@@ -2,8 +2,6 @@ from global_various import *
 
 
 class Camera(pygame.sprite.Sprite):
-    all_sprites = []
-
     def __init__(self):
         super().__init__()
         self.rect = [0] * 4
@@ -19,6 +17,3 @@ class Camera(pygame.sprite.Sprite):
     def set_pos(self, coords):
         self.rect[0] = coords[0]
         self.rect[1] = coords[1]
-
-    def add_in_lst(self, obj):
-        self.all_sprites.append(obj)
