@@ -2,12 +2,12 @@ from camera import Camera
 from global_various import *
 
 
-class Player(Camera):
-    def __init__(self):
+class Player(pygame.sprite.Sprite):
+    def __init__(self, image="player.png"):
         super().__init__()
-        self.image = load_image("player.png", -1)
-        self.set_pos((width // 2, height // 2))
-        self.set_rect(self.image.get_rect())
+        self.image = load_image(image)
+        player_group.add(self)
+        self.rect = [width // 2, height // 2, *self.image.get_rect()[2:]]
         self.change_x = 0
         self.change_y = 0
         self.speed_run = 1000 // FPS
@@ -30,7 +30,12 @@ class Player(Camera):
             self.run(1, 1)
 
     def change_all_pos(self):
-        for i in self.all_sprites:
-            i.move_camera(self.change_x, self.change_y)
+        for i in motionless:
+            for j in i:
+                j.move_camera(self.change_x, self.change_y)
+        for i in motionful:
+            for j in i:
+                if j != self:
+                    j.move_camera(self.change_x, self.change_y)
         self.change_x = 0
         self.change_y = 0
