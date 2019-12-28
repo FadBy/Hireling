@@ -2,7 +2,7 @@ import pygame
 import os
 
 
-def load_image(name, color_key=None):
+def load_image(name):
     fullname = os.path.join('data', name)
     image = pygame.image.load(fullname)
     image.set_colorkey((255, 255, 255))
@@ -12,11 +12,11 @@ def load_image(name, color_key=None):
 player_group = pygame.sprite.Group()
 enemys_group = pygame.sprite.Group()
 surface_group = pygame.sprite.Group()
-walls_front_group = pygame.sprite.Group()
-walls_back_group = pygame.sprite.Group()
-walls_side_group = pygame.sprite.Group()
+walls_hor_group = pygame.sprite.Group()
+walls_ver_group = pygame.sprite.Group()
 
-layers = [surface_group, walls_back_group, enemys_group, player_group, walls_front_group]
+motionless = [surface_group, walls_hor_group, walls_ver_group]
+motionful = [enemys_group, player_group]
 
 FPS = 60
 
