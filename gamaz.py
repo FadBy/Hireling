@@ -43,14 +43,14 @@ class Surface(Camera):
         super().__init__()
         self.add_in_lst(self)
         self.set_pos((x, y))
-        self.image = load_image("background.png", -1)
+        self.image = load_image("player_back.png", -1)
         self.set_rect(self.image.get_rect())
 
 
 class Player(Camera):
     def __init__(self):
         super().__init__()
-        self.image = load_image("player.png", -1)
+        self.image = load_image("player_face.png", -1)
         self.set_pos((width // 2, height // 2))
         self.set_rect(self.image.get_rect())
         self.change_x = 0
@@ -71,8 +71,10 @@ class Player(Camera):
             self.run(0, 1)
         if pressed_btns[pygame.K_w]:
             self.run(1, -1)
+            self.image = load_image("player_back.png", -1)
         if pressed_btns[pygame.K_s]:
             self.run(1, 1)
+            self.image = load_image("player_face.png", -1)
 
     def change_all_pos(self):
         for i in self.all_sprites:
@@ -81,13 +83,9 @@ class Player(Camera):
         self.change_y = 0
 
 
-
-
-
-
 pygame.init()
 FPS = 60
-size = width, height = 800, 600
+size = width, height = 1280, 720
 screen = pygame.display.set_mode(size)
 clock = pygame.time.Clock()
 sur1 = Surface(width // 2 - 200, height // 2 - 200)
