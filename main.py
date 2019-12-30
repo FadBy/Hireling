@@ -10,7 +10,7 @@ def draw_all_sprites():
         i.draw(screen)
 
 pygame.init()
-player = Player("player.png")
+player = Player("player_face.png")
 sur2 = Room("background_without_height.png", width // 2 - 300, height // 2 - 300)
 
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME

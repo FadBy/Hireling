@@ -32,10 +32,11 @@ class Collider(pygame.sprite.Sprite):
                     object_collided.rect_f[1] > self.rect_f[1] and \
                     object_collided.rect_f[1] + object_collided.rect_f[3] < self.rect_f[1] + self.rect_f[3]:
                 object_collided.change_x = self.rect_f[0] + self.rect_f[2] - object_collided.rect_f[0]
-            elif object_collided.rect_f[1] < self.rect_f[1] and object_collided.rect_f[0] > self.rect_f[0] and \
-                    object_collided.rect_f[0] < self.rect_f[0] + self.rect_f[2]:
+            elif object_collided.rect_f[1] < self.rect_f[1] and self.rect_f[0] < object_collided.rect_f[0] < \
+                    self.rect_f[0] + self.rect_f[2]:
                 object_collided.change_y = self.rect_f[1] - object_collided.rect[1] - object_collided.rect_f[3]
-            elif object_collided.rect_f[1] + object_collided.rect_f[3] > self.rect_f[1] and object_collided.rect_f[0] > \
-                    self.rect_f[0] and object_collided.rect_f[0] + object_collided.rect_f[2] < self.rect_f[0] + self.rect_f[2]:
+            elif object_collided.rect_f[1] + object_collided.rect_f[3] > self.rect_f[1] and object_collided.rect_f[0] \
+                    > self.rect_f[0] and object_collided.rect_f[0] + \
+                    object_collided.rect_f[2] < self.rect_f[0] + self.rect_f[2]:
                 object_collided.change_y = self.rect_f[1] + self.rect_f[3] - object_collided.rect_f[1]
 

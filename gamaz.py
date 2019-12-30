@@ -43,7 +43,7 @@ class Surface(Camera):
         super().__init__()
         self.add_in_lst(self)
         self.set_pos((x, y))
-        self.image = load_image("player_back.png", -1)
+        self.image = load_image("player_back1.png", -1)
         self.set_rect(self.image.get_rect())
 
 
@@ -71,7 +71,7 @@ class Player(Camera):
             self.run(0, 1)
         if pressed_btns[pygame.K_w]:
             self.run(1, -1)
-            self.image = load_image("player_back.png", -1)
+            self.image = load_image("player_back1.png", -1)
         if pressed_btns[pygame.K_s]:
             self.run(1, 1)
             self.image = load_image("player_face.png", -1)

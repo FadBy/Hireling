@@ -1,4 +1,5 @@
 import pygame, os
+from global_various import *
 
 running = True
 width = 1600
@@ -17,43 +18,55 @@ class Menu(pygame.sprite.Sprite):
         self.fps = 120
         self.background = pygame.transform.scale(pygame.image.load('data/Menu.jpg'),  (width, height))
         self.arrow = pygame.transform.scale(pygame.image.load('data/arrow.png'),
-                                       (100, 94))
-        self.arrow_sprite = pygame.sprite.Sprite()
+                                       (width // 1280 * 50, height // 720 * 47))
         self.start_sprite = pygame.sprite.Sprite()
         self.options_sprite = pygame.sprite.Sprite()
         self.exit_sprite = pygame.sprite.Sprite()
         self.start_sprite.rect = load_image('start_collider.png').get_rect()
-        self.start_sprite.mask = pygame.mask.from_surface(load_image('start_collider.png'))
+        self.start_sprite.rect.x, self.start_sprite.rect.y = 575, 305
         self.options_sprite.rect = load_image('options_collider.png').get_rect()
-        self.options_sprite.mask = pygame.mask.from_surface(load_image('options_collider.png'))
+        self.options_sprite.rect.x, self.options_sprite.rect.y = 575, 415
         self.exit_sprite.rect = load_image('exit_collider.png').get_rect()
-        self.exit_sprite.mask = pygame.mask.from_surface(load_image('exit_collider.png'))
+        self.exit_sprite.rect.x, self.exit_sprite.rect.y = 575, 525
+        buttons.add(self.start_sprite)
+        buttons.add(self.options_sprite)
+        buttons.add(self.exit_sprite)
 
     def render(self):
-        self.arrow_sprite.rect = self.arrow.get_rect()
-        self.arrow_sprite.mask = pygame.mask.from_surface(self.arrow)
-        print(self.start_sprite.rect, self.start_sprite.mask)
+        x, y = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    self.arrow = pygame.transform.scale(pygame.image.load('data/arrow_tapped.png'), (100, 94))
-                    if pygame.sprite.collide_mask(self.arrow_sprite, self.start_sprite):
-                        self.background = pygame.transform.scale(pygame.image.load('data/start_tapped.jpg'),
-                                                                 (width, height))
-                    elif pygame.sprite.collide_mask(self.arrow_sprite, self.options_sprite):
-                        self.background = pygame.transform.scale(pygame.image.load('data/options_tapped.jpg'),
-                                                                 (width, height))
-                    elif pygame.sprite.collide_mask(self.arrow_sprite, self.exit_sprite):
-                        self.background = pygame.transform.scale(pygame.image.load('data/exit_tapped.jpg'),
-                                                                 (width, height))
+                    self.arrow = pygame.transform.scale(pygame.image.load('data/arrow.png'),
+                                                        (width // 1280 * 50, height // 720 * 47))
+                    if x > self.start_sprite.rect.x and y > self.start_sprite.rect.y:
+                        if x < self.start_sprite.rect.x + 595 * width / 1980 \
+                                and y < self.start_sprite.rect.y + 120 * height / 1280:
+                            self.background = pygame.transform.scale(pygame.image.load('data/start_tapped.jpg'),
+                                                                     (width, height))
+                    if x > self.options_sprite.rect.x and y > self.options_sprite.rect.y:
+                        if x < self.options_sprite.rect.x + 595 * width / 1980 \
+                                and y < self.options_sprite.rect.y + 115 * height / 1280:
+                            self.background = pygame.transform.scale(pygame.image.load('data/options_tapped.jpg'),
+                                                                     (width, height))
+                    if x > self.exit_sprite.rect.x and y > self.exit_sprite.rect.y:
+                        if x < self.exit_sprite.rect.x + 595 * width / 1980 \
+                                and y < self.exit_sprite.rect.y + 115 * height / 1280:
+                            self.background = pygame.transform.scale(pygame.image.load('data/exit_tapped.jpg'),
+                                                                     (width, height))
+                            screen.blit(self.background, self.background.get_rect(bottomright=(width, height)))
+                            pygame.display.flip()
+                            pygame.time.Clock().tick(self.fps)
+                            return False
             if event.type == pygame.MOUSEBUTTONUP:
-                self.arrow = pygame.transform.scale(pygame.image.load('data/arrow.png'), (100, 94))
+                self.arrow = pygame.transform.scale(pygame.image.load('data/arrow.png'),
+                                               (width // 1280 * 50, height // 720 * 47))
                 self.background = pygame.transform.scale(pygame.image.load('data/Menu.jpg'),  (width, height))
         if pygame.mouse.get_focused():
             screen.blit(self.background, self.background.get_rect(bottomright=(width, height)))
-            screen.blit(self.arrow, self.arrow.get_rect(bottomright=(pygame.mouse.get_pos())))
+            screen.blit(self.arrow, self.arrow.get_rect(bottomright=(x + width // 1280 * 50, y + height // 720 * 47)))
         pygame.time.Clock().tick(self.fps)
         pygame.display.flip()
         return True
