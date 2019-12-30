@@ -1,5 +1,5 @@
-from camera import Camera
 from global_various import *
+from collider import Collider
 
 
 class Player(pygame.sprite.Sprite):
@@ -44,8 +44,8 @@ class Player(pygame.sprite.Sprite):
                     j.move_camera(self.change_x, self.change_y)
 
     def check_colliders(self):
-        colliders = pygame.sprite.spritecollide(self, wall_collider_group, False)
+        colliders = pygame.sprite.spritecollide(self, collider_group, False)
         if colliders:
             for i in colliders:
-                i.main_collide(self)
+                i.owner.player_collided(self)
 
