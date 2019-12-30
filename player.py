@@ -15,13 +15,15 @@ class Player(pygame.sprite.Sprite):
         self.change_y = 0
         self.speed_run = 300 / FPS
         self.tag = "player"
+        self.height_person = self.rect_f[3] * 0.5
+        self.player_collider = Collider(self, 0, self.height_person, self.rect_f[2],
+                                        self.rect_f[3] - self.height_person)
 
     def run(self, coord, way):
         if coord == "x":
             self.change_x += self.speed_run * way
         else:
             self.change_y = self.speed_run * way
-
 
     def check_pressed(self):
         pressed_btns = pygame.key.get_pressed()
@@ -44,8 +46,7 @@ class Player(pygame.sprite.Sprite):
                     j.move_camera(self.change_x, self.change_y)
 
     def check_colliders(self):
-        colliders = pygame.sprite.spritecollide(self, collider_group, False)
+        colliders = pygame.sprite.spritecollide(self.player_collider, collider_group, False)
         if colliders:
             for i in colliders:
-                i.owner.player_collided(self)
-
+                i.owner.player_collided(self.player_collider)

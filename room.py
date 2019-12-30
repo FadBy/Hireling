@@ -14,10 +14,10 @@ class Room(Camera):
         self.rect_f[0], self.rect_f[1] = x, y
         self.rect = pygame.Rect(*self.rect_f)
         self.tag = "room"
-        Wall("hor_wall.png", x, y)
-        Wall("hor_wall.png", x, y + self.rect_f[3] - self.thickness)
-        Wall("ver_wall.png", x, y)
-        Wall("ver_wall.png", x + self.rect_f[2] - self.thickness, y)
+        Wall(self, "hor_wall.png", 0, 0)
+        Wall(self, "hor_wall.png", 0, 0 + self.rect_f[3] - self.thickness)
+        Wall(self, "ver_wall.png", 0, 0)
+        Wall(self, "ver_wall.png", 0 + self.rect_f[2] - self.thickness, 0)
 
 
 
