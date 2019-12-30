@@ -17,8 +17,6 @@ walls_ver_group = pygame.sprite.Group()
 
 wall_collider_group = pygame.sprite.Group()
 
-buttons = pygame.sprite.Group()
-
 motionless = [surface_group, walls_hor_group, walls_ver_group]
 motionful = [enemys_group, player_group]
 
