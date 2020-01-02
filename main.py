@@ -11,6 +11,20 @@ def draw_all_sprites():
     motionful.draw(screen)
     collusions = []
     for i in motionful:
+        element = [i]
+        for j in motionless:
+            if pygame.sprite.spritecollide(i, j, False):
+                element.append(j)
+        for j in motionful:
+            if pygame.sprite.collide_rect(i, j):
+                element.append(j)
+        collusions.append(element)
+    for i in collusions:
+        i.sort(key=lambda x: x.rect_f[1])
+        for j in i:
+            j.draw(screen)
+
+
 
 
 

@@ -54,3 +54,6 @@ class Player(pygame.sprite.Sprite):
         if colliders:
             for i in colliders:
                 i.owner.player_collided(self.player_collider)
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
