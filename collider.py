@@ -1,5 +1,6 @@
 import pygame
 from global_various import *
+from camera import Camera
 
 
 class Collider(pygame.sprite.Sprite):
@@ -13,4 +14,34 @@ class Collider(pygame.sprite.Sprite):
     def change_pos(self, x, y):
         self.rect_f[0] -= x
         self.rect_f[1] -= y
+
+    def move_camera(self, x, y):
+        self.rect_f[0] -= x
+        self.rect_f[1] -= y
         self.rect = pygame.Rect(self.rect_f)
+
+    def default_collide(self, player):
+        if player.owner.change_x > 0 and player.owner.change_y == 0:
+            player.owner.change_x = self.rect_f[0] - player.rect_f[0] - player.rect_f[2]
+        elif player.owner.change_x < 0 and player.owner.change_y == 0:
+            player.owner.change_x = self.rect_f[0] + self.rect_f[2] - player.rect_f[0]
+        elif player.owner.change_x == 0 and player.owner.change_y > 0:
+            player.owner.change_y = self.rect_f[1] - player.rect[1] - player.rect_f[3]
+        elif player.owner.change_x == 0 and player.owner.change_y < 0:
+            player.owner.change_y = self.rect_f[1] + self.rect_f[3] - player.rect_f[1]
+        elif player.rect_f[0] < self.rect_f[0] and player.rect_f[1] > self.rect_f[1] and \
+                player.rect_f[1] + player.rect_f[3] < self.rect_f[1] + self.rect_f[3]:
+            player.owner.change_x = self.rect_f[0] - player.rect_f[0] - player.rect_f[2]
+        elif player.rect_f[0] + player.rect_f[2] > self.rect_f[0] + self.rect_f[2] and \
+                player.rect_f[1] > self.rect_f[1] and \
+                player.rect_f[1] + player.rect_f[3] < self.rect_f[1] + self.rect_f[3]:
+            player.owner.change_x = self.rect_f[0] + self.rect_f[2] - player.rect_f[0]
+        elif player.rect_f[1] < self.rect_f[1] and player.rect_f[0] > self.rect_f[0] and \
+                player.rect_f[0] < self.rect_f[0] + self.rect_f[2]:
+            player.owner.change_y = self.rect_f[1] - player.rect[1] - player.rect_f[3]
+        elif player.rect_f[1] + player.rect_f[3] > self.rect_f[1] and player.rect_f[
+            0] > \
+                self.rect_f[0] and player.rect_f[0] + player.rect_f[2] < self.rect_f[0] + \
+                self.rect_f[2]:
+            player.owner.change_y = self.rect_f[1] + self.rect_f[3] - player.rect_f[1]
+

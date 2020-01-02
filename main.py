@@ -4,14 +4,20 @@ from global_various import *
 
 
 def draw_all_sprites():
+    for i in background:
+        i.draw(screen)
     for i in motionless:
         i.draw(screen)
+    motionful.draw(screen)
+    collusions = []
     for i in motionful:
-        i.draw(screen)
+
+
 
 pygame.init()
 player = Player("player.png")
-sur2 = Room("background_without_height.png", width // 2 - 300, height // 2 - 300)
+sur2 = Room("surface_block.png", TEXTURES, width // 2 - 300, height // 2 - 300, 20, 10)
+
 
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 clock = pygame.time.Clock()

@@ -9,16 +9,24 @@ def load_image(name, colorkey=(255, 255, 255)):
     return image
 
 
-player_group = pygame.sprite.Group()
-enemys_group = pygame.sprite.Group()
-surface_group = pygame.sprite.Group()
-walls_hor_group = pygame.sprite.Group()
-walls_ver_group = pygame.sprite.Group()
+TEXTURES = ["wall_block_ver.png", "full_corner.png", "not_full_corner.png", "wall_block_hor.png"]
+
+rooms = []
+background = []
+motionless = []
+motionful = pygame.sprite.Group()
 
 collider_group = pygame.sprite.Group()
 
-motionless = [surface_group, walls_hor_group, walls_ver_group]
-motionful = [enemys_group, player_group]
+VERTICAL_SPRITE = 0
+FULL_CORNER_SPRITE = 1
+NOT_FULL_CORNER_SPRITE = 2
+WALL_SPRITE = 3
+
+FULL_CORNER = True
+
+
+METR = 50
 
 FPS = 60
 size = width, height = 800, 600
