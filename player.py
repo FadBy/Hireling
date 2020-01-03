@@ -6,6 +6,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, image):
         super().__init__()
         motionful.add(self)
+        self.animation = []
         self.image = load_image(image)
         self.rect_f = list(self.image.get_rect())
         self.rect_f[0] = width / 2 - self.rect_f[2]
@@ -18,6 +19,8 @@ class Player(pygame.sprite.Sprite):
         self.height_person = self.rect_f[3] * 0.5
         self.player_collider = Collider(self, 0, self.height_person, self.rect_f[2],
                                         self.rect_f[3] - self.height_person)
+        self.frame = 0
+        self.not_attacking = True
 
     def run(self, coord, way):
         if coord == "x":
@@ -25,16 +28,46 @@ class Player(pygame.sprite.Sprite):
         else:
             self.change_y = self.speed_run * way
 
+    def attack(self, weapon_type, attacked_side):
+        if self.not_attacking:
+            if attacked_side == 'up':
+                fst, snd, trd, fth = load_image('player_back1.png'), load_image('player_back2.png'), \
+                                load_image('player_back201.png'), load_image('player_back3.png')
+                self.animation_create([snd, snd, trd, trd, fth, fth, fth])
+                self.image = self.animation[self.frame]
+                if self.frame < len(self.animation) - 1:
+                    self.frame += 1
+                else:
+                    if not weapon_type:
+                        self.not_attacking = False
+                    self.frame = 0
+
+    def animation_create(self, images):
+        self.animation = images
+
     def check_pressed(self):
         pressed_btns = pygame.key.get_pressed()
+        self.image = load_image('player_face.png')
         if pressed_btns[pygame.K_a]:
             self.run("x", -1)
         if pressed_btns[pygame.K_d]:
             self.run("x", 1)
         if pressed_btns[pygame.K_w]:
             self.run("y", -1)
+            self.image = load_image('player_back1.png')
         if pressed_btns[pygame.K_s]:
             self.run("y", 1)
+        if pressed_btns[pygame.K_LEFT]:
+            self.attack(False, 'left')
+        elif pressed_btns[pygame.K_RIGHT]:
+            self.attack(False, 'right')
+        elif pressed_btns[pygame.K_UP]:
+            self.attack(False, 'up')
+        elif pressed_btns[pygame.K_DOWN]:
+            self.attack(False, 'down')
+        else:
+            self.frame = 0
+            self.not_attacking = True
 
     def change_all_pos(self):
         for i in rooms:

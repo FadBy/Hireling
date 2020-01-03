@@ -25,11 +25,8 @@ def draw_all_sprites():
             j.draw(screen)
 
 
-
-
-
 pygame.init()
-player = Player("player.png")
+player = Player("player_face.png")
 sur2 = Room("surface_block.png", TEXTURES, width // 2 - 300, height // 2 - 300, 20, 10)
 
 
