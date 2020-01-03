@@ -5,7 +5,7 @@ from collider import Collider
 class Player(pygame.sprite.Sprite):
     def __init__(self, image):
         super().__init__()
-        self.add(player_group)
+        motionful.add(self)
         self.image = load_image(image)
         self.rect_f = list(self.image.get_rect())
         self.rect_f[0] = width / 2 - self.rect_f[2]
@@ -37,16 +37,23 @@ class Player(pygame.sprite.Sprite):
             self.run("y", 1)
 
     def change_all_pos(self):
+        for i in rooms:
+            i.move_camera(self.change_x, self.change_y)
+        for i in background:
+            i.move_camera(self.change_x, self.change_y)
         for i in motionless:
-            for j in i:
-                j.move_camera(self.change_x, self.change_y)
+            i.move_camera(self.change_x, self.change_y)
         for i in motionful:
-            for j in i:
-                if j != self:
-                    j.move_camera(self.change_x, self.change_y)
+            if i != self:
+                i.move_camera(self.change_x, self.change_y)
+        for i in collider_group:
+            i.move_camera(self.change_x, self.change_y)
 
     def check_colliders(self):
         colliders = pygame.sprite.spritecollide(self.player_collider, collider_group, False)
         if colliders:
             for i in colliders:
                 i.owner.player_collided(self.player_collider)
+
+    def draw(self, screen):
+        screen.blit(self.image, self.rect)
