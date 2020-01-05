@@ -28,5 +28,5 @@ FULL_CORNER = True
 
 METR = 50
 
-FPS = 60
-size = width, height = 800, 600
+FPS = 20
+size = width, height = 1280, 720

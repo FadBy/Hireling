@@ -33,7 +33,13 @@ class Player(pygame.sprite.Sprite):
             if attacked_side == 'up':
                 fst, snd, trd, fth = load_image('player_back1.png'), load_image('player_back2.png'), \
                                 load_image('player_back201.png'), load_image('player_back3.png')
-                self.animation_create([snd, snd, trd, trd, fth, fth, fth])
+                self.animation = []
+                for i in range(2):
+                    self.animation.append(snd)
+                for i in range(2):
+                    self.animation.append(trd)
+                for i in range(3):
+                    self.animation.append(fth)
                 self.image = self.animation[self.frame]
                 if self.frame < len(self.animation) - 1:
                     self.frame += 1
@@ -41,9 +47,6 @@ class Player(pygame.sprite.Sprite):
                     if not weapon_type:
                         self.not_attacking = False
                     self.frame = 0
-
-    def animation_create(self, images):
-        self.animation = images
 
     def check_pressed(self):
         pressed_btns = pygame.key.get_pressed()

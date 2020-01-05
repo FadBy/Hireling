@@ -1,6 +1,7 @@
 from player import Player
 from room import Room
 from global_various import *
+import time
 
 
 def draw_all_sprites():
@@ -33,7 +34,10 @@ sur2 = Room("surface_block.png", TEXTURES, width // 2 - 300, height // 2 - 300, 
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 clock = pygame.time.Clock()
 running = True
+x = 0
 while running:
+    last_frame = time.time()
+    print(last_frame)
     screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -45,8 +49,12 @@ while running:
     player.change_x = 0
     player.change_y = 0
     draw_all_sprites()
-
     pygame.display.flip()
-    clock.tick(FPS)
+    while time.time() < last_frame + 1 / FPS:
+        pass
+    last_frame = time.time()
+    print(last_frame)
+    x += 1
+
 
 pygame.quit()
