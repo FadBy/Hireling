@@ -44,7 +44,10 @@ class Menu(pygame.sprite.Sprite):
                                 and y < self.start_sprite.rect.y + 120 * height / 1280:
                             self.background = pygame.transform.scale(pygame.image.load('data/start_tapped.jpg'),
                                                                      (width, height))
+                            screen.blit(self.background, self.background.get_rect(bottomright=(width, height)))
                             self.start_game = True
+                            pygame.display.flip()
+                            pygame.time.Clock().tick(self.fps)
                             return False
                     if x > self.options_sprite.rect.x and y > self.options_sprite.rect.y:
                         if x < self.options_sprite.rect.x + 595 * width / 1980 \
