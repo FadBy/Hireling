@@ -15,6 +15,7 @@ def load_image(name, color_key=None):
 
 class Menu(pygame.sprite.Sprite):
     def __init__(self):
+        self.start_game = False
         self.fps = 120
         self.background = pygame.transform.scale(pygame.image.load('data/Menu.jpg'), (width, height))
         self.arrow = pygame.transform.scale(pygame.image.load('data/arrow.png'),
@@ -43,6 +44,8 @@ class Menu(pygame.sprite.Sprite):
                                 and y < self.start_sprite.rect.y + 120 * height / 1280:
                             self.background = pygame.transform.scale(pygame.image.load('data/start_tapped.jpg'),
                                                                      (width, height))
+                            self.start_game = True
+                            return False
                     if x > self.options_sprite.rect.x and y > self.options_sprite.rect.y:
                         if x < self.options_sprite.rect.x + 595 * width / 1980 \
                                 and y < self.options_sprite.rect.y + 115 * height / 1280:
@@ -77,3 +80,7 @@ while running:
     running = menu.render()
 
 pygame.quit()
+
+if menu.start_game:
+    os.system('main.py')
+
