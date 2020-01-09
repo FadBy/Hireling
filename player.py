@@ -68,6 +68,8 @@ class Player(pygame.sprite.Sprite):
             self.attack(False, 'up')
         elif pressed_btns[pygame.K_DOWN]:
             self.attack(False, 'down')
+        elif pressed_btns[pygame.K_ESCAPE]:
+            return 'paused'
         else:
             self.frame = 0
             self.not_attacking = True

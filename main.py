@@ -42,7 +42,15 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    player.check_pressed()
+    if player.check_pressed() == 'paused':
+        paused = True
+        while paused:
+            pressed_btns = pygame.key.get_pressed()
+            if not pressed_btns[pygame.K_ESCAPE]:
+                paused = False
+            little_menu = pygame.image.load('data/Ingame_menu.jpg')
+            screen.blit(little_menu, little_menu.get_rect(bottomright=(width, height)))
+            pygame.display.flip()
     player.change_all_pos()
     player.check_colliders()
     player.change_all_pos()
