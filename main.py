@@ -56,5 +56,4 @@ while running:
     print(last_frame)
     x += 1
 
-
 pygame.quit()

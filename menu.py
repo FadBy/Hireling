@@ -1,9 +1,10 @@
-import pygame, os
+import os
+import pygame
 from global_various import *
 
 running = True
-width = 1600
-height = 900
+width = 1280
+height = 720
 
 
 def load_image(name, color_key=None):
@@ -85,5 +86,4 @@ while running:
 pygame.quit()
 
 if menu.start_game:
-    os.system('main.py')
-
+    os.system("main.py")
