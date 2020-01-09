@@ -7,9 +7,10 @@ import time
 def draw_all_sprites():
     for i in background:
         i.draw(screen)
-    for i in motionless:
+    for i in walls:
         i.draw(screen)
-    motionful.draw(screen)
+    for i in motionful:
+        i.draw(screen)
     collusions = []
     for i in motionful:
         element = [i]
@@ -24,13 +25,19 @@ def draw_all_sprites():
         i.sort(key=lambda x: x.rect_f[1])
         for j in i:
             j.draw(screen)
+    if test_collider:
+        for i in motionless_collider_group:
+            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
+        for i in motionful_collider_group:
+            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f))
 
 
 pygame.init()
+
 player = Player("player_face.png")
-sur2 = Room("surface_block.png", TEXTURES, width // 2 - 300, height // 2 - 300, 20, 10)
-
-
+sur1 = Room("surface_block.png", TEXTURES, width // 2 - 300, height // 2 - 300, 20, 10)
+sur2 = Room("surface_block.png", TEXTURES, width // 2 - 825, height // 2 - 200, 10, 10)
+sort_groups()
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 clock = pygame.time.Clock()
 running = True

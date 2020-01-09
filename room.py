@@ -21,3 +21,11 @@ class Room:
     def move_camera(self, x, y):
         self.rect_f[0] -= x
         self.rect_f[1] -= y
+        self.surface.move_camera(x, y)
+        for i in self.walls:
+            self.walls[i].move_camera(x, y)
+
+    def draw(self, screen):
+        self.surface.draw(screen)
+        for i in self.walls:
+            self.walls[i].draw(screen)

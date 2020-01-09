@@ -75,21 +75,13 @@ class Player(pygame.sprite.Sprite):
     def change_all_pos(self):
         for i in rooms:
             i.move_camera(self.change_x, self.change_y)
-        for i in background:
-            i.move_camera(self.change_x, self.change_y)
-        for i in motionless:
-            i.move_camera(self.change_x, self.change_y)
-        for i in motionful:
-            if i != self:
-                i.move_camera(self.change_x, self.change_y)
-        for i in collider_group:
-            i.move_camera(self.change_x, self.change_y)
 
     def check_colliders(self):
-        colliders = pygame.sprite.spritecollide(self.player_collider, collider_group, False)
+        colliders = pygame.sprite.spritecollide(self.player_collider, motionless_collider_group, False)
         if colliders:
             for i in colliders:
-                i.owner.player_collided(self.player_collider)
+                if not i.trigger:
+                    i.default_collide(self.player_collider)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
