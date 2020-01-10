@@ -71,6 +71,8 @@ class Player(pygame.sprite.Sprite):
         else:
             self.frame = 0
             self.not_attacking = True
+#        if pressed_btns[pygame.K_ESCAPE]:
+#            os.system('ingame_menu.py')
 
     def change_all_pos(self):
         for i in rooms:
