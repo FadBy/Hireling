@@ -1,6 +1,5 @@
 import pygame
-from global_various import *
-from camera import Camera
+from all_various import *
 
 
 class Collider(pygame.sprite.Sprite):
