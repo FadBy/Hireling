@@ -55,7 +55,7 @@ while running:
             pressed_btns = pygame.key.get_pressed()
             if not pressed_btns[pygame.K_ESCAPE]:
                 paused = False
-            little_menu = pygame.image.load('data/Ingame_menu.jpg')
+            little_menu = pygame.transform.scale(pygame.image.load('data/Ingame_menu.jpg'), (width, height))
             screen.blit(little_menu, little_menu.get_rect(bottomright=(width, height)))
             pygame.display.flip()
     player.change_all_pos()
