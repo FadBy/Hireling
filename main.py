@@ -1,15 +1,16 @@
 from player import Player
 from room import Room
-from global_various import *
 import time
+from all_various import *
 
 
 def draw_all_sprites():
     for i in background:
         i.draw(screen)
-    for i in motionless:
+    for i in walls:
         i.draw(screen)
-    motionful.draw(screen)
+    for i in motionful:
+        i.draw(screen)
     collusions = []
     for i in motionful:
         element = [i]
@@ -24,20 +25,26 @@ def draw_all_sprites():
         i.sort(key=lambda x: x.rect_f[1])
         for j in i:
             j.draw(screen)
+    if TEST_COLLIDER:
+        for i in motionless_collider_group:
+            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
+        for i in motionful_collider_group:
+            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f))
 
 
 pygame.init()
-player = Player("player_face.png")
-sur2 = Room("surface_block.png", TEXTURES, width // 2 - 300, height // 2 - 300, 20, 10)
 
-
+player = Player()
+sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10)
+sur2 = Room(TEXTURES_DEFAULT, width // 2 - 825, height // 2 - 200, 10, 10)
+sort_groups()
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 clock = pygame.time.Clock()
 running = True
-x = 0
+# x = 0
 while running:
-    last_frame = time.time()
-    print(last_frame)
+    # last_frame = time.time()
+    # print(last_frame)
     screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -50,11 +57,10 @@ while running:
     player.change_y = 0
     draw_all_sprites()
     pygame.display.flip()
-    while time.time() < last_frame + 1 / FPS:
-        pass
-    last_frame = time.time()
-    print(last_frame)
-    x += 1
-
+    # while time.time() < last_frame + 1 / FPS:
+    #   pass
+    # last_frame = time.time()
+    # print(last_frame)
+    # x += 1
 
 pygame.quit()

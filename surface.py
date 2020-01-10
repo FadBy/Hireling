@@ -1,8 +1,8 @@
-from global_various import *
+from all_various import *
 
 
 class Surface(pygame.sprite.Group):
-    def __init__(self, room, image, x, y, w, h):
+    def __init__(self, room, images, x, y, w, h):
         super().__init__()
         background.append(self)
         self.owner = room
@@ -12,7 +12,7 @@ class Surface(pygame.sprite.Group):
         for i in range(w):
             for j in range(h):
                 sprite = pygame.sprite.Sprite(self)
-                sprite.image = load_image(image)
+                sprite.image = images["surface_block"]
                 sprite.rect = list(sprite.image.get_rect())
                 sprite.rect[0], sprite.rect[1] = self.rect_f[0] + i * METR, self.rect_f[1] + j * METR
 
@@ -22,7 +22,6 @@ class Surface(pygame.sprite.Group):
         for i in self:
             i.rect[0] -= x
             i.rect[1] -= y
-
 
 
 
