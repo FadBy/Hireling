@@ -1,4 +1,4 @@
-from global_various import *
+from all_various import *
 
 
 class Camera:

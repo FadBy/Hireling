@@ -1,13 +1,13 @@
-from global_various import *
+from all_various import *
 from collider import Collider
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image):
+    def __init__(self):
         super().__init__()
         motionful.add(self)
         self.animation = []
-        self.image = load_image(image)
+        self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
         self.rect_f[0] = width / 2 - self.rect_f[2]
         self.rect_f[1] = height / 2 - self.rect_f[3]
@@ -31,8 +31,8 @@ class Player(pygame.sprite.Sprite):
     def attack(self, weapon_type, attacked_side):
         if self.not_attacking:
             if attacked_side == 'up':
-                fst, snd, trd, fth = load_image('player_back1.png'), load_image('player_back2.png'), \
-                                load_image('player_back201.png'), load_image('player_back3.png')
+                fst, snd, trd, fth = PLAYER["player_back1"], PLAYER["player_back2"], \
+                                PLAYER["player_back201"], PLAYER["player_back3"]
                 self.animation = []
                 for i in range(2):
                     self.animation.append(snd)
@@ -50,14 +50,14 @@ class Player(pygame.sprite.Sprite):
 
     def check_pressed(self):
         pressed_btns = pygame.key.get_pressed()
-        self.image = load_image('player_face.png')
+        self.image = PLAYER["player_face"]
         if pressed_btns[pygame.K_a]:
             self.run("x", -1)
         if pressed_btns[pygame.K_d]:
             self.run("x", 1)
         if pressed_btns[pygame.K_w]:
             self.run("y", -1)
-            self.image = load_image('player_back1.png')
+            self.image = PLAYER["player_back1"]
         if pressed_btns[pygame.K_s]:
             self.run("y", 1)
         if pressed_btns[pygame.K_LEFT]:
@@ -84,6 +84,8 @@ class Player(pygame.sprite.Sprite):
             for i in colliders:
                 if not i.trigger:
                     i.default_collide(self.player_collider)
+                else:
+                    unit_collided()
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
