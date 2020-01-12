@@ -5,8 +5,6 @@ WALL_SPRITE = 3
 
 FULL_CORNER = True
 
-TEST_COLLIDER = False
+METR = 75
 
-METR = 50
-
-FPS = 20
+FPS = 60
