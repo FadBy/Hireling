@@ -2,6 +2,7 @@ from player import Player
 from room import Room
 import time
 from all_various import *
+from test import *
 
 
 def draw_all_sprites():
@@ -15,14 +16,18 @@ def draw_all_sprites():
     for i in motionful:
         element = [i]
         for j in motionless:
-            if pygame.sprite.spritecollide(i, j, False):
-                element.append(j)
+            if isinstance(j, pygame.sprite.Group):
+                if pygame.sprite.spritecollide(i, j, False):
+                    element.append(j)
+            else:
+                if pygame.sprite.collide_rect(i, j):
+                    element.append(j)
         for j in motionful:
             if pygame.sprite.collide_rect(i, j):
                 element.append(j)
         collusions.append(element)
     for i in collusions:
-        i.sort(key=lambda x: x.rect_f[1])
+        i.sort(key=lambda x: x.rect_f[1] + x.rect_f[3])
         for j in i:
             j.draw(screen)
     if TEST_COLLIDER:
@@ -33,19 +38,21 @@ def draw_all_sprites():
 
 
 pygame.init()
-
 player = Player()
-sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10)
-sur2 = Room(TEXTURES_DEFAULT, width // 2 - 825, height // 2 - 200, 10, 10)
+sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["up", 5]])
 sort_groups()
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
-clock = pygame.time.Clock()
+
+TEST_COLLIDER = True
+PRINT_FPS = True
+
 running = True
 while running:
     screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+    player.set_tick(clock.tick() / 1000)
     player.change_all_pos()
     player.check_colliders()
     player.change_all_pos()
@@ -66,5 +73,12 @@ while running:
                         if mouse_x > width // 4 and mouse_y > height * 15 // 16 - width // 2:
                             if mouse_x < width * 3 // 4 and mouse_y < height * 15 // 16:
                                 paused = False
+    if PRINT_FPS:
+        (print(int(clock.get_fps())))
+    # while time.time() < last_frame + 1 / FPS:
+    #   pass
+    # last_frame = time.time()
+    # print(last_frame)
+    # x += 1
 
 pygame.quit()

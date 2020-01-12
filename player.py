@@ -14,19 +14,23 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.rect_f)
         self.change_x = 0
         self.change_y = 0
-        self.speed_run = 300 / fps
+        self.speed_run = 150
         self.tag = "player"
         self.height_person = self.rect_f[3] * 0.5
         self.player_collider = Collider(self, 0, self.height_person, self.rect_f[2],
                                         self.rect_f[3] - self.height_person)
         self.frame = 0
         self.not_attacking = True
+        self.tick = None
+
+    def set_tick(self, tick):
+        self.tick = tick
 
     def run(self, coord, way):
         if coord == "x":
-            self.change_x += self.speed_run * way
+            self.change_x += self.speed_run * way * self.tick
         else:
-            self.change_y = self.speed_run * way
+            self.change_y = self.speed_run * way * self.tick
 
     def attack(self, weapon_type, attacked_side):
         if self.not_attacking:
@@ -76,7 +80,6 @@ class Player(pygame.sprite.Sprite):
         return ''
 
     def change_all_pos(self):
-        self.speed_run = 300 / fps
         for i in rooms:
             i.move_camera(self.change_x, self.change_y)
 
@@ -86,6 +89,8 @@ class Player(pygame.sprite.Sprite):
             for i in colliders:
                 if not i.trigger:
                     i.default_collide(self.player_collider)
+                else:
+                    i.owner.unit_collided(self)
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
