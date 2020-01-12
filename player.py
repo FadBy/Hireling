@@ -89,7 +89,7 @@ class Player(pygame.sprite.Sprite):
                 if not i.trigger:
                     i.default_collide(self.player_collider)
                 else:
-                    i.owner.unit_collided(self)
+                    i.owner.unit_collided()
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

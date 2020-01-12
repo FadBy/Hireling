@@ -15,6 +15,11 @@ class Wall(pygame.sprite.Group):
         self.tag = "wall"
         self.colliders = []
         self.doors = []
+        coord_of_doors2 = []
+        for i in coord_of_doors:
+            for j in i[1:]:
+                coord_of_doors2.append(j)
+        coord_of_doors = coord_of_doors2
         if way == "horisontal":
             walls.append(self)
             self.rect_f = [x + owner.rect_f[0], y - self.height_wall + owner.rect_f[1],
@@ -74,7 +79,7 @@ class Wall(pygame.sprite.Group):
     def draw(self, screen):
         super().draw(screen)
         for i in self.doors:
-            screen.blit(i.image, i.rect)
+            i.draw(screen)
 
 
 
