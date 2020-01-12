@@ -43,7 +43,7 @@ sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["up
 sort_groups()
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 
-TEST_COLLIDER = True
+TEST_COLLIDER = False
 PRINT_FPS = True
 
 running = True
@@ -62,23 +62,22 @@ while running:
     pygame.display.flip()
     if player.check_pressed() == 'paused':
         paused = True
-        little_menu = pygame.transform.scale(MENU['ingame_menu'], (width // 2, width // 2))
-        screen.blit(little_menu, little_menu.get_rect(bottomright=(width * 3 // 4, height * 15 // 16)))
-        pygame.display.flip()
         while paused:
+            little_menu = pygame.transform.scale(MENU['ingame_menu'], (width // 2, width // 2))
+            screen.blit(little_menu, little_menu.get_rect(bottomright=(width * 3 // 4, height * 15 // 16)))
+            pygame.display.flip()
             mouse_x, mouse_y = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        if mouse_x > width // 4 and mouse_y > height * 15 // 16 - width // 2:
-                            if mouse_x < width * 3 // 4 and mouse_y < height * 15 // 16:
+                        if mouse_x > width * 3 // 4 - 410 and mouse_y > height * 15 // 16 - 350:
+                            if mouse_x < width * 3 // 4 - 215 and mouse_y < height * 15 // 16 - 290:
+                                paused = False
+                        if mouse_x > width * 3 // 4 - 410 and mouse_y > height * 15 // 16 - 199:
+                            if mouse_x < width * 3 // 4 - 215 and mouse_y < height * 15 // 16 - 137:
+                                running = False
                                 paused = False
     if PRINT_FPS:
         (print(int(clock.get_fps())))
-    # while time.time() < last_frame + 1 / FPS:
-    #   pass
-    # last_frame = time.time()
-    # print(last_frame)
-    # x += 1
 
 pygame.quit()
