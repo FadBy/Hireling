@@ -14,7 +14,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.rect_f)
         self.change_x = 0
         self.change_y = 0
-        self.speed_run = 300 / FPS
+        self.speed_run = 300 / fps
         self.tag = "player"
         self.height_person = self.rect_f[3] * 0.5
         self.player_collider = Collider(self, 0, self.height_person, self.rect_f[2],
@@ -73,10 +73,10 @@ class Player(pygame.sprite.Sprite):
         else:
             self.frame = 0
             self.not_attacking = True
-#        if pressed_btns[pygame.K_ESCAPE]:
-#            os.system('ingame_menu.py')
+        return ''
 
     def change_all_pos(self):
+        self.speed_run = 300 / fps
         for i in rooms:
             i.move_camera(self.change_x, self.change_y)
 
@@ -86,8 +86,6 @@ class Player(pygame.sprite.Sprite):
             for i in colliders:
                 if not i.trigger:
                     i.default_collide(self.player_collider)
-                else:
-                    unit_collided()
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)

@@ -21,4 +21,5 @@ MENU = {"exit_collider": load_image("menu/exit_collider.png"),
         "options_collider": load_image("menu/options_collider.png"),
         "options_tapped": load_image("menu/options_tapped.jpg"),
         "start_collider": load_image("menu/start_collider.png"),
-        "start_tapped": load_image("menu/start_tapped.jpg")}
+        "start_tapped": load_image("menu/start_tapped.jpg"),
+        "ingame_menu": load_image("menu/Ingame_menu.jpg")}

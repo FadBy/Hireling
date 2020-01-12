@@ -15,7 +15,6 @@ class Door(pygame.sprite.Sprite):
         self.rect = pygame.Rect(*self.rect_f)
         self.collider = Collider(self, 0, 0, self.rect_f[2], self.rect_f[3], trigger=True)
 
-    def unit_collide(self):
 
 
 

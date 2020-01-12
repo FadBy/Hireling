@@ -9,4 +9,4 @@ TEST_COLLIDER = False
 
 METR = 50
 
-FPS = 20
+fps = 30

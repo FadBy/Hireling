@@ -41,23 +41,11 @@ sort_groups()
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 clock = pygame.time.Clock()
 running = True
-# x = 0
 while running:
-    # last_frame = time.time()
-    # print(last_frame)
     screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    if player.check_pressed() == 'paused':
-        paused = True
-        while paused:
-            pressed_btns = pygame.key.get_pressed()
-            if not pressed_btns[pygame.K_ESCAPE]:
-                paused = False
-            little_menu = pygame.transform.scale(pygame.image.load('data/Ingame_menu.jpg'), (width, height))
-            screen.blit(little_menu, little_menu.get_rect(bottomright=(width, height)))
-            pygame.display.flip()
     player.change_all_pos()
     player.check_colliders()
     player.change_all_pos()
@@ -65,10 +53,18 @@ while running:
     player.change_y = 0
     draw_all_sprites()
     pygame.display.flip()
-    # while time.time() < last_frame + 1 / FPS:
-    #   pass
-    # last_frame = time.time()
-    # print(last_frame)
-    # x += 1
+    if player.check_pressed() == 'paused':
+        paused = True
+        little_menu = pygame.transform.scale(MENU['ingame_menu'], (width // 2, width // 2))
+        screen.blit(little_menu, little_menu.get_rect(bottomright=(width * 3 // 4, height * 15 // 16)))
+        pygame.display.flip()
+        while paused:
+            mouse_x, mouse_y = pygame.mouse.get_pos()
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if event.button == 1:
+                        if mouse_x > width // 4 and mouse_y > height * 15 // 16 - width // 2:
+                            if mouse_x < width * 3 // 4 and mouse_y < height * 15 // 16:
+                                paused = False
 
 pygame.quit()
