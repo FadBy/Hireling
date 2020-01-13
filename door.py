@@ -16,7 +16,7 @@ class Door(pygame.sprite.Sprite):
             self.rect_f = list(self.image_close.get_rect())
             self.rect_f[0], self.rect_f[1] = x + owner.rect_f[0], y + owner.rect_f[1]
             self.rect = pygame.Rect(*self.rect_f)
-            self.collider = Collider(self, 0, owner.height_wall, self.rect_f[2], self.rect_f[3] - owner.height_wall,
+            self.collider = Collider(self, 0, 0, self.rect_f[2], self.rect_f[3],
                                      trigger=True)
         else:
             self.image_close = images["door_close_ver"]

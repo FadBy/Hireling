@@ -16,7 +16,8 @@ class Player(pygame.sprite.Sprite):
         self.change_y = 0
         self.speed_run = 150
         self.tag = "player"
-        self.height_person = self.rect_f[3] * 0.5
+
+        self.height_person = self.rect_f[3] * WIDTH_UNIT_COLLIDER
         self.player_collider = Collider(self, 0, self.height_person, self.rect_f[2],
                                         self.rect_f[3] - self.height_person)
         self.frame = 0

@@ -42,11 +42,11 @@ def draw_all_sprites():
 
 pygame.init()
 player = Player()
-sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [])
+sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["up", 3]])
 sort_groups()
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 
-TEST_COLLIDER = True
+TEST_COLLIDER = False
 PRINT_FPS = False
 
 running = True
