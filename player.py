@@ -77,6 +77,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.frame = 0
             self.not_attacking = True
+        return ''
 
     def change_all_pos(self):
         for i in rooms:

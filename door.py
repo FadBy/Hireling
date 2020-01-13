@@ -19,10 +19,14 @@ class Door(pygame.sprite.Sprite):
             self.collider = Collider(self, 0, owner.height_wall, self.rect_f[2], self.rect_f[3] - owner.height_wall,
                                      trigger=True)
         else:
+            self.image_close = images["door_close_ver"]
+            self.image_open = images["door_open_ver"]
             self.rect_f = list(self.image_open.get_rect())
+
             self.rect_f[0], self.rect_f[1] = x + owner.rect_f[0], y + owner.rect_f[1]
+            print("door", self.rect_f)
             self.rect = pygame.Rect(*self.rect_f)
-            self.collider = Collider(self, 0, 0, self.rect_f[2], self.rect_f[3], trigger=True)
+            self.collider = Collider(self, 0, owner.height_wall, self.rect_f[2], self.rect_f[3], trigger=True)
 
     def move_camera(self, x, y):
         self.rect_f[0] -= x

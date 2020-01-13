@@ -5,12 +5,10 @@ from surface import Surface
 
 
 class Room:
-    def __init__(self, images, x, y, w, h, doors, up=[not FULL_CORNER, not FULL_CORNER],
-                 down=[FULL_CORNER, FULL_CORNER]):
+    def __init__(self, images, x, y, w, h, doors):
         rooms.append(self)
-        self.height_wall = images["wall_block_hor"].get_rect()[3]
-        self.thickness = images["wall_block_ver"].get_rect()[2]
-        self.rect_f = [x, y, w * METR + self.thickness * 2, h * METR + self.thickness * 2]
+        self.side = images["wall_block_hor"].get_rect()[3]
+        self.rect_f = [x, y, w * METR + self.side * 2, h * METR + self.side * 2]
         self.tag = "room"
         self.walls = {"up": [], "down": [], "left": [], "right": []}
         for i in range(len(doors)):
@@ -19,16 +17,16 @@ class Room:
         for i in self.walls:
             if i == "up":
                 print(self.walls[i])
-                self.walls[i] = Wall(self, "horisontal", images, 0, 0, w, self.walls[i], up)
+                self.walls[i] = Wall(self, "up", images, 0, 0, w, self.walls[i])
             elif i == "down":
-                self.walls[i] = Wall(self, "horisontal", images, 0, self.rect_f[3] - self.thickness, w,
-                                     self.walls[i], down)
-            elif i == "left":
-                self.walls[i] = Wall(self, "vertical", images, 0, 0, h, self.walls[i])
-            else:
-                self.walls[i] = Wall(self, "vertical", images, self.rect_f[2] - self.thickness, 0, h,
+                self.walls[i] = Wall(self, "down", images, 0, self.rect_f[3] - self.side, w,
                                      self.walls[i])
-        self.surface = Surface(self, images, self.thickness, self.thickness, w, h)
+            elif i == "left":
+                self.walls[i] = Wall(self, "vertical", images, 0, self.side, h, self.walls[i])
+            else:
+                self.walls[i] = Wall(self, "vertical", images, self.rect_f[2] - self.side, self.side, h,
+                                     self.walls[i])
+        self.surface = Surface(self, images, self.side, self.side, w, h)
 
     def move_camera(self, x, y):
         self.rect_f[0] -= x
