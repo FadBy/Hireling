@@ -8,31 +8,9 @@ from test import *
 def draw_all_sprites():
     for i in background:
         i.draw(screen)
-    for i in walls:
+    middle.sort(key=lambda x: x.rect[1] + x.rect[3])
+    for i in middle:
         i.draw(screen)
-    for i in motionful:
-        i.draw(screen)
-    collusions = []
-    for i in motionful:
-        element = [i]
-        for j in motionless:
-            if isinstance(j, pygame.sprite.Group):
-                if pygame.sprite.spritecollide(i, j, False):
-                    element.append(j)
-            else:
-                if pygame.sprite.collide_rect(i, j):
-                    element.append(j)
-        for j in motionful:
-            if pygame.sprite.collide_rect(i, j):
-                element.append(j)
-        collusions.append(element)
-    for i in collusions:
-        i.sort(key=lambda x: x.rect_f[1] + x.rect_f[3])
-        for j in i:
-            j.draw(screen)
-    for i in walls:
-        for j in i.doors:
-            j.set_open(False)
     if TEST_COLLIDER:
         for i in motionless_collider_group:
             pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
@@ -42,7 +20,7 @@ def draw_all_sprites():
 
 pygame.init()
 player = Player()
-sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["up", 3]])
+sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["left", 5], ["down", 2]])
 sort_groups()
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 

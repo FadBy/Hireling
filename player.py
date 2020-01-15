@@ -1,11 +1,11 @@
 from all_various import *
 from collider import Collider
+from sprite import Sprite
 
 
-class Player(pygame.sprite.Sprite):
+class Player(Sprite):
     def __init__(self):
-        super().__init__()
-        motionful.add(self)
+        super().__init__(middle, motionful)
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
@@ -92,6 +92,3 @@ class Player(pygame.sprite.Sprite):
                     i.default_collide(self.player_collider)
                 else:
                     i.owner.unit_collided()
-
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)

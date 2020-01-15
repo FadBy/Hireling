@@ -1,4 +1,5 @@
 from all_various import *
+from sprite import Sprite
 
 
 class Surface(pygame.sprite.Group):
@@ -11,10 +12,11 @@ class Surface(pygame.sprite.Group):
 
         for i in range(w):
             for j in range(h):
-                sprite = pygame.sprite.Sprite(self)
+                sprite = Sprite(self)
                 sprite.image = images["surface_block"]
                 sprite.rect = list(sprite.image.get_rect())
                 sprite.rect[0], sprite.rect[1] = self.rect_f[0] + i * METR, self.rect_f[1] + j * METR
+
     def move_camera(self, x, y):
         self.rect_f[0] -= x
         self.rect_f[1] -= y

@@ -1,6 +1,7 @@
 from all_various import *
 from collider import Collider
 from door import Door
+from sprite import Sprite
 
 
 class Wall(pygame.sprite.Group):
@@ -29,7 +30,7 @@ class Wall(pygame.sprite.Group):
             else:
                 corner_image = images["corner_down"]
             for i in range(2):
-                corner = pygame.sprite.Sprite(self)
+                corner = Sprite(self, middle)
                 if i == 0:
                     corner.image = corner_image
                 else:
@@ -40,7 +41,7 @@ class Wall(pygame.sprite.Group):
                 if i + 1 in coord_of_doors:
                     self.doors.append(Door(self, "horisontal", images, i * METR + self.side, 0))
                 else:
-                    wall_surface = pygame.sprite.Sprite(self)
+                    wall_surface = Sprite(self, middle)
                     wall_surface.image = images["wall_block_hor"]
                     wall_surface.rect = list(wall_surface.image.get_rect())
                     wall_surface.rect[0], wall_surface.rect[1] = self.rect_f[0] + i * METR + self.side, self.rect_f[
@@ -65,7 +66,7 @@ class Wall(pygame.sprite.Group):
                     self.doors.append(Door(self, "vertical", images, 0, i * METR))
                     print(self.rect_f)
                 else:
-                    wall_surface = pygame.sprite.Sprite(self)
+                    wall_surface = Sprite(self, middle)
                     wall_surface.image = images["wall_block_ver"]
                     wall_surface.rect = list(wall_surface.image.get_rect())
                     wall_surface.rect[0], wall_surface.rect[1] = self.rect_f[0], self.rect_f[1] + i * METR
