@@ -24,7 +24,6 @@ class Door(pygame.sprite.Sprite):
             self.rect = pygame.Rect(*self.rect_f)
             self.collider = Collider(self, 0, 0, self.rect_f[2], self.rect_f[3])
 
-
     def move_camera(self, x, y):
         self.rect_f[0] -= x
         self.rect_f[1] -= y
