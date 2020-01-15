@@ -8,7 +8,7 @@ from test import *
 def draw_all_sprites():
     for i in background:
         i.draw(screen)
-    middle.sort(key=lambda x: x.rect[1] + x.rect[3])
+    middle.sort(key=lambda x: x.rect[Y] + x.rect[H])
     for i in middle:
         i.draw(screen)
     if TEST_COLLIDER:
@@ -25,7 +25,7 @@ sort_groups()
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 
 TEST_COLLIDER = False
-PRINT_FPS = True
+PRINT_FPS = False
 
 running = True
 while running:

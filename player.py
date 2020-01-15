@@ -9,17 +9,17 @@ class Player(Sprite):
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
-        self.rect_f[0] = width / 2 - self.rect_f[2]
-        self.rect_f[1] = height / 2 - self.rect_f[3]
+        self.rect_f[X] = width / 2 - self.rect_f[2]
+        self.rect_f[Y] = height / 2 - self.rect_f[3]
         self.rect = pygame.Rect(self.rect_f)
         self.change_x = 0
         self.change_y = 0
         self.speed_run = 150
         self.tag = "player"
 
-        self.height_person = self.rect_f[3] * WIDTH_UNIT_COLLIDER
-        self.player_collider = Collider(self, 0, self.height_person, self.rect_f[2],
-                                        self.rect_f[3] - self.height_person)
+        self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
+        self.player_collider = Collider(self, 0, self.height_person, self.rect_f[W],
+                                        self.rect_f[H] - self.height_person)
         self.frame = 0
         self.not_attacking = True
         self.tick = None
