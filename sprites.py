@@ -1,11 +1,15 @@
 from functions import load_image
 
 TEXTURES_DEFAULT = {"wall_block_ver": load_image("textures_default/wall_block_ver.png"),
-                    "full_corner": load_image("textures_default/full_corner.png"),
-                    "not_full_corner": load_image("textures_default/not_full_corner.png"),
                     "wall_block_hor": load_image("textures_default/wall_block_hor.png"),
                     "surface_block": load_image("textures_default/surface_block.png"),
-                    "door_close": load_image("textures_default/door_close.png")}
+                    "door_close_hor": load_image("textures_default/door_close_hor.png"),
+                    "door_open_hor": load_image("textures_default/door_open_hor.png"),
+                    "door_close_ver": load_image("textures_default/door_close_ver.png"),
+                    "door_open_ver": load_image("textures_default/door_open_ver.png"),
+                    "corner_up": load_image("textures_default/corner_up.png"),
+                    "corner_down": load_image("textures_default/corner_down.png")
+                    }
 
 PLAYER = {"player_back1": load_image('player/player_back1.png'),
           "player_back2": load_image('player/player_back2.png'),

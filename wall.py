@@ -4,61 +4,72 @@ from door import Door
 
 
 class Wall(pygame.sprite.Group):
-    def __init__(self, owner, way, images, x, y, length, coord_of_doors, corners=None):
+    def __init__(self, owner, way, images, x, y, length, coord_of_doors):
         super().__init__()
         self.way = way
-        self.thickness = owner.thickness
+        self.side = owner.side
         motionless.append(self)
-        self.height_wall = owner.height_wall
         self.length = length
         self.owner = owner
         self.tag = "wall"
         self.colliders = []
         self.doors = []
-        if way == "horisontal":
+        coord_of_doors2 = []
+        for i in coord_of_doors:
+            for j in i[1:]:
+                coord_of_doors2.append(j)
+        coord_of_doors = coord_of_doors2
+        if way == "up" or way == "down":
             walls.append(self)
-            self.rect_f = [x + owner.rect_f[0], y - self.height_wall + owner.rect_f[1],
-                           length * METR + self.thickness * 2,
-                           self.height_wall + self.thickness]
-            for i in range(len(corners)):
+            self.rect_f = [x + owner.rect_f[0], y + owner.rect_f[1],
+                           length * METR + self.side * 2,
+                           self.side]
+            if way == "up":
+                corner_image = images["corner_up"]
+            else:
+                corner_image = images["corner_down"]
+            for i in range(2):
                 corner = pygame.sprite.Sprite(self)
-                if corners[i]:
-                    corner.image = images["full_corner"]
+                if i == 0:
+                    corner.image = corner_image
                 else:
-                    corner.image = images["not_full_corner"]
+                    corner.image = pygame.transform.flip(corner_image, True, False)
                 corner.rect = list(corner.image.get_rect())
-                corner.rect[0], corner.rect[1] = self.rect_f[0] + i * length * METR + i * self.thickness, self.rect_f[1]
+                corner.rect[0], corner.rect[1] = self.rect_f[0] + i * (self.rect_f[2] - corner.rect[2]), self.rect_f[1]
             for i in range(length):
-                vertical = pygame.sprite.Sprite(self)
-                vertical.image = pygame.transform.rotate(images["wall_block_ver"], 90)
-                vertical.rect = list(vertical.image.get_rect())
-                vertical.rect[0], vertical.rect[1] = self.rect_f[0] + i * METR + self.thickness, self.rect_f[1]
                 if i + 1 in coord_of_doors:
-                    self.doors.append(Door(self, "horisontal", images, i * METR + self.thickness, 0))
+                    self.doors.append(Door(self, "horisontal", images, i * METR + self.side, 0))
                 else:
                     wall_surface = pygame.sprite.Sprite(self)
                     wall_surface.image = images["wall_block_hor"]
                     wall_surface.rect = list(wall_surface.image.get_rect())
-                    wall_surface.rect[0], wall_surface.rect[1] = self.rect_f[0] + i * METR + self.thickness, self.rect_f[
-                        1] + self.thickness
+                    wall_surface.rect[0], wall_surface.rect[1] = self.rect_f[0] + i * METR + self.side, self.rect_f[
+                        1]
                     self.colliders.append(
-                        Collider(self, i * METR + self.thickness, self.height_wall, METR, self.thickness))
-            self.colliders.append(Collider(self, 0, self.height_wall, self.thickness, self.thickness))
-            self.colliders.append(Collider(self, self.rect_f[2] - self.thickness, self.height_wall, self.thickness, self.thickness))
+                        Collider(self, i * METR + self.side, self.side * (1 - WIDTH_WALL_COLLIDER), METR,
+                                 self.side * WIDTH_WALL_COLLIDER))
+            if way == "up":
+                self.colliders.append(Collider(self, 0, self.side * (1 - WIDTH_WALL_COLLIDER), self.side, self.side * WIDTH_WALL_COLLIDER))
+                self.colliders.append(
+                    Collider(self, self.rect_f[2] - self.side, self.side * (1 - WIDTH_WALL_COLLIDER), self.side, self.side * WIDTH_WALL_COLLIDER))
+            else:
+                self.colliders.append(Collider(self, 0, 0, self.side, self.side))
+                self.colliders.append(Collider(self, self.rect_f[2] - self.side, 0, self.side, self.side))
 
         else:
             walls.insert(0, self)
-            self.rect_f = [x + owner.rect_f[0], y - self.height_wall + self.thickness +owner.rect_f[1], self.thickness,
+            self.rect_f = [x + owner.rect_f[0], y + owner.rect_f[1], self.side,
                            length * METR]
             for i in range(length):
-                if i + 1 == coord_of_doors:
-                    self.doors.append(Door(self, "vertical", images, self.rect_f[0] + i * METR + self.thickness, self.rect_f[1]))
-                wall_surface = pygame.sprite.Sprite(self)
-                wall_surface.image = images["wall_block_ver"]
-                wall_surface.rect = list(wall_surface.image.get_rect())
-                wall_surface.rect[0], wall_surface.rect[1] = self.rect_f[0], self.rect_f[1] + i * METR
-                self.colliders.append(Collider(self, 0, self.height_wall + METR * i, self.rect_f[2], METR))
-
+                if i + 1 in coord_of_doors:
+                    self.doors.append(Door(self, "vertical", images, 0, i * METR))
+                    print(self.rect_f)
+                else:
+                    wall_surface = pygame.sprite.Sprite(self)
+                    wall_surface.image = images["wall_block_ver"]
+                    wall_surface.rect = list(wall_surface.image.get_rect())
+                    wall_surface.rect[0], wall_surface.rect[1] = self.rect_f[0], self.rect_f[1] + i * METR
+                    self.colliders.append(Collider(self, 0, METR * i, self.rect_f[2], METR))
 
     def move_camera(self, x, y):
         self.rect_f[0] -= x
@@ -74,7 +85,4 @@ class Wall(pygame.sprite.Group):
     def draw(self, screen):
         super().draw(screen)
         for i in self.doors:
-            screen.blit(i.image, i.rect)
-
-
-
+            i.draw(screen)

@@ -30,6 +30,9 @@ def draw_all_sprites():
         i.sort(key=lambda x: x.rect_f[1] + x.rect_f[3])
         for j in i:
             j.draw(screen)
+    for i in walls:
+        for j in i.doors:
+            j.set_open(False)
     if TEST_COLLIDER:
         for i in motionless_collider_group:
             pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
@@ -39,12 +42,12 @@ def draw_all_sprites():
 
 pygame.init()
 player = Player()
-sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["up", 5]])
+sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["up", 3]])
 sort_groups()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
 TEST_COLLIDER = False
-PRINT_FPS = True
+PRINT_FPS = False
 
 running = True
 while running:

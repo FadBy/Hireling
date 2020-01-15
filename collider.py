@@ -32,41 +32,41 @@ class Collider(pygame.sprite.Sprite):
                 player.rect_f[0] + player.rect_f[2] <= self.rect_f[0] + self.rect_f[2]:
             player.owner.change_y = self.rect_f[1] - player.rect[1] - player.rect_f[3]
         elif player.rect_f[1] + player.rect_f[3] >= self.rect_f[1] and player.rect_f[
-            0] > \
+            0] >= \
                 self.rect_f[0] and player.rect_f[0] + player.rect_f[2] <= self.rect_f[0] + \
                 self.rect_f[2]:
             player.owner.change_y = self.rect_f[1] + self.rect_f[3] - player.rect_f[1]
-        elif player.rect_f[0] < self.rect_f[0] and player.rect_f[1] < self.rect_f[1] and player.rect_f[1] + \
-                player.rect_f[3] - self.rect_f[1] > player.rect_f[0] + player.rect_f[2] - self.rect_f[0] or \
-                player.rect_f[0] < self.rect_f[0] + self.rect_f[2] and player.rect_f[1] + player.rect_f[3] > \
+        elif player.rect_f[0] <= self.rect_f[0] and player.rect_f[1] <= self.rect_f[1] and player.rect_f[1] + \
+                player.rect_f[3] - self.rect_f[1] >= player.rect_f[0] + player.rect_f[2] - self.rect_f[0] or \
+                player.rect_f[0] <= self.rect_f[0] + self.rect_f[2] and player.rect_f[1] + player.rect_f[3] >= \
                 self.rect_f[1] + self.rect_f[3] and \
-                self.rect_f[1] + self.rect_f[3] - player.rect_f[1] > player.rect_f[2] + player.rect_f[0] - self.rect_f[
+                self.rect_f[1] + self.rect_f[3] - player.rect_f[1] >= player.rect_f[2] + player.rect_f[0] - self.rect_f[
             0]:
             player.owner.change_x = self.rect_f[0] - player.rect_f[0] - player.rect_f[2]
-        elif player.rect_f[0] < self.rect_f[0] and player.rect_f[1] < self.rect_f[1] and player.rect_f[1] + \
-                player.rect_f[3] - self.rect_f[1] < player.rect_f[0] + player.rect_f[2] - self.rect_f[0] or \
-                player.rect_f[1] < self.rect_f[1] and player.rect_f[0] + player.rect_f[2] > self.rect_f[0] + \
+        elif player.rect_f[0] <= self.rect_f[0] and player.rect_f[1] <= self.rect_f[1] and player.rect_f[1] + \
+                player.rect_f[3] - self.rect_f[1] <= player.rect_f[0] + player.rect_f[2] - self.rect_f[0] or \
+                player.rect_f[1] <= self.rect_f[1] and player.rect_f[0] + player.rect_f[2] >= self.rect_f[0] + \
                 self.rect_f[2] and \
                 player.rect_f[1] + player.rect_f[3] - self.rect_f[1] < self.rect_f[0] + self.rect_f[2] - player.rect_f[
             0]:
             player.owner.change_y = self.rect_f[1] - player.rect[1] - player.rect_f[3]
-        elif player.rect_f[1] < self.rect_f[1] and player.rect_f[0] + player.rect_f[2] > self.rect_f[0] + self.rect_f[
+        elif player.rect_f[1] <= self.rect_f[1] and player.rect_f[0] + player.rect_f[2] >= self.rect_f[0] + self.rect_f[
             2] and \
-                self.rect_f[1] - player.rect_f[1] - player.rect_f[3] < self.rect_f[0] + self.rect_f[2] - player.rect_f[
+                self.rect_f[1] - player.rect_f[1] - player.rect_f[3] <= self.rect_f[0] + self.rect_f[2] - player.rect_f[
             0] or \
-                player.rect_f[0] + player.rect_f[2] > self.rect_f[0] + self.rect_f[2] and player.rect_f[1] + \
-                player.rect_f[3] > \
-                self.rect_f[1] + self.rect_f[3] and self.rect_f[1] + self.rect_f[3] - player.rect_f[1] > self.rect_f[
+                player.rect_f[0] + player.rect_f[2] >= self.rect_f[0] + self.rect_f[2] and player.rect_f[1] + \
+                player.rect_f[3] >= \
+                self.rect_f[1] + self.rect_f[3] and self.rect_f[1] + self.rect_f[3] - player.rect_f[1] >= self.rect_f[
             0] + \
                 self.rect_f[2] - player.rect_f[0]:
             player.owner.change_x = self.rect_f[0] + self.rect_f[2] - player.rect_f[0]
-        elif player.rect_f[0] < self.rect_f[0] and player.rect_f[1] + player.rect_f[3] > self.rect_f[1] + self.rect_f[
+        elif player.rect_f[0] <= self.rect_f[0] and player.rect_f[1] + player.rect_f[3] >= self.rect_f[1] + self.rect_f[
             3] and \
-                self.rect_f[1] + self.rect_f[3] - player.rect_f[1] < player.rect_f[2] + player.rect_f[0] - self.rect_f[
+                self.rect_f[1] + self.rect_f[3] - player.rect_f[1] <= player.rect_f[2] + player.rect_f[0] - self.rect_f[
             0] or \
-                player.rect_f[0] + player.rect_f[2] > self.rect_f[0] + self.rect_f[2] and player.rect_f[1] + \
-                player.rect_f[3] > self.rect_f[1] + self.rect_f[3] and self.rect_f[1] + self.rect_f[3] - player.rect_f[
-            1] < \
+                player.rect_f[0] + player.rect_f[2] >= self.rect_f[0] + self.rect_f[2] and player.rect_f[1] + \
+                player.rect_f[3] >= self.rect_f[1] + self.rect_f[3] and self.rect_f[1] + self.rect_f[3] - player.rect_f[
+            1] <= \
                 self.rect_f[0] + self.rect_f[2] - player.rect_f[0]:
             player.owner.change_y = self.rect_f[1] + self.rect_f[3] - player.rect_f[1]
 
