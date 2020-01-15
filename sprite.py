@@ -16,5 +16,5 @@ class Sprite(pygame.sprite.Sprite):
         self.image = None
         self.rect = None
 
-    def draw(self, screen, image=None):
+    def draw(self, screen):
         screen.blit(self.image, self.rect)

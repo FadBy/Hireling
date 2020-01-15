@@ -38,7 +38,6 @@ class Door(Sprite):
         super().draw(screen)
         self.image = self.image_close
 
-
     def unit_collided(self):
         self.image = self.image_open
 
