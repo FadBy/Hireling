@@ -10,6 +10,7 @@ class Door(Sprite):
         self.owner = owner
         self.way = way
         self.open = False
+        self.tag = "door"
         if way == "horisontal":
             self.image_close = images["door_close_hor"]
             self.image_open = images["door_open_hor"]
@@ -39,6 +40,7 @@ class Door(Sprite):
         self.image = self.image_close
 
     def unit_collided(self, unit):
-        self.image = self.image_open
+        if unit.tag != "bullet":
+            self.image = self.image_open
 
 

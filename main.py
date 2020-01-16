@@ -3,6 +3,7 @@ from room import Room
 from all_various import *
 from test import *
 from bullet import Bullet
+from door import Door
 
 
 def draw_all_sprites():
@@ -33,10 +34,10 @@ def check_colliders():
                 if j.owner != i:
                     if j.trigger:
                         j.owner.unit_collided(i)
-                    elif i.collider.trigger:
-                        i.unit_collided(i)
                     else:
-                        j.default_collide(i.collider)
+                        j.default_collide(i)
+                    if i.collider.trigger:
+                        i.unit_collided(j.owner)
 
 
 pygame.init()
@@ -45,7 +46,7 @@ sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["le
 sort_groups()
 screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 
-TEST_COLLIDER = True
+TEST_COLLIDER = False
 PRINT_FPS = False
 
 running = True

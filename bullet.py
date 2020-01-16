@@ -18,6 +18,7 @@ class Bullet(Sprite):
         self.yspeed = None
         self.set_change_coord()
         self.collider = Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], trigger=True)
+        self.tag = "bullet"
 
     def set_pos(self):
         self.rect_f[X], self.rect_f[Y] = self.owner.rect_f[X] + self.owner.rect_f[W] // 2, self.owner.rect_f[Y] + \
@@ -67,7 +68,7 @@ class Bullet(Sprite):
         self.collider.move_camera(x, y)
 
     def unit_collided(self, unit):
-        if unit != self.owner:
+        if unit.tag != "player" and unit.tag != "bullet":
             self.delete_from_all()
 
     def delete_from_all(self):
