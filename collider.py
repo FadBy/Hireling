@@ -1,23 +1,25 @@
 import pygame
 from all_various import *
+from sprite import Sprite
 
 
-class Collider(pygame.sprite.Sprite):
+class Collider(Sprite):
     def __init__(self, owner, x, y, w, h, trigger=False):
-        super().__init__()
-        if owner in motionless:
-            motionless_collider_group.add(self)
-        else:
-            motionful_collider_group.add(self)
+        super().__init__(collider_group)
         self.trigger = trigger
         self.image = pygame.Surface((w, h))
         self.rect_f = [x + owner.rect_f[X], y + owner.rect_f[Y], w, h]
-        self.rect = pygame.Rect(*self.rect_f)
+        self.rect = pygame.Rect(self.rect_f)
         self.owner = owner
 
     def move_camera(self, x, y):
         self.rect_f[X] -= x
         self.rect_f[Y] -= y
+        self.rect = pygame.Rect(self.rect_f)
+
+    def move(self, x, y):
+        self.rect_f[X] += x
+        self.rect_f[Y] += y
         self.rect = pygame.Rect(self.rect_f)
 
     def default_collide(self, player):

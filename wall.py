@@ -10,7 +10,6 @@ class Wall(pygame.sprite.Group):
         self.way = way
         self.height = owner.height
         self.width = owner.width
-        motionless.append(self)
         self.length = length
         self.owner = owner
         self.tag = "wall"
@@ -22,7 +21,6 @@ class Wall(pygame.sprite.Group):
                 coord_of_doors2.append(j)
         coord_of_doors = coord_of_doors2
         if way == "up" or way == "down":
-            walls.append(self)
             self.rect_f = [x + owner.rect_f[0], y + owner.rect_f[1],
                            length * METR + self.width * 2,
                            self.height]
@@ -61,7 +59,6 @@ class Wall(pygame.sprite.Group):
                 self.colliders.append(Collider(self, self.rect_f[2] - self.width, 0, self.width, self.height))
 
         else:
-            walls.insert(0, self)
             self.rect_f = [x + owner.rect_f[0], y + owner.rect_f[1], self.width,
                            length * METR]
             for i in range(length):

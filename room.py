@@ -14,7 +14,6 @@ class Room:
         self.walls = {"up": [], "down": [], "left": [], "right": []}
         for i in range(len(doors)):
             self.walls[doors[i][0]].append(doors[i])
-        print(self.walls)
         for i in self.walls:
             if i == "up":
                 print(self.walls[i])
