@@ -8,21 +8,21 @@ class Surface(pygame.sprite.Group):
         background.append(self)
         self.owner = room
         self.tag = "surface"
-        self.rect_f = [x + room.rect_f[0], y + room.rect_f[1], w * METR, h * METR]
+        self.rect_f = [x + room.rect_f[X], y + room.rect_f[Y], w * METR, h * METR]
 
         for i in range(w):
             for j in range(h):
                 sprite = Sprite(self)
                 sprite.image = images["surface_block"]
                 sprite.rect = list(sprite.image.get_rect())
-                sprite.rect[0], sprite.rect[1] = self.rect_f[0] + i * METR, self.rect_f[1] + j * METR
+                sprite.rect[X], sprite.rect[Y] = self.rect_f[X] + i * METR, self.rect_f[Y] + j * METR
 
     def move_camera(self, x, y):
-        self.rect_f[0] -= x
-        self.rect_f[1] -= y
+        self.rect_f[X] -= x
+        self.rect_f[Y] -= y
         for i in self:
-            i.rect[0] -= x
-            i.rect[1] -= y
+            i.rect[X] -= x
+            i.rect[Y] -= y
 
 
 

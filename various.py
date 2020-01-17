@@ -1,14 +1,11 @@
 import pygame
 
-motionless_collider_group = pygame.sprite.Group()
-motionful_collider_group = pygame.sprite.Group()
+collider_group = pygame.sprite.Group()
 
 rooms = []
 background = []
-motionless = []
-walls = []
+motionful = []
 middle = []
-motionful = pygame.sprite.Group()
 
 size = width, height = 1280, 720
 clock = pygame.time.Clock()
@@ -18,6 +15,11 @@ FULL_CORNER_SPRITE = 1
 NOT_FULL_CORNER_SPRITE = 2
 WALL_SPRITE = 3
 
+X = 0
+Y = 1
+W = 2
+H = 3
+
 FULL_CORNER = True
 
 METR = 75
@@ -26,4 +28,6 @@ WALL_SHIFT = 21
 WIDTH_UNIT_COLLIDER = 0.5
 
 FPS = 60
+
+DISTANCE = 30
 
