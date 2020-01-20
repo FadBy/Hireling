@@ -18,12 +18,12 @@ class Menu:
         self.start_sprite.rect = MENU['start_collider'].get_rect()
         self.options_sprite.rect = MENU['options_collider'].get_rect()
         self.exit_sprite.rect = MENU['exit_collider'].get_rect()
-        self.start_sprite.rect.x, self.start_sprite.rect.y = self.x_size / self.max_x_size * 687, \
-                                                             self.y_size / self.max_y_size * 367
-        self.options_sprite.rect.x, self.options_sprite.rect.y = self.x_size / self.max_x_size * 687, \
-                                                                 self.y_size / self.max_y_size * 500
-        self.exit_sprite.rect.x, self.exit_sprite.rect.y = self.x_size / self.max_x_size * 687, \
-                                                           self.y_size / self.max_y_size * 625
+        self.start_sprite.rect.x = self.x_size / self.max_x_size * 687
+        self.start_sprite.rect.y = self.y_size / self.max_y_size * 367
+        self.options_sprite.rect.x = self.x_size / self.max_x_size * 687
+        self.options_sprite.rect.y = self.y_size / self.max_y_size * 500
+        self.exit_sprite.rect.x = self.x_size / self.max_x_size * 687
+        self.exit_sprite.rect.y = self.y_size / self.max_y_size * 625
 
     def render(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()

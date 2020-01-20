@@ -1,6 +1,7 @@
 from all_various import *
 from collider import Collider
 from sprite import Sprite
+from bullet import Bullet
 
 
 class Player(Sprite):
@@ -9,31 +10,48 @@ class Player(Sprite):
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
-        self.rect_f[0] = width / 2 - self.rect_f[2]
-        self.rect_f[1] = height / 2 - self.rect_f[3]
+        self.rect_f[X] = width // 2 - self.rect_f[2]
+        self.rect_f[Y] = height // 2 - self.rect_f[3]
         self.rect = pygame.Rect(self.rect_f)
         self.change_x = 0
         self.change_y = 0
         self.speed_run = 150
         self.tag = "player"
-
-        self.height_person = self.rect_f[3] * WIDTH_UNIT_COLLIDER
-        self.player_collider = Collider(self, 0, self.height_person, self.rect_f[2],
-                                        self.rect_f[3] - self.height_person)
+        self.bullets = []
+        self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
+        self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
+                                        self.rect_f[H] - self.height_person)
         self.frame = 0
         self.not_attacking = True
         self.tick = None
+        self.weapon = True
+        self.change_x = 0
+        self.change_y = 0
+
+    def move(self, x, y):
+        self.change_x += x * self.tick
+        self.change_y += y * self.tick
 
     def set_tick(self, tick):
         self.tick = tick
 
     def run(self, coord, way):
         if coord == "x":
-            self.change_x += self.speed_run * way * self.tick
+            self.move(self.speed_run * way, 0)
         else:
-            self.change_y = self.speed_run * way * self.tick
+            self.move(0, self.speed_run * way)
 
     def attack(self, weapon_type, attacked_side):
+        if self.weapon:
+            if attacked_side == "right":
+                self.bullets.append(Bullet(self, 0))
+            elif attacked_side == "up":
+                self.bullets.append(Bullet(self, 90))
+            elif attacked_side == "left":
+                self.bullets.append(Bullet(self, 180))
+            else:
+                self.bullets.append(Bullet(self, 270))
+
         if self.not_attacking:
             if attacked_side == 'up':
                 fst, snd, trd, fth = PLAYER["player_back1"], PLAYER["player_back2"], \
@@ -80,15 +98,12 @@ class Player(Sprite):
             self.not_attacking = True
         return ''
 
-    def change_all_pos(self):
-        for i in rooms:
-            i.move_camera(self.change_x, self.change_y)
-
     def check_colliders(self):
-        colliders = pygame.sprite.spritecollide(self.player_collider, motionless_collider_group, False)
+        colliders = pygame.sprite.spritecollide(self.player_collider, collider_group, False)
         if colliders:
             for i in colliders:
-                if not i.trigger:
-                    i.default_collide(self.player_collider)
-                else:
-                    i.owner.unit_collided()
+                if i.owner != self:
+                    if not i.trigger:
+                        i.default_collide(self.player_collider)
+                    else:
+                        i.owner.unit_collided()

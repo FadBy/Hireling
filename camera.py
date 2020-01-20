@@ -9,7 +9,7 @@ class Camera:
         self.image = None
 
     def move_camera(self, x, y):
-        self.rect_f[0] -= x
-        self.rect_f[1] -= y
+        self.rect_f[X] -= x
+        self.rect_f[Y] -= y
         self.rect = pygame.Rect(self.rect_f)
 
