@@ -59,6 +59,6 @@ while running:
                                 running = False
                                 paused = False
     if PRINT_FPS:
-        (print(int(clock.get_fps())))
+        print(int(clock.get_fps()))
 
 pygame.quit()
