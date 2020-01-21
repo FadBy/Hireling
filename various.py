@@ -6,6 +6,7 @@ rooms = []
 background = []
 motionful = []
 middle = []
+timers_with = []
 
 size = width, height = 1280, 720
 clock = pygame.time.Clock()
@@ -31,3 +32,7 @@ FPS = 60
 
 DISTANCE = 30
 
+TIMER_OBJECT = 0
+TIMER_TYPE = 1
+
+AGA = 31

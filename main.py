@@ -2,8 +2,6 @@ from player import Player
 from room import Room
 from all_various import *
 from test import *
-from bullet import Bullet
-from door import Door
 
 
 def draw_all_sprites():
@@ -55,6 +53,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        check_timers()
     tick = clock.tick() / 1000
     for i in motionful:
         i.set_tick(tick)

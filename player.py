@@ -2,11 +2,13 @@ from all_various import *
 from collider import Collider
 from sprite import Sprite
 from bullet import Bullet
+from watchtimer import WatchTimer
 
 
 class Player(Sprite):
     def __init__(self):
-        super().__init__(middle, motionful)
+        super().__init__(middle, motionful, timers_with)
+        self.timers = {"weapon": WatchTimer(0.3, self.stop_timer)}
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
@@ -27,6 +29,7 @@ class Player(Sprite):
         self.weapon = True
         self.change_x = 0
         self.change_y = 0
+        self.rapidity = False
 
     def move(self, x, y):
         self.change_x += x * self.tick
@@ -41,17 +44,22 @@ class Player(Sprite):
         else:
             self.move(0, self.speed_run * way)
 
+    def stop_timer(self):
+        self.rapidity = False
+
     def attack(self, weapon_type, attacked_side):
         if self.weapon:
-            if attacked_side == "right":
-                self.bullets.append(Bullet(self, 0))
-            elif attacked_side == "up":
-                self.bullets.append(Bullet(self, 90))
-            elif attacked_side == "left":
-                self.bullets.append(Bullet(self, 180))
-            else:
-                self.bullets.append(Bullet(self, 270))
-
+            if not self.rapidity:
+                self.rapidity = True
+                self.timers["weapon"].start()
+                if attacked_side == "right":
+                    self.bullets.append(Bullet(self, 0))
+                elif attacked_side == "up":
+                    self.bullets.append(Bullet(self, 90))
+                elif attacked_side == "left":
+                    self.bullets.append(Bullet(self, 180))
+                else:
+                    self.bullets.append(Bullet(self, 270))
         if self.not_attacking:
             if attacked_side == 'up':
                 fst, snd, trd, fth = PLAYER["player_back1"], PLAYER["player_back2"], \
@@ -97,13 +105,3 @@ class Player(Sprite):
             self.frame = 0
             self.not_attacking = True
         return ''
-
-    def check_colliders(self):
-        colliders = pygame.sprite.spritecollide(self.player_collider, collider_group, False)
-        if colliders:
-            for i in colliders:
-                if i.owner != self:
-                    if not i.trigger:
-                        i.default_collide(self.player_collider)
-                    else:
-                        i.owner.unit_collided()
