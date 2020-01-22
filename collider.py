@@ -1,6 +1,6 @@
 import pygame
+from sprite import *
 from all_various import *
-from sprite import Sprite
 
 
 class Collider(Sprite):
@@ -11,11 +11,6 @@ class Collider(Sprite):
         self.rect_f = [x + owner.rect_f[X], y + owner.rect_f[Y], w, h]
         self.rect = pygame.Rect(self.rect_f)
         self.owner = owner
-
-    def move_camera(self, x, y):
-        self.rect_f[X] -= x
-        self.rect_f[Y] -= y
-        self.rect = pygame.Rect(self.rect_f)
 
     def move(self, x, y):
         self.rect_f[X] += x

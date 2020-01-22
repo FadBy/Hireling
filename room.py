@@ -1,7 +1,6 @@
-from camera import Camera
-from all_various import *
-from wall import Wall
-from surface import Surface
+from wall import *
+from surface import *
+from various import *
 
 
 class Room:

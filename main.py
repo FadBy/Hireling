@@ -1,27 +1,10 @@
-from player import Player
-from room import Room
 from all_various import *
-from test import *
+from player import *
+from room import *
 
 
-def draw_all_sprites():
-    for i in background:
-        i.draw(screen)
-    middle.sort(key=lambda x: x.rect[Y] + x.rect[H])
-    for i in middle:
-        i.draw(screen)
-    if TEST_COLLIDER:
-        for i in collider_group:
-            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
-
-
-def change_all_pos():
-    for i in rooms:
-        i.move_camera(player.change_x, player.change_y)
-    for i in motionful:
-        if i != player:
-            i.move_camera(player.change_x, player.change_y)
-            i.move()
+def sort_groups():
+    rooms.sort(key=lambda x: x.rect_f[0], reverse=True)
 
 
 def check_colliders():
@@ -38,13 +21,39 @@ def check_colliders():
                         i.unit_collided(j.owner)
 
 
+def change_all_pos():
+    for i in rooms:
+        i.move_camera(player.change_x, player.change_y)
+    for i in collider_group:
+        if i.owner.tag != "player":
+            i.move_camera(player.change_x, player.change_y)
+    for i in object_sprites:
+        i.move_camera(player.change_x, player.change_y)
+    for i in motionful:
+        if i != player:
+            i.move_camera(player.change_x, player.change_y)
+            i.move()
+
+
+def draw_all_sprites():
+    for i in background:
+        i.draw(screen)
+    middle.sort(key=lambda x: x.rect[Y] + x.rect[H])
+    for i in middle:
+        i.draw(screen)
+    if TEST_COLLIDER:
+        for i in collider_group:
+            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
+
+
 pygame.init()
+
 player = Player()
 sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["left", 5], ["down", 2]])
-sort_groups()
-screen = pygame.display.set_mode(size)  # pygame.NOFRAME
 
-TEST_COLLIDER = False
+sort_groups()
+
+TEST_COLLIDER = True
 PRINT_FPS = False
 
 running = True
@@ -52,18 +61,10 @@ while running:
     screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
-        check_timers()
+            runninsg = False
     tick = clock.tick() / 1000
     for i in motionful:
         i.set_tick(tick)
-    change_all_pos()
-    check_colliders()
-    change_all_pos()
-    player.change_x = 0
-    player.change_y = 0
-    draw_all_sprites()
-    pygame.display.flip()
     if player.check_pressed() == 'paused':
         paused = True
         while paused:
@@ -81,6 +82,15 @@ while running:
                             if mouse_x < width * 3 // 4 - 215 and mouse_y < height * 15 // 16 - 137:
                                 running = False
                                 paused = False
+    for i in motionful:
+        i.set_tick(tick)
+    change_all_pos()
+    check_colliders()
+    change_all_pos()
+    player.change_x = 0
+    player.change_y = 0
+    draw_all_sprites()
+    pygame.display.flip()
     if PRINT_FPS:
         (print(int(clock.get_fps())))
 
