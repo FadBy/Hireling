@@ -55,7 +55,7 @@ sort_groups()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
 TEST_COLLIDER = False
-PRINT_FPS = True
+PRINT_FPS = False
 
 running = True
 while running:
@@ -66,6 +66,14 @@ while running:
     tick = clock.tick() / 1000
     for i in motionful:
         i.set_tick(tick)
+
+    change_all_pos()
+    check_colliders()
+    change_all_pos()
+    player.change_x = 0
+    player.change_y = 0
+    draw_all_sprites()
+    pygame.display.flip()
     if player.check_pressed() == 'paused':
         paused = True
         little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'], (width // 2, width // 2))
@@ -87,20 +95,13 @@ while running:
                             if mouse_x < width * 3 // 4 - 215 and mouse_y < height * 15 // 16 - 137:
                                 running = False
                                 paused = False
-    for i in motionful:
-        i.set_tick(tick)
-    change_all_pos()
-    check_colliders()
-    change_all_pos()
-    player.change_x = 0
-    player.change_y = 0
-    draw_all_sprites()
-    pygame.display.flip()
                                 little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu_exit'],
                                                                      (width // 2, width // 2))
                 if event.type == pygame.MOUSEBUTTONUP:
-                    little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'], (width // 2, width // 2))
-            screen.blit(little_menu, little_menu.get_rect(bottomright=(width * 3 // 4, height * 15 // 16)))
+                    little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'],
+                                                             (width // 2, width // 2))
+            screen.blit(little_menu, little_menu.get_rect(
+            bottomright=(width * 3 // 4, height * 15 // 16)))
             pygame.display.flip()
     if PRINT_FPS:
         (print(int(clock.get_fps())))
