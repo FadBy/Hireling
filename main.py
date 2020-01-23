@@ -53,7 +53,7 @@ sort_groups()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
 TEST_COLLIDER = False
-PRINT_FPS = False
+PRINT_FPS = True
 
 running = True
 while running:
