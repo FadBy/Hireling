@@ -24,9 +24,11 @@ class Player(Sprite):
         self.frame = 0
         self.not_attacking = True
         self.tick = None
-        self.weapon = True
         self.change_x = 0
         self.change_y = 0
+        self.health = 5
+        self.full_health = 5
+        self.alive = True
 
     def move(self, x, y):
         self.change_x += x * self.tick
@@ -41,8 +43,18 @@ class Player(Sprite):
         else:
             self.move(0, self.speed_run * way)
 
+    def health_change(self, heal_or_damage):
+        if heal_or_damage:
+            if self.health <= self.full_health:
+                self.health += 1
+        else:
+            self.health -= 1
+            if self.health == 0:
+                self.alive = False
+        return self.health
+
     def attack(self, weapon_type, attacked_side):
-        if self.weapon:
+        if weapon_type:
             if attacked_side == "right":
                 self.bullets.append(Bullet(self, 0))
             elif attacked_side == "up":
@@ -51,25 +63,25 @@ class Player(Sprite):
                 self.bullets.append(Bullet(self, 180))
             else:
                 self.bullets.append(Bullet(self, 270))
-
-        if self.not_attacking:
-            if attacked_side == 'up':
-                fst, snd, trd, fth = PLAYER["player_back1"], PLAYER["player_back2"], \
-                                PLAYER["player_back201"], PLAYER["player_back3"]
-                self.animation = []
-                for i in range(2):
-                    self.animation.append(snd)
-                for i in range(2):
-                    self.animation.append(trd)
-                for i in range(3):
-                    self.animation.append(fth)
-                self.image = self.animation[self.frame]
-                if self.frame < len(self.animation) - 1:
-                    self.frame += 1
-                else:
-                    if not weapon_type:
-                        self.not_attacking = False
-                    self.frame = 0
+        else:
+            if self.not_attacking:
+                if attacked_side == 'up':
+                    fst, snd, trd, fth = PLAYER["player_back1"], PLAYER["player_back2"], \
+                                    PLAYER["player_back201"], PLAYER["player_back3"]
+                    self.animation = []
+                    for i in range(2):
+                        self.animation.append(snd)
+                    for i in range(2):
+                        self.animation.append(trd)
+                    for i in range(3):
+                        self.animation.append(fth)
+                    self.image = self.animation[self.frame]
+                    if self.frame < len(self.animation) - 1:
+                        self.frame += 1
+                    else:
+                        if not weapon_type:
+                            self.not_attacking = False
+                        self.frame = 0
 
     def check_pressed(self):
         pressed_btns = pygame.key.get_pressed()
