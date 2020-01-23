@@ -23,7 +23,9 @@ PLAYER = {"player_back1": load_image('player/player_back1.png'),
           "player_back2": load_image('player/player_back2.png'),
           "player_back201": load_image('player/player_back201.png'),
           "player_back3": load_image('player/player_back3.png'),
-          "player_face": load_image("player/player_face.png")}
+          "player_face": load_image("player/player_face.png"),
+          "player_left": load_image('player/player_left.png'),
+          "player_right": load_image("player/player_right.png")}
 
 CURSOR = {"arrow": load_image("cursor/arrow.png"),
           "arrow_tapped": load_image("cursor/arrow_tapped.png")}
@@ -40,4 +42,5 @@ INGAME_MENU = {"ingame_menu": load_image("ingame_menu/Ingame_menu.jpg"),
                "ingame_menu_continue": load_image("ingame_menu/Ingame_menu_continue_tapped.jpg"),
                "ingame_menu_options": load_image("ingame_menu/Ingame_menu_options_tapped.jpg"),
                "ingame_menu_exit": load_image("ingame_menu/Ingame_menu_exit_tapped.jpg")}
+
 BULLETS = {"player_bullet": load_image("bullets/player_bullet.png")}

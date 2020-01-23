@@ -24,6 +24,7 @@ class Player(Sprite):
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
         self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
                                  self.rect_f[H] - self.height_person)
+        self.bullets = []
         self.frame = 0
         self.length_jerk = 150
         self.speed_jerk = 1000
@@ -139,34 +140,6 @@ class Player(Sprite):
 
     def attack(self, weapon_type, attacked_side):
         if weapon_type:
-            if attacked_side == "right":
-                self.bullets.append(Bullet(self, 0))
-            elif attacked_side == "up":
-                self.bullets.append(Bullet(self, 90))
-            elif attacked_side == "left":
-                self.bullets.append(Bullet(self, 180))
-            else:
-                self.bullets.append(Bullet(self, 270))
-        else:
-            if self.not_attacking:
-                if attacked_side == 'up':
-                    fst, snd, trd, fth = PLAYER["player_back1"], PLAYER["player_back2"], \
-                                    PLAYER["player_back201"], PLAYER["player_back3"]
-                    self.animation = []
-                    for i in range(2):
-                        self.animation.append(snd)
-                    for i in range(2):
-                        self.animation.append(trd)
-                    for i in range(3):
-                        self.animation.append(fth)
-                    self.image = self.animation[self.frame]
-                    if self.frame < len(self.animation) - 1:
-                        self.frame += 1
-                    else:
-                        if not weapon_type:
-                            self.not_attacking = False
-                        self.frame = 0
-        if self.weapon:
             if not self.rapidity:
                 self.rapidity = True
                 Timer(*self.timers["weapon"]).start()
@@ -197,8 +170,10 @@ class Player(Sprite):
             self.image = PLAYER["player_face"]
             if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_s]:
                 self.run("left")
+                #self.image = PLAYER["player_left"]
             if pressed_btns[pygame.K_d] and not pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_s]:
                 self.run("right")
+                #self.image = PLAYER["player_right"]
             if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_d]:
                 self.run("up")
                 self.image = PLAYER["player_back1"]
