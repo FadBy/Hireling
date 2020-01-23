@@ -24,14 +24,17 @@ class Player(Sprite):
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
         self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
                                  self.rect_f[H] - self.height_person)
+        self.bullets = []
         self.frame = 0
         self.length_jerk = 100
         self.speed_jerk = 800
         self.not_attacking = True
         self.tick = None
-        self.weapon = True
         self.change_x = 0
         self.change_y = 0
+        self.health = 5
+        self.full_health = 5
+        self.alive = True
         self.rapidity = False
         self.condition = "stand"
         self.angle = 270
@@ -124,8 +127,18 @@ class Player(Sprite):
     def stop_timer_rapidity(self):
         self.rapidity = False
 
+    def health_change(self, heal_or_damage):
+        if heal_or_damage:
+            if self.health <= self.full_health:
+                self.health += 1
+        else:
+            self.health -= 1
+            if self.health == 0:
+                self.alive = False
+        return self.health
+
     def attack(self, weapon_type, attacked_side):
-        if self.weapon:
+        if weapon_type:
             if not self.rapidity:
                 self.rapidity = True
                 Timer(*self.timers["weapon"]).start()
@@ -156,8 +169,10 @@ class Player(Sprite):
             self.image = PLAYER["player_face"]
             if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_s]:
                 self.run("left")
+                #self.image = PLAYER["player_left"]
             if pressed_btns[pygame.K_d] and not pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_s]:
                 self.run("right")
+                #self.image = PLAYER["player_right"]
             if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_d]:
                 self.run("up")
                 self.image = PLAYER["player_back1"]

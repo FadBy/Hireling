@@ -47,10 +47,8 @@ def draw_all_sprites():
 
 
 pygame.init()
-
 player = Player()
 sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["left", 5], ["down", 2]])
-
 sort_groups()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
@@ -66,7 +64,6 @@ while running:
     tick = clock.tick() / 1000
     for i in motionful:
         i.set_tick(tick)
-
     change_all_pos()
     check_colliders()
     change_all_pos()
@@ -98,12 +95,10 @@ while running:
                                 little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu_exit'],
                                                                      (width // 2, width // 2))
                 if event.type == pygame.MOUSEBUTTONUP:
-                    little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'],
-                                                             (width // 2, width // 2))
-            screen.blit(little_menu, little_menu.get_rect(
-            bottomright=(width * 3 // 4, height * 15 // 16)))
+                    little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'], (width // 2, width // 2))
+            screen.blit(little_menu, little_menu.get_rect(bottomright=(width * 3 // 4, height * 15 // 16)))
             pygame.display.flip()
     if PRINT_FPS:
-        (print(int(clock.get_fps())))
+        print(int(clock.get_fps()))
 
 pygame.quit()
