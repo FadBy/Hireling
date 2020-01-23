@@ -64,7 +64,6 @@ class Wall(Group):
             for i in range(length):
                 if i + 1 in coord_of_doors:
                     self.doors.append(Door(self, "vertical", images, 0, i * METR))
-                    print(self.rect_f)
                 else:
                     wall_surface = Sprite(self, middle)
                     wall_surface.image = images["wall_block_ver"]

@@ -10,7 +10,7 @@ class Player(Sprite):
     def __init__(self):
         super().__init__(middle, motionful, timers_with)
         self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
-                       "illusion": [0.1, self.stop_timer_illusion]}
+                       "illusion": [0.2, self.stop_timer_illusion]}
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
@@ -25,8 +25,8 @@ class Player(Sprite):
         self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
                                  self.rect_f[H] - self.height_person)
         self.frame = 0
-        self.length_jerk = 150
-        self.speed_jerk = 1000
+        self.length_jerk = 100
+        self.speed_jerk = 800
         self.not_attacking = True
         self.tick = None
         self.weapon = True
@@ -74,7 +74,6 @@ class Player(Sprite):
 
     def stop_timer_illusion(self):
         self.illusions[0].kill()
-        print(len(self.illusions))
 
     def set_tick(self, tick):
         self.tick = tick

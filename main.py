@@ -53,8 +53,8 @@ sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["le
 
 sort_groups()
 
-TEST_COLLIDER = True
-PRINT_FPS = False
+TEST_COLLIDER = False
+PRINT_FPS = True
 
 running = True
 while running:
