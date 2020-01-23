@@ -1,7 +1,7 @@
 from all_various import *
 from player import *
 from room import *
-
+from enemy import Enemy
 
 def sort_groups():
     rooms.sort(key=lambda x: x.rect_f[0], reverse=True)
@@ -49,11 +49,12 @@ def draw_all_sprites():
 pygame.init()
 player = Player()
 sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["left", 5], ["down", 2]])
+enemies = [Enemy('vorog', random.randint(-500, 1000), random.randint(-500, 1000))]
 sort_groups()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
-TEST_COLLIDER = False
-PRINT_FPS = True
+TEST_COLLIDER = True
+PRINT_FPS = False
 
 running = True
 while running:
@@ -71,6 +72,11 @@ while running:
     player.change_y = 0
     draw_all_sprites()
     pygame.display.flip()
+    hp = player.health_change(enemies[0].attack)
+    enemies[0].attack = 0
+    print(hp)
+    if not player.alive:
+        running = False
     if player.check_pressed() == 'paused':
         paused = True
         little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'], (width // 2, width // 2))
