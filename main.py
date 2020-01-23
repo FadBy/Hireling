@@ -1,29 +1,10 @@
-from player import Player
-from room import Room
 from all_various import *
-from test import *
-from bullet import Bullet
-from door import Door
+from player import *
+from room import *
 
 
-def draw_all_sprites():
-    for i in background:
-        i.draw(screen)
-    middle.sort(key=lambda x: x.rect[Y] + x.rect[H])
-    for i in middle:
-        i.draw(screen)
-    if TEST_COLLIDER:
-        for i in collider_group:
-            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
-
-
-def change_all_pos():
-    for i in rooms:
-        i.move_camera(player.change_x, player.change_y)
-    for i in motionful:
-        if i != player:
-            i.move_camera(player.change_x, player.change_y)
-            i.move()
+def sort_groups():
+    rooms.sort(key=lambda x: x.rect_f[0], reverse=True)
 
 
 def check_colliders():

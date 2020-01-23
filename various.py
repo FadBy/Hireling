@@ -6,9 +6,12 @@ rooms = []
 background = []
 motionful = []
 middle = []
+timers_with = []
+object_sprites = []
 
 size = width, height = 1280, 720
 clock = pygame.time.Clock()
+screen = pygame.display.set_mode(size)
 
 VERTICAL_SPRITE = 0
 FULL_CORNER_SPRITE = 1
@@ -20,8 +23,6 @@ Y = 1
 W = 2
 H = 3
 
-FULL_CORNER = True
-
 METR = 75
 WIDTH_WALL_COLLIDER = 0.75
 WALL_SHIFT = 21
@@ -29,5 +30,5 @@ WIDTH_UNIT_COLLIDER = 0.5
 
 FPS = 60
 
-DISTANCE = 30
+COUNT_OF_ILLUSIONS = 3
 

@@ -1,4 +1,12 @@
-from functions import load_image
+import os
+import pygame
+
+
+def load_image(name):
+    fullname = os.path.join('data', name)
+    image = pygame.image.load(fullname)
+    return image
+
 
 TEXTURES_DEFAULT = {"wall_block_ver": load_image("textures_default/wall_block_ver.png"),
                     "wall_block_hor": load_image("textures_default/wall_block_hor.png"),

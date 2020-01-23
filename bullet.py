@@ -1,7 +1,7 @@
-from all_various import *
-from sprite import Sprite
+from sprite import *
 from math import *
-from collider import Collider
+from collider import *
+from all_various import *
 
 
 class Bullet(Sprite):
@@ -13,7 +13,7 @@ class Bullet(Sprite):
         self.rect_f = list(self.image.get_rect())
         self.set_pos()
         self.rect = pygame.Rect(*self.rect_f)
-        self.speed = 500
+        self.speed = 1000
         self.xspeed = None
         self.yspeed = None
         self.set_change_coord()
@@ -53,31 +53,16 @@ class Bullet(Sprite):
         else:
             self.xspeed = self.speed / sqrt(1 + abs(tan(self.angle * pi / 180)))
             self.yspeed = self.xspeed * abs(tan(self.angle * pi / 180))
-            if 90 < self.angle % 360 < 180:
+            if 90 < self.angle % 360 < 270:
                 self.xspeed = -self.xspeed
-            elif 180 < self.angle % 360 < 270:
+            if 0 < self.angle % 360 < 180:
                 self.yspeed = -self.yspeed
-                self.xspeed = -self.xspeed
-            elif 270 < self.angle % 360 < 0:
-                self.yspeed = -self.yspeed
-
-    def move_camera(self, x, y):
-        self.rect_f[X] -= x
-        self.rect_f[Y] -= y
-        self.rect = pygame.Rect(self.rect_f)
-        self.collider.move_camera(x, y)
 
     def unit_collided(self, unit):
         if unit.tag != "player" and unit.tag != "bullet":
             self.delete_from_all()
 
     def delete_from_all(self):
-        for i in self.lsts:
-            if self in i:
-                i.remove(self)
         self.kill()
-        for i in self.collider.lsts:
-            if self in i:
-                i.remove(self.collider)
         self.collider.kill()
 
