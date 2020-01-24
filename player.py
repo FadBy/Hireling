@@ -1,29 +1,28 @@
 from bullet import *
-from various import *
 from watchtimer import Timer
-from various import *
-from sprites import *
+from menu import *
 
 
 class Player(Sprite):
     def __init__(self):
         super().__init__(middle, motionful, timers_with)
         self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
-                       "illusion": [0.1, self.stop_timer_illusion], "health": [0.3, self.stop_timer_damage]}
+                       "illusion": [0.2, self.stop_timer_illusion], "health": [0.3, self.stop_timer_damage],
+                       "test": [1, self.stop_timer_test], "after_jerk": [0.05, self.stop_timer_after_jerk]}
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
         self.rect_f[X] = width // 2 - self.rect_f[2]
         self.rect_f[Y] = height // 2 - self.rect_f[3]
         self.rect = pygame.Rect(self.rect_f)
-        self.speed_run = 150
+        self.speed_run = 300
         self.tag = "player"
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
         self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
                                  self.rect_f[H] - self.height_person)
         self.bullets = []
         self.frame = 0
-        self.length_jerk = 150
+        self.length_jerk = 300
         self.speed_jerk = 1000
         self.not_attacking = True
         self.tick = None
@@ -39,6 +38,9 @@ class Player(Sprite):
         self.jerk_delay = False
         self.illusions = []
         self.current_length_jerk = 0
+        self.test = False
+        self.count_set_illusion = 0
+        self.after_jerk = False
 
     def move(self, speed):
         if self.condition == "jerk":
@@ -75,22 +77,36 @@ class Player(Sprite):
 
     def stop_timer_illusion(self):
         self.illusions[0].kill()
-        print(len(self.illusions))
+        # print(len(self.illusions))
+
+    def stop_timer_after_jerk(self):
+        self.after_jerk = False
+
+    def stop_timer_test(self):
+        self.test = False
+        # print(sumx, sumy)
 
     def set_tick(self, tick):
         self.tick = tick
 
     def jerk(self):
         self.condition = "jerk"
-        if self.current_length_jerk >= self.length_jerk / COUNT_OF_ILLUSIONS * len(self.illusions):
+        print(self.current_length_jerk, ">=", self.length_jerk / COUNT_OF_ILLUSIONS * self.count_set_illusion)
+        print(self.count_set_illusion)
+        if self.current_length_jerk >= self.length_jerk / COUNT_OF_ILLUSIONS * self.count_set_illusion:
+            print("asd")
+            self.count_set_illusion += 1
             illussion = Sprite(object_sprites, middle, self.illusions)
             illussion.image = self.image
             illussion.rect_f = self.rect_f.copy()
             Timer(*self.timers['illusion']).start()
         if self.current_length_jerk >= self.length_jerk:
+            self.after_jerk = True
+            self.count_set_illusion = 0
             self.condition = "stand"
             self.jerk_delay = True
             self.current_length_jerk = 0
+            Timer(*self.timers["after_jerk"]).start()
             Timer(*self.timers["jerk"]).start()
         self.move(self.speed_jerk)
 
@@ -165,53 +181,57 @@ class Player(Sprite):
 
     def check_pressed(self):
         if not self.condition == "jerk":
-            self.condition = "stand"
-            pressed_btns = pygame.key.get_pressed()
-            self.image = PLAYER["player_face"]
-            if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[
-                pygame.K_s]:
-                self.run("left")
-                self.image = PLAYER["player_left"]
-            if pressed_btns[pygame.K_d] and not pressed_btns[pygame.K_w] and not pressed_btns[
-                pygame.K_s]:
-                self.run("right")
-                self.image = PLAYER["player_right"]
-            if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_a] and not pressed_btns[
-                pygame.K_d]:
-                self.run("up")
-                self.image = PLAYER["player_back1"]
-            if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_a] and not pressed_btns[
-                pygame.K_d]:
-                self.run("down")
-            if pressed_btns[pygame.K_d] and pressed_btns[pygame.K_w]:
-                self.run("right-up")
-            if pressed_btns[pygame.K_a] and pressed_btns[pygame.K_w]:
-                self.run("left-up")
-            if pressed_btns[pygame.K_a] and pressed_btns[pygame.K_s]:
-                self.run("left-down")
-            if pressed_btns[pygame.K_d] and pressed_btns[pygame.K_s]:
-                self.run("right-down")
-            if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
-                self.attack(True, "left-up")
-            elif pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_DOWN]:
-                self.attack(True, "left-down")
-            elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_UP]:
-                self.attack(True, 'right-up')
-            elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_DOWN]:
-                self.attack(True, "right-down")
-            elif pressed_btns[pygame.K_LEFT]:
-                self.attack(True, 'left')
-            elif pressed_btns[pygame.K_RIGHT]:
-                self.attack(True, 'right')
-            elif pressed_btns[pygame.K_UP]:
-                self.attack(True, 'up')
-            elif pressed_btns[pygame.K_DOWN]:
-                self.attack(True, 'down')
-            elif pressed_btns[pygame.K_ESCAPE]:
-                return 'paused'
-            else:
-                self.frame = 0
-                self.not_attacking = True
-            return ''
+            if not self.after_jerk:
+                self.condition = "stand"
+                pressed_btns = pygame.key.get_pressed()
+                self.image = PLAYER["player_face"]
+                if pressed_btns[pygame.K_z]:
+                    Timer(*self.timers["test"]).start()
+                    self.test = True
+                if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[
+                    pygame.K_s]:
+                    self.run("left")
+                    self.image = PLAYER["player_left"]
+                if pressed_btns[pygame.K_d] and not pressed_btns[pygame.K_w] and not pressed_btns[
+                    pygame.K_s]:
+                    self.run("right")
+                    self.image = PLAYER["player_right"]
+                if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_a] and not pressed_btns[
+                    pygame.K_d]:
+                    self.run("up")
+                    self.image = PLAYER["player_back1"]
+                if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_a] and not pressed_btns[
+                    pygame.K_d]:
+                    self.run("down")
+                if pressed_btns[pygame.K_d] and pressed_btns[pygame.K_w]:
+                    self.run("right-up")
+                if pressed_btns[pygame.K_a] and pressed_btns[pygame.K_w]:
+                    self.run("left-up")
+                if pressed_btns[pygame.K_a] and pressed_btns[pygame.K_s]:
+                    self.run("left-down")
+                if pressed_btns[pygame.K_d] and pressed_btns[pygame.K_s]:
+                    self.run("right-down")
+                if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
+                    self.attack(True, "left-up")
+                elif pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_DOWN]:
+                    self.attack(True, "left-down")
+                elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_UP]:
+                    self.attack(True, 'right-up')
+                elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_DOWN]:
+                    self.attack(True, "right-down")
+                elif pressed_btns[pygame.K_LEFT]:
+                    self.attack(True, 'left')
+                elif pressed_btns[pygame.K_RIGHT]:
+                    self.attack(True, 'right')
+                elif pressed_btns[pygame.K_UP]:
+                    self.attack(True, 'up')
+                elif pressed_btns[pygame.K_DOWN]:
+                    self.attack(True, 'down')
+                elif pressed_btns[pygame.K_ESCAPE]:
+                    ingame_menu_start()
+                else:
+                    self.frame = 0
+                    self.not_attacking = True
+                return ''
         else:
             self.jerk()

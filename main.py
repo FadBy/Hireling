@@ -1,6 +1,7 @@
 from map import *
 from enemy import Enemy
 
+
 def sort_groups():
     rooms.sort(key=lambda x: x.rect_f[0], reverse=True)
 
@@ -31,6 +32,8 @@ def change_all_pos():
         if i != player:
             i.move_camera(player.change_x, player.change_y)
             i.move()
+    player.change_x = 0
+    player.change_y = 0
 
 
 def draw_all_sprites():
@@ -44,13 +47,22 @@ def draw_all_sprites():
             pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
 
 
+def cancel_player_change():
+    player.change_x = 0
+    player.change_y = 0
+
+
 pygame.init()
+
 enemies = [Enemy('vorog', random.randint(-500, 1000), random.randint(-500, 1000))]
+
 sort_groups()
+
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
 TEST_COLLIDER = False
 PRINT_FPS = False
+
 running = True
 while running:
     screen.fill((0, 0, 0))
@@ -58,51 +70,20 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     tick = clock.tick() / 1000
+    player.check_pressed()
     for i in motionful:
         i.set_tick(tick)
-    player.check_pressed()
     change_all_pos()
-    player.change_x = 0
-    player.change_y = 0
     check_colliders()
     change_all_pos()
-    player.change_x = 0
-    player.change_y = 0
     draw_all_sprites()
-    pygame.display.flip()
     hp = player.health_change(enemies[0].attack)
     enemies[0].attack = 0
-    print(hp)
+    # print(hp)
     if not player.alive:
         running = False
-    if player.check_pressed() == 'paused':
-        paused = True
-        little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'], (width // 2, width // 2))
-        while paused:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            for event in pygame.event.get():
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1:
-                        if mouse_x > width * 3 // 4 - 410 and mouse_y > height * 15 // 16 - 350:
-                            if mouse_x < width * 3 // 4 - 215 and mouse_y < height * 15 // 16 - 290:
-                                paused = False
-                                little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu_continue'],
-                                                                     (width // 2, width // 2))
-                        if mouse_x > width * 3 // 4 - 410 and mouse_y > height * 15 // 16 - 275:
-                            if mouse_x < width * 3 // 4 - 215 and mouse_y < height * 15 // 16 - 215:
-                                little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu_options'],
-                                                                     (width // 2, width // 2))
-                        if mouse_x > width * 3 // 4 - 410 and mouse_y > height * 15 // 16 - 199:
-                            if mouse_x < width * 3 // 4 - 215 and mouse_y < height * 15 // 16 - 137:
-                                running = False
-                                paused = False
-                                little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu_exit'],
-                                                                     (width // 2, width // 2))
-                if event.type == pygame.MOUSEBUTTONUP:
-                    little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'], (width // 2, width // 2))
-            screen.blit(little_menu, little_menu.get_rect(bottomright=(width * 3 // 4, height * 15 // 16)))
-            pygame.display.flip()
     if PRINT_FPS:
         print(int(clock.get_fps()))
+    pygame.display.flip()
 
 pygame.quit()

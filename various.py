@@ -10,6 +10,7 @@ middle = []
 timers_with = []
 object_sprites = []
 
+
 size = width, height = 1280, 720
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(size)
@@ -31,5 +32,4 @@ WIDTH_UNIT_COLLIDER = 0.5
 
 FPS = 60
 
-COUNT_OF_ILLUSIONS = 10
-
+COUNT_OF_ILLUSIONS = 4
