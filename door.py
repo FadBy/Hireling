@@ -1,12 +1,12 @@
-from camera import Camera
-from all_various import *
-from collider import Collider
-from sprite import Sprite
+from collider import *
+from sprite import *
+from various import *
+from sprites import *
 
 
 class Door(Sprite):
     def __init__(self, owner, way, images, x, y):
-        super().__init__(middle)
+        super().__init__(middle, owner)
         self.owner = owner
         self.way = way
         self.open = False
@@ -28,12 +28,6 @@ class Door(Sprite):
             self.rect_f[X], self.rect_f[Y] = x + owner.rect_f[X], y + owner.rect_f[Y]
             self.rect = pygame.Rect(*self.rect_f)
             self.collider = Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], trigger=True)
-
-    def move_camera(self, x, y):
-        self.rect_f[X] -= x
-        self.rect_f[Y] -= y
-        self.rect = pygame.Rect(self.rect_f)
-        self.collider.move_camera(x, y)
 
     def draw(self, screen):
         super().draw(screen)

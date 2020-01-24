@@ -1,4 +1,4 @@
-import pygame
+from various import *
 
 
 class Sprite(pygame.sprite.Sprite):
@@ -15,6 +15,20 @@ class Sprite(pygame.sprite.Sprite):
             i.append(self)
         self.image = None
         self.rect = None
+        self.rect_f = None
 
     def draw(self, screen):
         screen.blit(self.image, self.rect)
+
+    def move_camera(self, x, y):
+        self.rect_f[X] -= x
+        self.rect_f[Y] -= y
+        self.rect = pygame.Rect(self.rect_f)
+
+    def kill(self):
+        for i in self.lsts:
+            if self in i:
+                i.remove(self)
+        super().kill()
+
+

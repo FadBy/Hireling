@@ -1,29 +1,8 @@
-from player import Player
-from room import Room
-from all_various import *
-from test import *
-from bullet import Bullet
-from door import Door
+from map import *
+from enemy import Enemy
 
-
-def draw_all_sprites():
-    for i in background:
-        i.draw(screen)
-    middle.sort(key=lambda x: x.rect[Y] + x.rect[H])
-    for i in middle:
-        i.draw(screen)
-    if TEST_COLLIDER:
-        for i in collider_group:
-            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
-
-
-def change_all_pos():
-    for i in rooms:
-        i.move_camera(player.change_x, player.change_y)
-    for i in motionful:
-        if i != player:
-            i.move_camera(player.change_x, player.change_y)
-            i.move()
+def sort_groups():
+    rooms.sort(key=lambda x: x.rect_f[0], reverse=True)
 
 
 def check_colliders():
@@ -40,15 +19,38 @@ def check_colliders():
                         i.unit_collided(j.owner)
 
 
+def change_all_pos():
+    for i in rooms:
+        i.move_camera(player.change_x, player.change_y)
+    for i in collider_group:
+        if i.owner.tag != "player":
+            i.move_camera(player.change_x, player.change_y)
+    for i in object_sprites:
+        i.move_camera(player.change_x, player.change_y)
+    for i in motionful:
+        if i != player:
+            i.move_camera(player.change_x, player.change_y)
+            i.move()
+
+
+def draw_all_sprites():
+    for i in background:
+        i.draw(screen)
+    middle.sort(key=lambda x: x.rect[Y] + x.rect[H])
+    for i in middle:
+        i.draw(screen)
+    if TEST_COLLIDER:
+        for i in collider_group:
+            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
+
+
 pygame.init()
-player = Player()
-sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["left", 5], ["down", 2]])
+enemies = [Enemy('vorog', random.randint(-500, 1000), random.randint(-500, 1000))]
 sort_groups()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
 TEST_COLLIDER = False
 PRINT_FPS = False
-
 running = True
 while running:
     screen.fill((0, 0, 0))
@@ -58,13 +60,21 @@ while running:
     tick = clock.tick() / 1000
     for i in motionful:
         i.set_tick(tick)
+    player.check_pressed()
     change_all_pos()
+    player.change_x = 0
+    player.change_y = 0
     check_colliders()
     change_all_pos()
     player.change_x = 0
     player.change_y = 0
     draw_all_sprites()
     pygame.display.flip()
+    hp = player.health_change(enemies[0].attack)
+    enemies[0].attack = 0
+    print(hp)
+    if not player.alive:
+        running = False
     if player.check_pressed() == 'paused':
         paused = True
         little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'], (width // 2, width // 2))
@@ -93,6 +103,6 @@ while running:
             screen.blit(little_menu, little_menu.get_rect(bottomright=(width * 3 // 4, height * 15 // 16)))
             pygame.display.flip()
     if PRINT_FPS:
-        (print(int(clock.get_fps())))
+        print(int(clock.get_fps()))
 
 pygame.quit()

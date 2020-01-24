@@ -1,10 +1,9 @@
-from all_various import *
-from collider import Collider
-from door import Door
-from sprite import Sprite
+from door import *
+from sprite import *
+from group import *
 
 
-class Wall(pygame.sprite.Group):
+class Wall(Group):
     def __init__(self, owner, way, images, x, y, length, coord_of_doors):
         super().__init__()
         self.way = way
@@ -34,16 +33,16 @@ class Wall(pygame.sprite.Group):
                     corner.image = corner_image
                 else:
                     corner.image = pygame.transform.flip(corner_image, True, False)
-                corner.rect = list(corner.image.get_rect())
-                corner.rect[0], corner.rect[1] = self.rect_f[0] + i * (self.rect_f[2] - corner.rect[2]), self.rect_f[1]
+                corner.rect_f = list(corner.image.get_rect())
+                corner.rect_f[0], corner.rect_f[1] = self.rect_f[0] + i * (self.rect_f[2] - corner.rect_f[2]), self.rect_f[1]
             for i in range(length):
                 if i + 1 in coord_of_doors:
                     self.doors.append(Door(self, "horisontal", images, i * METR + self.width, 0))
                 elif i not in coord_of_doors:
                     wall_surface = Sprite(self, middle)
                     wall_surface.image = images["wall_block_hor"]
-                    wall_surface.rect = list(wall_surface.image.get_rect())
-                    wall_surface.rect[0], wall_surface.rect[1] = self.rect_f[0] + i * METR + self.width, self.rect_f[
+                    wall_surface.rect_f = list(wall_surface.image.get_rect())
+                    wall_surface.rect_f[0], wall_surface.rect_f[1] = self.rect_f[0] + i * METR + self.width, self.rect_f[
                         1]
                     self.colliders.append(
                         Collider(self, i * METR + self.width, self.height * (1 - WIDTH_WALL_COLLIDER), METR,
@@ -64,24 +63,12 @@ class Wall(pygame.sprite.Group):
             for i in range(length):
                 if i + 1 in coord_of_doors:
                     self.doors.append(Door(self, "vertical", images, 0, i * METR))
-                    print(self.rect_f)
                 else:
                     wall_surface = Sprite(self, middle)
                     wall_surface.image = images["wall_block_ver"]
-                    wall_surface.rect = list(wall_surface.image.get_rect())
-                    wall_surface.rect[0], wall_surface.rect[1] = self.rect_f[0], self.rect_f[1] + i * METR
+                    wall_surface.rect_f = list(wall_surface.image.get_rect())
+                    wall_surface.rect_f[0], wall_surface.rect_f[1] = self.rect_f[0], self.rect_f[1] + i * METR
                     self.colliders.append(Collider(self, 0, METR * i, self.rect_f[2], METR))
-
-    def move_camera(self, x, y):
-        self.rect_f[0] -= x
-        self.rect_f[1] -= y
-        for i in self:
-            i.rect[0] -= x
-            i.rect[1] -= y
-        for i in self.doors:
-            i.move_camera(x, y)
-        for i in self.colliders:
-            i.move_camera(x, y)
 
     def draw(self, screen):
         super().draw(screen)

@@ -1,7 +1,6 @@
-from camera import Camera
-from all_various import *
-from wall import Wall
-from surface import Surface
+from wall import *
+from surface import *
+from various import *
 
 
 class Room:
@@ -16,7 +15,6 @@ class Room:
             self.walls[doors[i][0]].append(doors[i])
         for i in self.walls:
             if i == "up":
-                print(self.walls[i])
                 self.walls[i] = Wall(self, "up", images, 0, 0, w, self.walls[i])
             elif i == "down":
                 self.walls[i] = Wall(self, "down", images, 0, self.rect_f[H] - self.height, w,
