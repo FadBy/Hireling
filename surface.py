@@ -1,6 +1,6 @@
 from sprite import *
-from various import *
 from group import *
+from various import *
 
 
 class Surface(Group):

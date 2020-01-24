@@ -1,6 +1,4 @@
-from all_various import *
-from player import *
-from room import *
+from map import *
 
 
 def sort_groups():
@@ -47,14 +45,12 @@ def draw_all_sprites():
 
 
 pygame.init()
-player = Player()
-sur1 = Room(TEXTURES_DEFAULT, width // 2 - 300, height // 2 - 300, 20, 10, [["left", 5], ["down", 2]])
+
 sort_groups()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
 TEST_COLLIDER = False
-PRINT_FPS = True
-
+PRINT_FPS = False
 running = True
 while running:
     screen.fill((0, 0, 0))
@@ -64,7 +60,10 @@ while running:
     tick = clock.tick() / 1000
     for i in motionful:
         i.set_tick(tick)
+    player.check_pressed()
     change_all_pos()
+    player.change_x = 0
+    player.change_y = 0
     check_colliders()
     change_all_pos()
     player.change_x = 0

@@ -1,6 +1,7 @@
 import os
 import pygame
-from all_various import *
+from various import *
+from sprites import *
 
 
 class Menu:

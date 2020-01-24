@@ -1,4 +1,3 @@
-from collider import *
 from door import *
 from sprite import *
 from group import *

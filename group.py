@@ -1,5 +1,5 @@
-import pygame
 from various import *
+from sprites import *
 
 
 class Group(pygame.sprite.Group):

@@ -1,8 +1,6 @@
-from collider import *
-from sprite import *
 from bullet import *
-from various import *
 from watchtimer import Timer
+from various import *
 from sprites import *
 
 
@@ -10,7 +8,7 @@ class Player(Sprite):
     def __init__(self):
         super().__init__(middle, motionful, timers_with)
         self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
-                       "illusion": [0.2, self.stop_timer_illusion]}
+                       "illusion": [0.2, self.stop_timer_illusion], "health": [1, ]}
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
@@ -45,7 +43,7 @@ class Player(Sprite):
     def move(self, speed):
         if self.condition == "jerk":
             self.current_length_jerk += speed * self.tick
-            # print(self.current_length_jerk, "+=", speed, " * ", self.tick)
+            print(self.current_length_jerk)
         if self.angle % 90 == 0:
             if self.angle % 360 == 0:
                 x = speed
@@ -167,16 +165,20 @@ class Player(Sprite):
             self.condition = "stand"
             pressed_btns = pygame.key.get_pressed()
             self.image = PLAYER["player_face"]
-            if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_s]:
+            if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[
+                pygame.K_s]:
                 self.run("left")
-                #self.image = PLAYER["player_left"]
-            if pressed_btns[pygame.K_d] and not pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_s]:
+                self.image = PLAYER["player_left"]
+            if pressed_btns[pygame.K_d] and not pressed_btns[pygame.K_w] and not pressed_btns[
+                pygame.K_s]:
                 self.run("right")
-                #self.image = PLAYER["player_right"]
-            if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_d]:
+                self.image = PLAYER["player_right"]
+            if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_a] and not pressed_btns[
+                pygame.K_d]:
                 self.run("up")
                 self.image = PLAYER["player_back1"]
-            if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_d]:
+            if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_a] and not pressed_btns[
+                pygame.K_d]:
                 self.run("down")
             if pressed_btns[pygame.K_d] and pressed_btns[pygame.K_w]:
                 self.run("right-up")
@@ -187,21 +189,21 @@ class Player(Sprite):
             if pressed_btns[pygame.K_d] and pressed_btns[pygame.K_s]:
                 self.run("right-down")
             if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
-                self.attack(False, "left-up")
+                self.attack(True, "left-up")
             elif pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_DOWN]:
-                self.attack(False, "left-down")
+                self.attack(True, "left-down")
             elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_UP]:
-                self.attack(False, 'right-up')
+                self.attack(True, 'right-up')
             elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_DOWN]:
-                self.attack(False, "right-down")
+                self.attack(True, "right-down")
             elif pressed_btns[pygame.K_LEFT]:
-                self.attack(False, 'left')
+                self.attack(True, 'left')
             elif pressed_btns[pygame.K_RIGHT]:
-                self.attack(False, 'right')
+                self.attack(True, 'right')
             elif pressed_btns[pygame.K_UP]:
-                self.attack(False, 'up')
+                self.attack(True, 'up')
             elif pressed_btns[pygame.K_DOWN]:
-                self.attack(False, 'down')
+                self.attack(True, 'down')
             elif pressed_btns[pygame.K_ESCAPE]:
                 return 'paused'
             else:

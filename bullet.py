@@ -1,7 +1,8 @@
 from sprite import *
 from math import *
 from collider import *
-from all_various import *
+from various import *
+from sprites import *
 
 
 class Bullet(Sprite):
@@ -13,7 +14,7 @@ class Bullet(Sprite):
         self.rect_f = list(self.image.get_rect())
         self.set_pos()
         self.rect = pygame.Rect(*self.rect_f)
-        self.speed = 1000
+        self.speed = 800
         self.xspeed = None
         self.yspeed = None
         self.set_change_coord()

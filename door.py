@@ -1,6 +1,7 @@
-from camera import *
 from collider import *
 from sprite import *
+from various import *
+from sprites import *
 
 
 class Door(Sprite):

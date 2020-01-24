@@ -1,6 +1,6 @@
-import pygame
 from sprite import *
-from all_various import *
+from various import *
+from sprites import *
 
 
 class Collider(Sprite):
