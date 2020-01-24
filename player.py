@@ -1,4 +1,5 @@
 from bullet import *
+from various import *
 from watchtimer import Timer
 from various import *
 from sprites import *
@@ -8,15 +9,13 @@ class Player(Sprite):
     def __init__(self):
         super().__init__(middle, motionful, timers_with)
         self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
-                       "illusion": [0.2, self.stop_timer_illusion], "health": [1, ]}
+                       "illusion": [0.1, self.stop_timer_illusion], "health": [0.3, self.stop_timer_damage]}
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
         self.rect_f[X] = width // 2 - self.rect_f[2]
         self.rect_f[Y] = height // 2 - self.rect_f[3]
         self.rect = pygame.Rect(self.rect_f)
-        self.change_x = 0
-        self.change_y = 0
         self.speed_run = 150
         self.tag = "player"
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
@@ -24,13 +23,14 @@ class Player(Sprite):
                                  self.rect_f[H] - self.height_person)
         self.bullets = []
         self.frame = 0
-        self.length_jerk = 100
-        self.speed_jerk = 800
+        self.length_jerk = 150
+        self.speed_jerk = 1000
         self.not_attacking = True
         self.tick = None
         self.change_x = 0
         self.change_y = 0
         self.health = 5
+        self.not_damaged = True
         self.full_health = 5
         self.alive = True
         self.rapidity = False
@@ -43,7 +43,7 @@ class Player(Sprite):
     def move(self, speed):
         if self.condition == "jerk":
             self.current_length_jerk += speed * self.tick
-            print(self.current_length_jerk)
+            # print(self.current_length_jerk, "+=", speed, " * ", self.tick)
         if self.angle % 90 == 0:
             if self.angle % 360 == 0:
                 x = speed
@@ -75,6 +75,7 @@ class Player(Sprite):
 
     def stop_timer_illusion(self):
         self.illusions[0].kill()
+        print(len(self.illusions))
 
     def set_tick(self, tick):
         self.tick = tick
@@ -125,14 +126,16 @@ class Player(Sprite):
     def stop_timer_rapidity(self):
         self.rapidity = False
 
+    def stop_timer_damage(self):
+        self.not_damaged = True
+
     def health_change(self, heal_or_damage):
-        if heal_or_damage:
-            if self.health <= self.full_health:
-                self.health += 1
-        else:
-            self.health -= 1
+        if self.not_damaged:
+            self.health += heal_or_damage
             if self.health == 0:
                 self.alive = False
+            self.not_damaged = False
+            Timer(*self.timers["health"]).start()
         return self.health
 
     def attack(self, weapon_type, attacked_side):

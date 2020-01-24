@@ -44,4 +44,5 @@ INGAME_MENU = {"ingame_menu": load_image("ingame_menu/Ingame_menu.jpg"),
                "ingame_menu_options": load_image("ingame_menu/Ingame_menu_options_tapped.jpg"),
                "ingame_menu_exit": load_image("ingame_menu/Ingame_menu_exit_tapped.jpg")}
 
-BULLETS = {"player_bullet": load_image("bullets/player_bullet.png")}
+BULLETS = {"player_bullet": load_image("bullets/player_bullet.png"),
+           "vorog": load_image("bullets/vorogg.png")}
