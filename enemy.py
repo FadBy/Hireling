@@ -1,7 +1,6 @@
-from all_various import *
-from sprite import Sprite
 from collider import *
-from player import Player
+from various import *
+from sprites import *
 
 class Enemy(Sprite):
     def __init__(self, enemy_type, x, y):

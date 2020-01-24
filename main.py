@@ -45,14 +45,12 @@ def draw_all_sprites():
 
 
 pygame.init()
-
 enemies = [Enemy('vorog', random.randint(-500, 1000), random.randint(-500, 1000))]
 sort_groups()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
 TEST_COLLIDER = False
-PRINT_FPS = True
-
+PRINT_FPS = False
 running = True
 while running:
     screen.fill((0, 0, 0))
