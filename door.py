@@ -34,7 +34,7 @@ class Door(Sprite):
         self.image = self.image_close
 
     def unit_collided(self, unit):
-        if unit.tag != "bullet":
+        if not unit.trigger:
             self.image = self.image_open
 
 

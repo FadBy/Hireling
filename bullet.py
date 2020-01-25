@@ -3,7 +3,6 @@ from various import *
 from sprites import *
 from functions import set_change_coord
 from sprite import Sprite
-from math import tan, pi, sqrt, atan
 
 
 class Bullet(Sprite):
@@ -19,7 +18,8 @@ class Bullet(Sprite):
         self.xspeed = None
         self.yspeed = None
         self.xspeed, self.yspeed = set_change_coord(angle, self.speed)
-        self.collider = Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], trigger=True)
+        self.colliders = []
+        self.colliders.append(Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], trigger=True))
         self.tag = "bullet"
 
     def set_pos(self):
@@ -34,16 +34,18 @@ class Bullet(Sprite):
         self.rect_f[X] += self.xspeed * self.tick
         self.rect_f[Y] += self.yspeed * self.tick
         self.rect = pygame.Rect(*self.rect_f)
-        self.collider.move(self.xspeed * self.tick, self.yspeed * self.tick)
+        for i in self.colliders:
+            i.move(self.xspeed * self.tick, self.yspeed * self.tick)
 
     def set_tick(self, tick):
         self.tick = tick
 
     def unit_collided(self, unit):
-        if self.owner.tag != unit.tag and unit.tag != "bullet":
+        if not (unit.owner.tag == self.owner.tag or (
+                unit.owner in motionful and not unit.trigger) or unit.owner.tag == "bullet"):
             self.delete_from_all()
 
     def delete_from_all(self):
         self.kill()
-        self.collider.kill()
-
+        for i in self.colliders:
+            i.kill()

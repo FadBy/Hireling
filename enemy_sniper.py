@@ -13,6 +13,8 @@ class EnemySniper(Enemy):
         super().__init__(x, y)
         self.min_rapidity = 500
         self.max_rapidity = 2500
+        self.damage_collide = 1
+        self.damage_bullet = 1
         self.image = BULLETS["vorog"]
         self.rect_f = list(self.image.get_rect().move(x, y))
         self.rect = pygame.Rect(self.rect_f)
@@ -34,7 +36,6 @@ class EnemySniper(Enemy):
             else:
                 angle = 270 + angle
             bullet = Bullet(self, angle)
-            print(randint(self.min_rapidity, self.max_rapidity) / 1000)
             Timer(randint(self.min_rapidity, self.max_rapidity) / 1000, self.stop_timer_rapidity).start()
             self.rapidity = True
 

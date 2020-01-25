@@ -1,11 +1,13 @@
 from sprite import Sprite
 from various import *
 from functions import *
+from collider import Collider
 
 
 class Character(Sprite):
     def __init__(self, *args):
         super().__init__(*args)
+        self.colliders = []
         self.timers = {}
         self.rect_f = []
         self.rect = []
@@ -15,6 +17,9 @@ class Character(Sprite):
         self.angle = None
         self.tick = None
         self.rapidity = False
+
+        self.colliders = []
+
 
     def set_tick(self, tick):
         self.tick = tick

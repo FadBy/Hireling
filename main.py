@@ -10,16 +10,16 @@ def spawn():
 
 def check_colliders():
     for i in motionful:
-        colliders = pygame.sprite.spritecollide(i.collider, collider_group, False)
-        if colliders:
-            for j in colliders:
-                if j.owner != i:
+        for j in i.colliders:
+            colliders = pygame.sprite.spritecollide(j, collider_group, False)
+            for u in colliders:
+                if u.owner != i:
+                    if u.trigger:
+                        u.owner.unit_collided(j)
+                    elif not j.trigger:
+                        u.default_collide(j)
                     if j.trigger:
-                        j.owner.unit_collided(i)
-                    else:
-                        j.default_collide(i)
-                    if i.collider.trigger:
-                        i.unit_collided(j.owner)
+                        i.unit_collided(u)
 
 
 def change_all_pos():
@@ -51,7 +51,11 @@ def draw_all_sprites():
         i.draw(screen)
     if TEST_COLLIDER:
         for i in collider_group:
-            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
+            if i.trigger:
+                color = (0, 255, 0)
+            else:
+                color = (255, 255, 255)
+            pygame.draw.rect(screen, color, pygame.Rect(*i.rect_f), 5)
     for i in interface_content:
         i.draw(screen)
 
@@ -60,17 +64,18 @@ pygame.init()
 
 spawn()
 
-TEST_COLLIDER = False
+TEST_COLLIDER = True
 PRINT_FPS = False
 
 running = True
 while running:
-    screen.fill((0, 0, 0))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     tick = clock.tick() / 1000
     pressed = player.check_pressed()
+    screen.fill((0, 0, 0))
     if pressed != '':
         running = pressed
     for i in motionful:

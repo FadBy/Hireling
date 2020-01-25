@@ -8,7 +8,7 @@ from interface import Interface
 
 class Player(Character):
     def __init__(self):
-        super().__init__(middle, motionful, timers_with)
+        super().__init__(middle, motionful)
         self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
                        "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
                        "after_jerk": [0.15, self.stop_timer_after_jerk]}
@@ -20,9 +20,15 @@ class Player(Character):
         self.rect = pygame.Rect(self.rect_f)
         self.speed_run = 1000
         self.tag = "player"
-        self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
-        self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
-                                 self.rect_f[H] - self.height_person)
+        self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
+        self.colliders.append(Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
+                                       self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
+                                       self.rect_f[H] - self.height_person))
+        self.colliders.append(
+            Collider(self, INDENT_UNIT_COLLIDET * self.rect_f[W], INDENT_UNIT_COLLIDET * self.rect_f[H],
+                     self.rect_f[W] - 2 * INDENT_UNIT_COLLIDET * self.rect_f[W],
+                     self.rect_f[H] - 2 * INDENT_UNIT_COLLIDET * self.rect_f[H], True))
+
         self.bullets = []
         self.frame = 0
         self.length_jerk = 300
@@ -43,7 +49,7 @@ class Player(Character):
         self.test = False
         self.count_set_illusion = 0
         self.after_jerk = False
-        self.weapon = False
+        self.weapon = True
         self.interface = Interface()
 
     def move(self, speed):
@@ -150,7 +156,7 @@ class Player(Character):
                 if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
                     self.attack("left-up")
                 elif pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_DOWN]:
-                    self.attack( "left-down")
+                    self.attack("left-down")
                 elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_UP]:
                     self.attack('right-up')
                 elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_DOWN]:
@@ -177,3 +183,7 @@ class Player(Character):
             self.not_damaged = True
             Timer(*self.timers["health"]).start()
             self.interface.change_hp(self.health)
+
+    def unit_collided(self, unit):
+        if unit.owner.tag == "bullet" and unit.owner.owner.tag != "player":
+            self.hit_from_enemy(unit.owner.owner.damage_bullet)
