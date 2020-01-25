@@ -1,6 +1,5 @@
-from sprite import *
+from sprite import Sprite
 from various import *
-from sprites import *
 
 
 class Collider(Sprite):

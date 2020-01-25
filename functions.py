@@ -1,3 +1,5 @@
+from math import sqrt, tan, pi
+
 from math import *
 import pygame
 from various import *
@@ -37,11 +39,11 @@ def set_change_coord(angle, speed):
         xspeed = 0
         yspeed = speed
     else:
-        xspeed = speed / sqrt(1 + abs(tan(angle * pi / 180)))
+        xspeed = speed / sqrt(1 + tan(angle * pi / 180) ** 2)
         yspeed = xspeed * abs(tan(angle * pi / 180))
-        if 90 < angle % 360 < 270:
+        if 90 < angle < 270:
             xspeed = -xspeed
-        if 0 < angle % 360 < 180:
+        if 0 < angle < 180:
             yspeed = -yspeed
     return [xspeed, yspeed]
 

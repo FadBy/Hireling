@@ -1,5 +1,5 @@
-from collider import *
-from sprite import *
+from collider import Collider
+from sprite import Sprite
 from various import *
 from sprites import *
 

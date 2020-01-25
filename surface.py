@@ -1,5 +1,5 @@
-from sprite import *
-from group import *
+from sprite import Sprite
+from group import Group
 from various import *
 
 class Surface(Group):

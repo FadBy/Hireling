@@ -1,5 +1,6 @@
-from bullet import *
+from bullet import Bullet
 from watchtimer import Timer
+from collider import Collider
 from functions import *
 from character import *
 from interface import Interface
@@ -8,16 +9,16 @@ from interface import Interface
 class Player(Character):
     def __init__(self):
         super().__init__(middle, motionful, timers_with)
-        self.timers = {"weapon": [0.1, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
-                       "illusion": [0.15, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
-                       "after_jerk": [0.05, self.stop_timer_after_jerk]}
+        self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
+                       "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
+                       "after_jerk": [0.15, self.stop_timer_after_jerk]}
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
-        self.rect_f[X] = width // 2 - self.rect_f[2]
-        self.rect_f[Y] = height // 2 - self.rect_f[3]
+        self.rect_f[X] = width // 2 - self.rect_f[2] // 2
+        self.rect_f[Y] = height // 2 - self.rect_f[3] // 2
         self.rect = pygame.Rect(self.rect_f)
-        self.speed_run = 300
+        self.speed_run = 1000
         self.tag = "player"
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
         self.collider = Collider(self, 0, self.height_person, self.rect_f[W],

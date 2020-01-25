@@ -1,5 +1,5 @@
-from wall import *
-from surface import *
+from wall import Wall
+from surface import Surface
 from various import *
 
 
@@ -11,6 +11,8 @@ class Room:
         self.rect_f = [x, y, w * METR + self.width * 2, h * METR + self.height * 2]
         self.tag = "room"
         self.walls = {"up": [], "down": [], "left": [], "right": []}
+        self.spawn_area = [2 * METR + self.rect_f[X], 2 * METR + self.rect_f[Y], self.rect_f[W] - 4 * METR,
+                           self.rect_f[H] - 4 * METR]
         for i in range(len(doors)):
             self.walls[doors[i][0]].append(doors[i])
         for i in self.walls:

@@ -1,8 +1,9 @@
-from math import *
-from collider import *
+from collider import Collider
 from various import *
 from sprites import *
-from functions import *
+from functions import set_change_coord
+from sprite import Sprite
+from math import tan, pi, sqrt, atan
 
 
 class Bullet(Sprite):
@@ -14,7 +15,7 @@ class Bullet(Sprite):
         self.rect_f = list(self.image.get_rect())
         self.set_pos()
         self.rect = pygame.Rect(*self.rect_f)
-        self.speed = 800
+        self.speed = 300
         self.xspeed = None
         self.yspeed = None
         self.xspeed, self.yspeed = set_change_coord(angle, self.speed)
@@ -38,29 +39,8 @@ class Bullet(Sprite):
     def set_tick(self, tick):
         self.tick = tick
 
-    def set_change_coord(self):
-        if self.angle % 360 == 0:
-            self.xspeed = self.speed
-            self.yspeed = 0
-        elif self.angle % 360 == 90:
-            self.xspeed = 0
-            self.yspeed = -self.speed
-        elif self.angle % 360 == 180:
-            self.xspeed = -self.speed
-            self.yspeed = 0
-        elif self.angle % 360 == 270:
-            self.xspeed = 0
-            self.yspeed = self.speed
-        else:
-            self.xspeed = self.speed / sqrt(1 + abs(tan(self.angle * pi / 180)))
-            self.yspeed = self.xspeed * abs(tan(self.angle * pi / 180))
-            if 90 < self.angle % 360 < 270:
-                self.xspeed = -self.xspeed
-            if 0 < self.angle % 360 < 180:
-                self.yspeed = -self.yspeed
-
     def unit_collided(self, unit):
-        if unit.tag != "player" and unit.tag != "bullet":
+        if self.owner.tag != unit.tag and unit.tag != "bullet":
             self.delete_from_all()
 
     def delete_from_all(self):

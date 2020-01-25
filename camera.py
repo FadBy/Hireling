@@ -1,6 +1,3 @@
-from all_various import *
-
-
 class Camera:
     def __init__(self):
         super().__init__()

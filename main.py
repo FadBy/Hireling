@@ -1,5 +1,11 @@
 from map import *
-from enemy import Enemy
+from random import randint
+from enemy_sniper import EnemySniper
+
+
+def spawn():
+    enemy = EnemySniper(randint(arenaroom1.spawn_area[X], arenaroom1.spawn_area[X] + arenaroom1.spawn_area[W]),
+                        randint(arenaroom1.spawn_area[Y], arenaroom1.spawn_area[Y] + arenaroom1.spawn_area[H]))
 
 
 def check_colliders():
@@ -32,6 +38,11 @@ def change_all_pos():
     player.change_y = 0
 
 
+def enemy_action():
+    for i in enemies:
+        i.attack()
+
+
 def draw_all_sprites():
     for i in background:
         i.draw(screen)
@@ -47,13 +58,14 @@ def draw_all_sprites():
 
 pygame.init()
 
-enemies = [Enemy(random.randint(-500, 1000), random.randint(-500, 1000))]
+spawn()
 
 TEST_COLLIDER = False
 PRINT_FPS = False
 
 running = True
 while running:
+    screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -66,7 +78,7 @@ while running:
     change_all_pos()
     check_colliders()
     change_all_pos()
-    screen.fill((0, 0, 0))
+    enemy_action()
     draw_all_sprites()
     if player.health <= 0:
         running = False
