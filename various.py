@@ -9,11 +9,12 @@ motionful = []
 middle = []
 timers_with = []
 object_sprites = []
+interface_content = []
 
 
-size = width, height = 1280, 720
+size = width, height = 1600, 900
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode(size)
+screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
 VERTICAL_SPRITE = 0
 FULL_CORNER_SPRITE = 1

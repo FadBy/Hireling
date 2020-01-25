@@ -1,8 +1,8 @@
 from bullet import *
 from watchtimer import Timer
-from ingame_menu import *
 from functions import *
 from character import *
+from interface import Interface
 
 
 class Player(Character):
@@ -42,6 +42,7 @@ class Player(Character):
         self.test = False
         self.count_set_illusion = 0
         self.after_jerk = False
+        self.interface = Interface()
 
     def move(self, speed):
         if self.condition == "jerk":
@@ -156,13 +157,13 @@ class Player(Character):
                 elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_DOWN]:
                     self.attack(True, "right-down")
                 elif pressed_btns[pygame.K_LEFT]:
-                    self.attack(True, 'left')
+                    self.attack(False, 'left')
                 elif pressed_btns[pygame.K_RIGHT]:
-                    self.attack(True, 'right')
+                    self.attack(False, 'right')
                 elif pressed_btns[pygame.K_UP]:
-                    self.attack(True, 'up')
+                    self.attack(False, 'up')
                 elif pressed_btns[pygame.K_DOWN]:
-                    self.attack(True, 'down')
+                    self.attack(False, 'down')
                 else:
                     self.frame = 0
                     self.not_attacking = True
@@ -176,3 +177,4 @@ class Player(Character):
             self.health -= hp
             self.not_damaged = True
             Timer(*self.timers["health"]).start()
+            self.interface.change_hp(self.health)

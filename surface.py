@@ -2,7 +2,6 @@ from sprite import *
 from group import *
 from various import *
 
-
 class Surface(Group):
     def __init__(self, room, images, x, y, w, h):
         super().__init__()
