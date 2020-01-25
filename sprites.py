@@ -26,7 +26,18 @@ PLAYER = {"player_back1": load_image('player/player_back1.png'),
           "player_face": load_image("player/player_face.png"),
           "player_left": load_image('player/player_left.png'),
           "player_right": load_image("player/player_right.png"),
-          "health_points": load_image("player/health_points.png")}
+          "health_point": load_image("player/interface_line.png"),
+          "dividing_line": load_image("player/interface_line.png"),
+          "1": load_image("player/1.png"),
+          "2": load_image("player/2.png"),
+          "3": load_image("player/3.png"),
+          "4": load_image("player/4.png"),
+          "5": load_image("player/5.png"),
+          "6": load_image("player/6.png"),
+          "7": load_image("player/7.png"),
+          "8": load_image("player/8.png"),
+          "9": load_image("player/9.png"),
+          "0": load_image("player/0.png")}
 
 CURSOR = {"arrow": load_image("cursor/arrow.png"),
           "arrow_tapped": load_image("cursor/arrow_tapped.png")}

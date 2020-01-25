@@ -1,12 +1,8 @@
 from bullet import Bullet
 from watchtimer import Timer
-from ingame_menu import ingame_menu_start
-from character import Character
-from various import *
-from sprites import PLAYER
-from functions import *
 from collider import Collider
-from sprite import Sprite
+from character import *
+from interface import Interface
 
 
 class Player(Character):
@@ -46,6 +42,8 @@ class Player(Character):
         self.test = False
         self.count_set_illusion = 0
         self.after_jerk = False
+        self.weapon = False
+        self.interface = Interface()
 
     def move(self, speed):
         if self.condition == "jerk":
@@ -92,8 +90,8 @@ class Player(Character):
     def stop_timer_damage(self):
         self.not_damaged = False
 
-    def attack(self, weapon_type, attacked_side):
-        if weapon_type:
+    def attack(self, attacked_side):
+        if self.weapon:
             if not self.rapidity:
                 self.rapidity = True
                 Timer(*self.timers["weapon"]).start()
@@ -113,7 +111,7 @@ class Player(Character):
                 if self.frame < len(self.animation) - 1:
                     self.frame += 1
                 else:
-                    if not weapon_type:
+                    if not self.weapon:
                         self.not_attacking = False
                     self.frame = 0
 
@@ -149,21 +147,21 @@ class Player(Character):
                 if pressed_btns[pygame.K_d] and pressed_btns[pygame.K_s]:
                     self.run("right-down")
                 if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
-                    self.attack(True, "left-up")
+                    self.attack("left-up")
                 elif pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_DOWN]:
-                    self.attack(True, "left-down")
+                    self.attack( "left-down")
                 elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_UP]:
-                    self.attack(True, 'right-up')
+                    self.attack('right-up')
                 elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_DOWN]:
-                    self.attack(True, "right-down")
+                    self.attack("right-down")
                 elif pressed_btns[pygame.K_LEFT]:
-                    self.attack(True, 'left')
+                    self.attack('left')
                 elif pressed_btns[pygame.K_RIGHT]:
-                    self.attack(True, 'right')
+                    self.attack('right')
                 elif pressed_btns[pygame.K_UP]:
-                    self.attack(True, 'up')
+                    self.attack('up')
                 elif pressed_btns[pygame.K_DOWN]:
-                    self.attack(True, 'down')
+                    self.attack('down')
                 else:
                     self.frame = 0
                     self.not_attacking = True
@@ -177,3 +175,4 @@ class Player(Character):
             self.health -= hp
             self.not_damaged = True
             Timer(*self.timers["health"]).start()
+            self.interface.change_hp(self.health)

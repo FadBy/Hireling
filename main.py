@@ -52,6 +52,8 @@ def draw_all_sprites():
     if TEST_COLLIDER:
         for i in collider_group:
             pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
+    for i in interface_content:
+        i.draw(screen)
 
 
 pygame.init()
