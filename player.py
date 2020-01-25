@@ -1,6 +1,6 @@
 from bullet import *
 from watchtimer import Timer
-from menu import *
+from ingame_menu import *
 from functions import *
 from character import *
 
@@ -9,7 +9,7 @@ class Player(Character):
     def __init__(self):
         super().__init__(middle, motionful, timers_with)
         self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
-                       "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
+                       "illusion": [0.15, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
                        "after_jerk": [0.05, self.stop_timer_after_jerk]}
         self.animation = []
         self.image = PLAYER["player_face"]
@@ -122,9 +122,8 @@ class Player(Character):
                 self.condition = "stand"
                 pressed_btns = pygame.key.get_pressed()
                 self.image = PLAYER["player_face"]
-                if pressed_btns[pygame.K_z]:
-                    Timer(*self.timers["test"]).start()
-                    self.test = True
+                if pressed_btns[pygame.K_ESCAPE]:
+                    return ingame_menu_start()
                 if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[
                     pygame.K_s]:
                     self.image = PLAYER["player_left"]
@@ -164,14 +163,12 @@ class Player(Character):
                     self.attack(True, 'up')
                 elif pressed_btns[pygame.K_DOWN]:
                     self.attack(True, 'down')
-                elif pressed_btns[pygame.K_ESCAPE]:
-                    ingame_menu_start()
                 else:
                     self.frame = 0
                     self.not_attacking = True
-                return ''
         else:
             self.jerk()
+        return ''
 
     def hit_from_enemy(self, hp):
         self.condition = 'stand'

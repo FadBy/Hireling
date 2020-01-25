@@ -52,17 +52,19 @@ PRINT_FPS = False
 
 running = True
 while running:
-    screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     tick = clock.tick() / 1000
-    player.check_pressed()
+    pressed = player.check_pressed()
+    if pressed != '':
+        running = pressed
     for i in motionful:
         i.set_tick(tick)
     change_all_pos()
     check_colliders()
     change_all_pos()
+    screen.fill((0, 0, 0))
     draw_all_sprites()
     if player.health <= 0:
         running = False

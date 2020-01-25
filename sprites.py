@@ -26,7 +26,8 @@ PLAYER = {"player_back1": load_image('player/player_back1.png'),
           "player_back3": load_image('player/player_back3.png'),
           "player_face": load_image("player/player_face.png"),
           "player_left": load_image('player/player_left.png'),
-          "player_right": load_image("player/player_right.png")}
+          "player_right": load_image("player/player_right.png"),
+          "health_points": load_image("player/health_points.png")}
 
 CURSOR = {"arrow": load_image("cursor/arrow.png"),
           "arrow_tapped": load_image("cursor/arrow_tapped.png")}
