@@ -55,5 +55,5 @@ class Interface(Group):
                 reserve.rect_f[X], reserve.rect_f[Y] = width - 85 + i * 20, height - 60
                 reserve.rect = pygame.Rect(reserve.rect_f)
         else:
-            self.ammo_in_magazine = 0
+            self.ammo_in_magazine = 0   
             return 'empty'
