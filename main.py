@@ -58,9 +58,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     tick = clock.tick() / 1000
+    player.check_pressed()
     for i in motionful:
         i.set_tick(tick)
-    player.check_pressed()
     change_all_pos()
     player.change_x = 0
     player.change_y = 0

@@ -26,7 +26,7 @@ class Player(Sprite):
         self.length_jerk = 150
         self.speed_jerk = 1000
         self.not_attacking = True
-        self.tick = None
+        self.tick = 0
         self.change_x = 0
         self.change_y = 0
         self.health = 5
