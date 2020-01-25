@@ -9,7 +9,7 @@ from interface import Interface
 class Player(Character):
     def __init__(self):
         super().__init__(middle, motionful, timers_with)
-        self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
+        self.timers = {"weapon": [0.1, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
                        "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
                        "after_jerk": [0.15, self.stop_timer_after_jerk]}
         self.animation = []
@@ -18,7 +18,7 @@ class Player(Character):
         self.rect_f[X] = width // 2 - self.rect_f[2] // 2
         self.rect_f[Y] = height // 2 - self.rect_f[3] // 2
         self.rect = pygame.Rect(self.rect_f)
-        self.speed_run = 1000
+        self.speed_run = 500
         self.tag = "player"
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
         self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
@@ -31,8 +31,8 @@ class Player(Character):
         self.tick = 0
         self.change_x = 0
         self.change_y = 0
-        self.health = 5
         self.not_damaged = False
+        self.health = 5
         self.full_health = 5
         self.rapidity = False
         self.condition = "stand"
@@ -45,6 +45,7 @@ class Player(Character):
         self.after_jerk = False
         self.weapon = True
         self.interface = Interface()
+        self.ammo_in_magazine = self.interface.ammo_in_magazine
 
     def move(self, speed):
         if self.condition == "jerk":
@@ -97,7 +98,9 @@ class Player(Character):
     def attack(self, attacked_side):
         if self.weapon:
             if not self.rapidity:
-                if self.interface.changes(self.health, self.interface.ammo_in_magazine) != 'empty':
+                self.ammo_in_magazine -= 1
+                if self.interface.changes(self.health, self.ammo_in_magazine) != 'empty':
+                    self.ammo_in_magazine = self.interface.ammo_in_magazine
                     self.rapidity = True
                     Timer(*self.timers["weapon"]).start()
                     bullet = Bullet(self, convert_side_in_angle(attacked_side))

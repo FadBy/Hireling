@@ -65,7 +65,6 @@ PRINT_FPS = False
 
 running = True
 while running:
-    screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -79,6 +78,7 @@ while running:
     check_colliders()
     change_all_pos()
     enemy_action()
+    screen.fill((0, 0, 0))
     draw_all_sprites()
     if player.health <= 0:
         running = False
