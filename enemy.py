@@ -1,9 +1,13 @@
-from map import *
+from various import *
+from sprites import *
+from character import Character
+from collider import Collider
+from map import player
 
 
 class Enemy(Character):
     def __init__(self, x, y):
-        super().__init__(middle, object_sprites)
+        super().__init__(middle, motionful, enemies)
         self.damage = 1
         self.enemy_hp = 100
         self.tag = 'enemy'

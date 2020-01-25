@@ -1,4 +1,4 @@
-from various import *
+from various import X, Y
 from sprites import *
 
 

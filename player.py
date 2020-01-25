@@ -1,7 +1,12 @@
-from bullet import *
+from bullet import Bullet
 from watchtimer import Timer
-from menu import *
-from character import *
+from ingame_menu import ingame_menu_start
+from character import Character
+from various import *
+from sprites import PLAYER
+from functions import *
+from collider import Collider
+from sprite import Sprite
 
 
 class Player(Character):
@@ -84,9 +89,6 @@ class Player(Character):
     def stop_timer_jerk(self):
         self.jerk_delay = False
 
-    def stop_timer_rapidity(self):
-        self.rapidity = False
-
     def stop_timer_damage(self):
         self.not_damaged = False
 
@@ -121,6 +123,8 @@ class Player(Character):
                 self.condition = "stand"
                 pressed_btns = pygame.key.get_pressed()
                 self.image = PLAYER["player_face"]
+                if pressed_btns[pygame.K_ESCAPE]:
+                    return ingame_menu_start()
                 if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[
                     pygame.K_s]:
                     self.image = PLAYER["player_left"]
@@ -160,14 +164,12 @@ class Player(Character):
                     self.attack(True, 'up')
                 elif pressed_btns[pygame.K_DOWN]:
                     self.attack(True, 'down')
-                elif pressed_btns[pygame.K_ESCAPE]:
-                    ingame_menu_start()
                 else:
                     self.frame = 0
                     self.not_attacking = True
-                return ''
         else:
             self.jerk()
+        return ''
 
     def hit_from_enemy(self, hp):
         self.condition = 'stand'

@@ -1,6 +1,5 @@
-from sprite import *
+from sprite import Sprite
 from various import *
-from sprites import *
 from functions import *
 
 
@@ -14,14 +13,12 @@ class Character(Sprite):
         self.health = None
         self.full_health = None
         self.angle = None
+        self.tick = None
+        self.rapidity = False
 
     def set_tick(self, tick):
         self.tick = tick
 
-    def move(self, speed):
-        coord = set_change_coord(self.angle, speed)
-        self.rect_f[X] += coord[X] * self.tick
-        self.rect_f[Y] += coord[Y] * self.tick
-        self.rect = pygame.Rect(self.rect_f)
-
+    def stop_timer_rapidity(self):
+        self.rapidity = False
 

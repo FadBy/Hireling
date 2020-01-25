@@ -1,5 +1,4 @@
 import pygame
-import random
 
 collider_group = pygame.sprite.Group()
 
@@ -9,6 +8,7 @@ motionful = []
 middle = []
 timers_with = []
 object_sprites = []
+enemies = []
 
 
 size = width, height = 1280, 720

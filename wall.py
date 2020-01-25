@@ -1,7 +1,8 @@
-from collider import *
-from door import *
-from sprite import *
-from group import *
+from door import Door
+from sprite import Sprite
+from group import Group
+from collider import Collider
+from various import *
 
 
 class Wall(Group):
