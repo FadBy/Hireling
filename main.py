@@ -2,10 +2,6 @@ from map import *
 from enemy import Enemy
 
 
-def sort_groups():
-    rooms.sort(key=lambda x: x.rect_f[0], reverse=True)
-
-
 def check_colliders():
     for i in motionful:
         colliders = pygame.sprite.spritecollide(i.collider, collider_group, False)
@@ -47,18 +43,9 @@ def draw_all_sprites():
             pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
 
 
-def cancel_player_change():
-    player.change_x = 0
-    player.change_y = 0
-
-
 pygame.init()
 
-enemies = [Enemy('vorog', random.randint(-500, 1000), random.randint(-500, 1000))]
-
-sort_groups()
-
-screen = pygame.display.set_mode(size, pygame.NOFRAME)
+enemies = [Enemy(random.randint(-500, 1000), random.randint(-500, 1000))]
 
 TEST_COLLIDER = False
 PRINT_FPS = False
@@ -77,13 +64,9 @@ while running:
     check_colliders()
     change_all_pos()
     draw_all_sprites()
-    hp = player.health_change(enemies[0].attack)
-    enemies[0].attack = 0
-    # print(hp)
-    if not player.alive:
+    if player.health <= 0:
         running = False
     if PRINT_FPS:
         print(int(clock.get_fps()))
     pygame.display.flip()
-
 pygame.quit()
