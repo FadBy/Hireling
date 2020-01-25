@@ -1,6 +1,7 @@
 from bullet import Bullet
 from watchtimer import Timer
 from collider import Collider
+from functions import *
 from character import *
 from interface import Interface
 
