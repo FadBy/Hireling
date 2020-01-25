@@ -12,7 +12,7 @@ object_sprites = []
 interface_content = []
 
 
-size = width, height = 1600, 900
+size = width, height = 1280, 720
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
