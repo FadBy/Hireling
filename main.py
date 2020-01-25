@@ -48,7 +48,7 @@ pygame.init()
 enemies = [Enemy(random.randint(-500, 1000), random.randint(-500, 1000))]
 
 TEST_COLLIDER = False
-PRINT_FPS = False
+PRINT_FPS = True
 
 running = True
 while running:

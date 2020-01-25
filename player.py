@@ -1,7 +1,6 @@
 from bullet import *
 from watchtimer import Timer
 from menu import *
-from functions import *
 from character import *
 
 
@@ -10,14 +9,14 @@ class Player(Character):
         super().__init__(middle, motionful, timers_with)
         self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
                        "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
-                       "after_jerk": [0.05, self.stop_timer_after_jerk]}
+                       "after_jerk": [0.15, self.stop_timer_after_jerk]}
         self.animation = []
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
-        self.rect_f[X] = width // 2 - self.rect_f[2]
-        self.rect_f[Y] = height // 2 - self.rect_f[3]
+        self.rect_f[X] = width // 2 - self.rect_f[2] // 2
+        self.rect_f[Y] = height // 2 - self.rect_f[3] // 2
         self.rect = pygame.Rect(self.rect_f)
-        self.speed_run = 300
+        self.speed_run = 1000
         self.tag = "player"
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
         self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
@@ -122,9 +121,6 @@ class Player(Character):
                 self.condition = "stand"
                 pressed_btns = pygame.key.get_pressed()
                 self.image = PLAYER["player_face"]
-                if pressed_btns[pygame.K_z]:
-                    Timer(*self.timers["test"]).start()
-                    self.test = True
                 if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[
                     pygame.K_s]:
                     self.image = PLAYER["player_left"]

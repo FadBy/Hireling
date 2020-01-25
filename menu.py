@@ -1,5 +1,3 @@
-import os
-import pygame
 from various import *
 from sprites import *
 
