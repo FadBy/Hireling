@@ -1,8 +1,8 @@
-from sprite import *
 from math import *
 from collider import *
 from various import *
 from sprites import *
+from functions import *
 
 
 class Bullet(Sprite):
@@ -17,7 +17,7 @@ class Bullet(Sprite):
         self.speed = 800
         self.xspeed = None
         self.yspeed = None
-        self.set_change_coord()
+        self.xspeed, self.yspeed = set_change_coord(angle, self.speed)
         self.collider = Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], trigger=True)
         self.tag = "bullet"
 

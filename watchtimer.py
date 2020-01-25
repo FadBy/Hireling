@@ -11,7 +11,3 @@ class Timer(MainTimer):
         super().__init__(self.time, self.function)
         super().start()
 
-
-
-
-
