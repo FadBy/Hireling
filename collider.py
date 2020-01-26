@@ -16,7 +16,7 @@ class Collider(Sprite):
         self.rect_f[Y] += y
         self.rect = pygame.Rect(self.rect_f)
 
-    def default_collide(self, player):
+    def default_collided(self, player):
         if player.rect_f[X] <= self.rect_f[X] and player.rect_f[Y] >= self.rect_f[Y] and \
                 player.rect_f[Y] + player.rect_f[H] <= self.rect_f[Y] + self.rect_f[H]:
             player.owner.change_x = self.rect_f[X] - player.rect_f[X] - player.rect_f[W]
@@ -65,3 +65,6 @@ class Collider(Sprite):
             Y] <= \
                 self.rect_f[X] + self.rect_f[W] - player.rect_f[X]:
             player.owner.change_y = self.rect_f[Y] + self.rect_f[H] - player.rect_f[Y]
+
+    def unit_collided(self, unit):
+        self.owner.unit_collided(self, unit)

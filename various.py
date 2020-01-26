@@ -6,10 +6,10 @@ rooms = []
 background = []
 motionful = []
 middle = []
-timers_with = []
 object_sprites = []
 interface_content = []
 enemies = []
+decors = []
 
 
 size = width, height = 1280, 720

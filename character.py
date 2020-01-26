@@ -17,9 +17,10 @@ class Character(Sprite):
         self.angle = None
         self.tick = None
         self.rapidity = False
+        self.colliders = {}
 
-        self.colliders = []
-
+    def hit_from_enemy(self, hp):
+        self.health -= hp
 
     def set_tick(self, tick):
         self.tick = tick

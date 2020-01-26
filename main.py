@@ -11,15 +11,15 @@ def spawn():
 def check_colliders():
     for i in motionful:
         for j in i.colliders:
-            colliders = pygame.sprite.spritecollide(j, collider_group, False)
+            colliders = pygame.sprite.spritecollide(i.colliders[j], collider_group, False)
             for u in colliders:
                 if u.owner != i:
                     if u.trigger:
-                        u.owner.unit_collided(j)
-                    elif not j.trigger:
-                        u.default_collide(j)
-                    if j.trigger:
-                        i.unit_collided(u)
+                        u.unit_collided(i.colliders[j])
+                    elif not i.colliders[j].trigger:
+                        u.default_collided(i.colliders[j])
+                    if i.colliders[j].trigger:
+                        i.colliders[j].unit_collided(u)
 
 
 def change_all_pos():
@@ -40,7 +40,10 @@ def change_all_pos():
 
 def enemy_action():
     for i in enemies:
-        i.attack()
+        if i.health <= 0:
+            i.kill()
+        else:
+            i.attack()
 
 
 def draw_all_sprites():
