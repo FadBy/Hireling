@@ -1,6 +1,6 @@
 from various import *
-from sprite import *
 from sprites import *
+from sprite import Sprite
 from group import Group
 import pygame
 
@@ -10,7 +10,7 @@ class Interface(Group):
         super().__init__()
         interface_content.append(self)
         self.tag = "health"
-        self.health = 5
+        self.health = 2
         self.bandolier = 10
         self.ammo_in_magazine = 30
         self.full_ammo = 30
@@ -55,5 +55,5 @@ class Interface(Group):
                 reserve.rect_f[X], reserve.rect_f[Y] = width - 85 + i * 20, height - 60
                 reserve.rect = pygame.Rect(reserve.rect_f)
         else:
-            self.ammo_in_magazine = 0   
+            self.ammo_in_magazine = 0
             return 'empty'

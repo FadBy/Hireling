@@ -57,3 +57,6 @@ INGAME_MENU = {"ingame_menu": load_image("ingame_menu/Ingame_menu.jpg"),
 
 BULLETS = {"player_bullet": load_image("bullets/player_bullet.png"),
            "vorog": load_image("bullets/vorogg.png")}
+
+ITEMS = {"aid": load_image('items/aid.png'),
+         "bullet_case": load_image('items/bullet_case.png')}

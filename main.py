@@ -1,11 +1,13 @@
 from map import *
 from random import randint
 from enemy_sniper import EnemySniper
+from aid_kit import Aid
 
 
 def spawn():
     enemy = EnemySniper(randint(arenaroom1.spawn_area[X], arenaroom1.spawn_area[X] + arenaroom1.spawn_area[W]),
                         randint(arenaroom1.spawn_area[Y], arenaroom1.spawn_area[Y] + arenaroom1.spawn_area[H]))
+    aid = Aid(200, 200)
 
 
 def check_colliders():
@@ -80,7 +82,7 @@ while running:
     enemy_action()
     screen.fill((0, 0, 0))
     draw_all_sprites()
-    if player.health <= 0:
+    if player.interface.health <= 0:
         running = False
     if PRINT_FPS:
         print(int(clock.get_fps()))

@@ -32,7 +32,7 @@ class Player(Character):
         self.change_x = 0
         self.change_y = 0
         self.not_damaged = False
-        self.health = 5
+        self.interface = Interface()
         self.full_health = 5
         self.rapidity = False
         self.condition = "stand"
@@ -44,7 +44,6 @@ class Player(Character):
         self.count_set_illusion = 0
         self.after_jerk = False
         self.weapon = True
-        self.interface = Interface()
         self.ammo_in_magazine = self.interface.ammo_in_magazine
 
     def move(self, speed):
@@ -180,7 +179,12 @@ class Player(Character):
     def hit_from_enemy(self, hp):
         self.condition = 'stand'
         if not self.not_damaged:
-            self.health -= hp
+            self.interface.health -= hp
             self.not_damaged = True
             Timer(*self.timers["health"]).start()
             self.interface.changes(self.health, self.interface.ammo_in_magazine)
+
+    def heal(self, hp):
+        if self.interface.health < self.full_health:
+            self.interface.health += 1
+            self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
