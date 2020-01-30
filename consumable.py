@@ -17,8 +17,8 @@ class Consumable(Sprite):
         self.rect_f[Y] = y
         self.rect = pygame.Rect(self.rect_f)
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
-        self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
-                                 self.rect_f[H] - self.height_person, True)
+        self.colliders = {"default": Collider(self, 0, self.height_person, self.rect_f[W],
+                                 self.rect_f[H] - self.height_person, True)}
 
     def changes(self, type, quantity):
         if type == 'heal':

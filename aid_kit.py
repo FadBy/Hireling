@@ -14,8 +14,8 @@ class Aid(Consumable):
         self.rect_f = list(self.image.get_rect().move(x, y))
         self.rect = pygame.Rect(self.rect_f)
 
-    def unit_collided(self, unit):
-        if unit.tag == "player":
+    def unit_collided(self, collider, unit):
+        if unit.owner.tag == "player":
             super().changes('heal', self.heal)
 
     def move(self):

@@ -33,7 +33,7 @@ class Player(Character):
                                                          self.height_person,
                                                          self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
                                                          self.rect_f[H] - self.height_person, True)}
-        self.bullets = []
+        self.arena = [False, 0]
         self.frame = 0
         self.length_jerk = 300
         self.speed_jerk = 1000
@@ -106,7 +106,7 @@ class Player(Character):
         if self.weapon:
             if not self.rapidity:
                 self.ammo_in_magazine -= 1
-                if self.interface.changes(self.health, self.ammo_in_magazine) != 'empty':
+                if self.interface.changes(self.interface.health, self.ammo_in_magazine) != 'empty':
                     self.ammo_in_magazine = self.interface.ammo_in_magazine
                     self.rapidity = True
                     Timer(*self.timers["weapon"]).start()
@@ -191,15 +191,16 @@ class Player(Character):
             self.not_damaged = True
             Timer(*self.timers["health"]).start()
             self.interface.changes(self.health, self.interface.ammo_in_magazine)
-
-    def hit_from_enemy(self, hp):
-        self.interface.health -= hp
-        self.interface.change_hp(self.health)
+            self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
 
     def heal(self, hp):
         if self.interface.health < self.full_health:
             self.interface.health += 1
             self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
+
+    def hit_from_enemy(self, hp):
+        self.interface.health -= hp
+        self.interface.change_hp(self.health)
 
     def unit_collided(self, collider, unit):
         if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \

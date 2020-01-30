@@ -16,7 +16,9 @@ TEXTURES_DEFAULT = {"wall_block_ver": load_image("textures_default/wall_block_ve
                     "door_close_ver": load_image("textures_default/door_close_ver.png"),
                     "door_open_ver": load_image("textures_default/door_open_ver.png"),
                     "corner_up": load_image("textures_default/corner_up.png"),
-                    "corner_down": load_image("textures_default/corner_down.png")
+                    "corner_down": load_image("textures_default/corner_down.png"),
+                    "door_blocked_ver": load_image("textures_default/door_blocked_ver.png"),
+                    "spawn_delay": load_image("texturese_default/spawn_delay.png")
                     }
 
 PLAYER = {"player_back1": load_image('player/player_back1.png'),
