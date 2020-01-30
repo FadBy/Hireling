@@ -12,16 +12,16 @@ def spawn():
 
 def check_colliders():
     for i in motionful:
-        colliders = pygame.sprite.spritecollide(i.collider, collider_group, False)
-        if colliders:
-            for j in colliders:
-                if j.owner != i:
-                    if j.trigger:
-                        j.owner.unit_collided(i)
-                    else:
-                        j.default_collide(i)
-                    if i.collider.trigger:
-                        i.unit_collided(j.owner)
+        for j in i.colliders:
+            colliders = pygame.sprite.spritecollide(i.colliders[j], collider_group, False)
+            for u in colliders:
+                if u.owner != i:
+                    if u.trigger:
+                        u.unit_collided(i.colliders[j])
+                    elif not i.colliders[j].trigger:
+                        u.default_collided(i.colliders[j])
+                    if i.colliders[j].trigger:
+                        i.colliders[j].unit_collided(u)
 
 
 def change_all_pos():
@@ -42,7 +42,10 @@ def change_all_pos():
 
 def enemy_action():
     for i in enemies:
-        i.attack()
+        if i.health <= 0:
+            i.kill()
+        else:
+            i.attack()
 
 
 def draw_all_sprites():
@@ -53,7 +56,11 @@ def draw_all_sprites():
         i.draw(screen)
     if TEST_COLLIDER:
         for i in collider_group:
-            pygame.draw.rect(screen, (255, 255, 255), pygame.Rect(*i.rect_f), 5)
+            if i.trigger:
+                color = (0, 255, 0)
+            else:
+                color = (255, 255, 255)
+            pygame.draw.rect(screen, color, pygame.Rect(*i.rect_f), 5)
     for i in interface_content:
         i.draw(screen)
 

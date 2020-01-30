@@ -6,7 +6,7 @@ from sprites import *
 
 class Door(Sprite):
     def __init__(self, owner, way, images, x, y):
-        super().__init__(middle, owner)
+        super().__init__(middle, owner, decors)
         self.owner = owner
         self.way = way
         self.open = False
@@ -33,8 +33,8 @@ class Door(Sprite):
         super().draw(screen)
         self.image = self.image_close
 
-    def unit_collided(self, unit):
-        if unit.tag != "bullet":
+    def unit_collided(self, collider, unit):
+        if not unit.trigger:
             self.image = self.image_open
 
 

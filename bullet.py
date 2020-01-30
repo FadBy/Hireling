@@ -3,7 +3,6 @@ from various import *
 from sprites import *
 from functions import set_change_coord
 from sprite import Sprite
-from math import tan, pi, sqrt, atan
 
 
 class Bullet(Sprite):
@@ -18,8 +17,9 @@ class Bullet(Sprite):
         self.speed = 300
         self.xspeed = None
         self.yspeed = None
+        self.tick = 0
         self.xspeed, self.yspeed = set_change_coord(angle, self.speed)
-        self.collider = Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], trigger=True)
+        self.colliders = {"default": Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], trigger=True)}
         self.tag = "bullet"
 
     def set_pos(self):
@@ -34,16 +34,22 @@ class Bullet(Sprite):
         self.rect_f[X] += self.xspeed * self.tick
         self.rect_f[Y] += self.yspeed * self.tick
         self.rect = pygame.Rect(*self.rect_f)
-        self.collider.move(self.xspeed * self.tick, self.yspeed * self.tick)
+        for i in self.colliders:
+            self.colliders[i].move(self.xspeed * self.tick, self.yspeed * self.tick)
 
     def set_tick(self, tick):
         self.tick = tick
 
-    def unit_collided(self, unit):
-        if self.owner.tag != unit.tag and unit.tag != "bullet":
+    def unit_collided(self, collider, unit):
+        if unit.owner.tag != "bullet" and (unit.owner in decors or unit.owner.tag != self.owner.tag):
             self.delete_from_all()
+        if (unit.owner.tag == "player" or unit.owner.tag == "enemy") and not collider == unit.owner.colliders[
+            "bullet_hit"] and unit.owner.tag != self.owner.tag:
+            print()
+        if (unit.owner.tag == "player" or unit.owner.tag == "enemy") and unit.owner.tag != self.owner.tag:
+            unit.owner.hit_from_enemy(unit.owner.damage_bullet)
 
     def delete_from_all(self):
         self.kill()
-        self.collider.kill()
-
+        for i in self.colliders:
+            self.colliders[i].kill()

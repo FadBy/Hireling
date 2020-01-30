@@ -8,11 +8,12 @@ from interface import Interface
 
 class Player(Character):
     def __init__(self):
-        super().__init__(middle, motionful, timers_with)
+        super().__init__(middle, motionful)
         self.timers = {"weapon": [0.1, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
                        "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
                        "after_jerk": [0.15, self.stop_timer_after_jerk]}
         self.animation = []
+        self.damage_bullet = 1
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
         self.rect_f[X] = width // 2 - self.rect_f[2] // 2
@@ -20,9 +21,18 @@ class Player(Character):
         self.rect = pygame.Rect(self.rect_f)
         self.speed_run = 500
         self.tag = "player"
-        self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
-        self.collider = Collider(self, 0, self.height_person, self.rect_f[W],
-                                 self.rect_f[H] - self.height_person)
+        self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
+        self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
+                                              self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
+                                              self.rect_f[H] - self.height_person),
+                          "bullet_hit": Collider(self, INDENT_UNIT_COLLIDET * self.rect_f[W],
+                                                 INDENT_UNIT_COLLIDET * self.rect_f[H],
+                                                 self.rect_f[W] - 2 * INDENT_UNIT_COLLIDET * self.rect_f[W],
+                                                 self.rect_f[H] - INDENT_UNIT_COLLIDET * self.rect_f[H], True),
+                          "collide_with_enemy": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W],
+                                                         self.height_person,
+                                                         self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
+                                                         self.rect_f[H] - self.height_person, True)}
         self.bullets = []
         self.frame = 0
         self.length_jerk = 300
@@ -45,6 +55,7 @@ class Player(Character):
         self.after_jerk = False
         self.weapon = True
         self.ammo_in_magazine = self.interface.ammo_in_magazine
+        self.test = 0
 
     def move(self, speed):
         if self.condition == "jerk":
@@ -87,9 +98,6 @@ class Player(Character):
 
     def stop_timer_jerk(self):
         self.jerk_delay = False
-
-    def stop_timer_rapidity(self):
-        self.rapidity = False
 
     def stop_timer_damage(self):
         self.not_damaged = False
@@ -156,7 +164,7 @@ class Player(Character):
                 if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
                     self.attack("left-up")
                 elif pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_DOWN]:
-                    self.attack( "left-down")
+                    self.attack("left-down")
                 elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_UP]:
                     self.attack('right-up')
                 elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_DOWN]:
@@ -176,7 +184,7 @@ class Player(Character):
             self.jerk()
         return ''
 
-    def hit_from_enemy(self, hp):
+    def hit_from_collider(self, hp):
         self.condition = 'stand'
         if not self.not_damaged:
             self.interface.health -= hp
@@ -184,7 +192,23 @@ class Player(Character):
             Timer(*self.timers["health"]).start()
             self.interface.changes(self.health, self.interface.ammo_in_magazine)
 
+    def hit_from_enemy(self, hp):
+        self.interface.health -= hp
+        self.interface.change_hp(self.health)
+
     def heal(self, hp):
         if self.interface.health < self.full_health:
             self.interface.health += 1
             self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
+
+    def unit_collided(self, collider, unit):
+        if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \
+                unit.owner.colliders["collide_with_enemy"]:
+            self.hit_from_collider(unit.owner.damage_collide)
+            # self.test += 1
+            # print(self.test)
+            # if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \
+            #         unit.owner.colliders["collide_with_enemy"]:
+            #     self.hit_from_collider(unit.owner.damage_collide)
+            # elif unit.owner.tag == "bullet":
+            #     self.hit_from_enemy(unit.owner.owner.damage_bullet)

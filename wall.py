@@ -8,6 +8,7 @@ from various import *
 class Wall(Group):
     def __init__(self, owner, way, images, x, y, length, coord_of_doors):
         super().__init__()
+        decors.append(self)
         self.way = way
         self.height = owner.height
         self.width = owner.width
@@ -30,7 +31,7 @@ class Wall(Group):
             else:
                 corner_image = images["corner_down"]
             for i in range(2):
-                corner = Sprite(self, middle)
+                corner = Sprite(self, middle, decors)
                 if i == 0:
                     corner.image = corner_image
                 else:
@@ -42,7 +43,7 @@ class Wall(Group):
                 if i + 1 in coord_of_doors:
                     self.doors.append(Door(self, "horisontal", images, i * METR + self.width, 0))
                 elif i not in coord_of_doors:
-                    wall_surface = Sprite(self, middle)
+                    wall_surface = Sprite(self, middle, decors)
                     wall_surface.image = images["wall_block_hor"]
                     wall_surface.rect_f = list(wall_surface.image.get_rect())
                     wall_surface.rect_f[0] = self.rect_f[0] + i * METR + self.width
@@ -68,7 +69,7 @@ class Wall(Group):
                 if i + 1 in coord_of_doors:
                     self.doors.append(Door(self, "vertical", images, 0, i * METR))
                 elif i not in coord_of_doors:
-                    wall_surface = Sprite(self, middle)
+                    wall_surface = Sprite(self, middle, decors)
                     wall_surface.image = images["wall_block_ver"]
                     wall_surface.rect_f = list(wall_surface.image.get_rect())
                     wall_surface.rect_f[0], wall_surface.rect_f[1] = self.rect_f[0], self.rect_f[1] + i * METR

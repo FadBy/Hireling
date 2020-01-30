@@ -6,10 +6,10 @@ rooms = []
 background = []
 motionful = []
 middle = []
-timers_with = []
 object_sprites = []
 interface_content = []
 enemies = []
+decors = []
 
 
 size = width, height = 1280, 720
@@ -29,7 +29,9 @@ H = 3
 METR = 75
 WIDTH_WALL_COLLIDER = 0.75
 WALL_SHIFT = 21
-WIDTH_UNIT_COLLIDER = 0.5
+WIDTH_UNIT_COLLIDER = 0.2
+HEIGHT_UNIT_COLLIDER = 0.5
+INDENT_UNIT_COLLIDET = 0.2
 
 FPS = 60
 
