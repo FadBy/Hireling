@@ -9,8 +9,9 @@ from map import player
 
 
 class EnemySniper(Enemy):
-    def __init__(self, x, y):
-        super().__init__(x, y)
+    def __init__(self, player, x, y):
+        super().__init__(player, x, y)
+        self.health = 5
         self.min_rapidity = 500
         self.max_rapidity = 2500
         self.damage_collide = 1
