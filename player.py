@@ -19,7 +19,7 @@ class Player(Character):
         self.rect_f[X] = width // 2 - self.rect_f[2] // 2
         self.rect_f[Y] = height // 2 - self.rect_f[3] // 2
         self.rect = pygame.Rect(self.rect_f)
-        self.speed_run = 1000
+        self.speed_run = 500
         self.tag = "player"
         self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
         self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
@@ -106,7 +106,7 @@ class Player(Character):
         if self.weapon:
             if not self.rapidity:
                 self.ammo_in_magazine -= 1
-                if self.interface.changes(self.health, self.ammo_in_magazine) != 'empty':
+                if self.interface.changes(self.interface.health, self.ammo_in_magazine) != 'empty':
                     self.ammo_in_magazine = self.interface.ammo_in_magazine
                     self.rapidity = True
                     Timer(*self.timers["weapon"]).start()
@@ -190,7 +190,7 @@ class Player(Character):
             self.interface.health -= hp
             self.not_damaged = True
             Timer(*self.timers["health"]).start()
-            self.interface.changes(self.health, self.interface.ammo_in_magazine)
+            self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
 
     def heal(self, hp):
         if self.interface.health < self.full_health:
@@ -198,8 +198,8 @@ class Player(Character):
             self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
 
     def hit_from_enemy(self, hp):
-        super().hit_from_enemy(hp)
-        self.interface.change_hp(self.health)
+        self.interface.health -= hp
+        self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
 
     def unit_collided(self, collider, unit):
         if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \

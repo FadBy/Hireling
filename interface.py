@@ -16,7 +16,6 @@ class Interface(Group):
         self.full_ammo = 30
         self.changes(self.health, self.ammo_in_magazine)
 
-
     def changes(self, hp, ammo):
         self.health = hp
         self.ammo_in_magazine = ammo

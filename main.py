@@ -69,7 +69,7 @@ pygame.init()
 
 spawn()
 
-TEST_COLLIDER = True
+TEST_COLLIDER = False
 PRINT_FPS = False
 
 running = True
