@@ -33,7 +33,7 @@ class Player(Character):
                                                          self.height_person,
                                                          self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
                                                          self.rect_f[H] - self.height_person, True)}
-        self.bullets = []
+        self.arena = [False, 0]
         self.frame = 0
         self.length_jerk = 300
         self.speed_jerk = 1000
@@ -202,9 +202,12 @@ class Player(Character):
         self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
 
     def unit_collided(self, collider, unit):
-        if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \
-                unit.owner.colliders["collide_with_enemy"]:
-            self.hit_from_collider(unit.owner.damage_collide)
+        pass
+        #if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \
+         #       unit.owner.colliders["collide_with_enemy"]:
+          #  self.hit_from_collider(unit.owner.damage_collide)
+
+
         # self.test += 1
         # print(self.test)
         # if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \

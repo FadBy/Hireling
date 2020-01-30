@@ -2,12 +2,19 @@ from map import *
 from random import randint
 from enemy_sniper import EnemySniper
 from aid_kit import Aid
+from sprite import Sprite
 
 
 def spawn():
     enemy = EnemySniper(randint(arenaroom1.spawn_area[X], arenaroom1.spawn_area[X] + arenaroom1.spawn_area[W]),
                         randint(arenaroom1.spawn_area[Y], arenaroom1.spawn_area[Y] + arenaroom1.spawn_area[H]))
     aid = Aid(200, 200)
+    arena = arenas[player.arena[1]]
+    for i in range(3):
+        spawn_zone = Sprite(enemies)
+        spawn_zone.image = TEXTURES_DEFAULT["spawn_delay"]
+        spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(arena.rect_f[X], arena.rect_f[X] + arena.rect_f[W]),
+                                                   randint(arena.rect_f[Y], arena.rect_f[Y] + arena.rect_f[H]))
 
 
 def check_colliders():
@@ -71,6 +78,10 @@ spawn()
 
 TEST_COLLIDER = False
 PRINT_FPS = False
+ENEMYS_ATTACK = False
+STOP_KADR = True
+
+test = False
 
 running = True
 while running:
@@ -88,6 +99,8 @@ while running:
     change_all_pos()
     enemy_action()
     screen.fill((0, 0, 0))
+    if ENEMYS_ATTACK:
+        enemy_action()
     draw_all_sprites()
     if player.interface.health <= 0:
         running = False
