@@ -42,6 +42,7 @@ class Door(Sprite):
             self.battle = True
             self.image = self.image_blocked
             self.colliders["locked"] = Collider(self, 0, 0, self.rect_f[W], self.rect_f[H])
+            self.owner.owner.spawn()
         elif not self.battle:
             self.image = self.image_close
 

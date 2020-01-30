@@ -1,6 +1,4 @@
 from math import sqrt, tan, pi
-
-from math import *
 import pygame
 from various import *
 from sprites import *

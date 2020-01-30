@@ -8,8 +8,10 @@ motionful = []
 middle = []
 object_sprites = []
 interface_content = []
-enemies = []
+enemies = pygame.sprite.Group()
 decors = []
+arenas = []
+spawns = pygame.sprite.Group()
 
 
 size = width, height = 1280, 720
@@ -36,3 +38,5 @@ INDENT_UNIT_COLLIDET = 0.2
 FPS = 60
 
 COUNT_OF_ILLUSIONS = 4
+
+COUNT_OF_ENEMIES = 3

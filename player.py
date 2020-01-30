@@ -195,10 +195,9 @@ class Player(Character):
 
     def unit_collided(self, collider, unit):
         pass
-        #if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \
-         #       unit.owner.colliders["collide_with_enemy"]:
-          #  self.hit_from_collider(unit.owner.damage_collide)
-
+        if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \
+                unit.owner.colliders["collide_with_enemy"]:
+            self.hit_from_collider(unit.owner.damage_collide)
 
         # self.test += 1
         # print(self.test)

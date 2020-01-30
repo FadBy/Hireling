@@ -1,7 +1,12 @@
 from wall import Wall
 from surface import Surface
 from various import *
+from sprites import *
 from collider import Collider
+from random import randint
+from sprite import Sprite
+from watchtimer import Timer
+from enemy_sniper import EnemySniper
 
 
 class Room:
@@ -15,8 +20,6 @@ class Room:
         self.rect_f = [x, y, w * METR + self.width * 2, h * METR + self.height * 2]
         self.tag = "room"
         self.walls = {"up": [], "down": [], "left": [], "right": []}
-        self.spawn_area = [3 * METR + self.rect_f[X], 3 * METR + self.rect_f[Y], self.rect_f[W] - 6 * METR,
-                           self.rect_f[H] - 6 * METR]
         self.colliders = {
             "default": Collider(self, 3 * METR, 3 * METR, self.rect_f[W] - 6 * METR, self.rect_f[H] - 6 * METR, True),
             "check_door": Collider(self, METR, METR, self.rect_f[W] - 2 * METR, self.rect_f[H] - 2 * METR, True)}
@@ -50,12 +53,33 @@ class Room:
     def unit_collided(self, collider, unit):
         pass
 
-    def collide_rect(self, unit):
-        if (unit.rect_f[X] < self.rect_f[X] + self.rect_f[W] and unit.rect_f[X] > self.rect_f[X] or unit.rect_f[X] +
-            unit.rect_f[W] > self.rect_f[X] and unit.rect_f[X] + unit.rect_f[W] < self.rect_f[X] + self.rect_f[W]) \
-                and (
-                unit.rect_f[Y] < self.rect_f[Y] + self.rect_f[H] and unit.rect_f[Y] > self.rect_f[Y] or unit.rect_f[Y] +
-                unit.rect_f[H] > self.rect_f[Y] and unit.rect_f[Y] + unit.rect_f[H] < self.rect_f[Y] + self.rect_f[H]):
-            return True
-        else:
-            return False
+    def spawn_enemies_instead(self):
+        for i in spawns:
+            rect = i.rect
+            i.kill()
+            enemy = EnemySniper(self.player, rect[X], rect[Y])
+
+    def spawn(self):
+        arena = arenas[self.player.arena[1]]
+        for i in range(COUNT_OF_ENEMIES):
+            spawn_zone = Sprite(spawns, object_sprites, background)
+            spawn_zone.image = TEXTURES_DEFAULT["spawn_delay"]
+            spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(int(arena.colliders["default"].rect_f[X]),
+                                                                         int(arena.colliders["default"].rect[X]) +
+                                                                         int(arena.colliders["default"].rect[W])),
+                                                                 randint(int(arena.colliders["default"].rect[Y]),
+                                                                         int(arena.colliders["default"].rect[Y]) +
+                                                                         int(arena.colliders["default"].rect[H])))
+            spawn_zone.rect = pygame.Rect(spawn_zone.rect_f)
+            while len(pygame.sprite.spritecollide(spawn_zone, spawns, False)) > 1:
+                spawn_zone.kill()
+                spawn_zone = Sprite(spawns, object_sprites, background)
+                spawn_zone.image = TEXTURES_DEFAULT["spawn_delay"]
+                spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(int(arena.colliders["default"].rect[X]),
+                                                                             int(arena.colliders["default"].rect[X]) +
+                                                                             int(arena.colliders["default"].rect[W])),
+                                                                     randint(int(arena.colliders["default"].rect[Y]),
+                                                                             int(arena.colliders["default"].rect[Y]) +
+                                                                             int(arena.colliders["default"].rect[H])))
+                spawn_zone.rect = pygame.Rect(spawn_zone.rect_f)
+        Timer(1, self.spawn_enemies_instead).start()

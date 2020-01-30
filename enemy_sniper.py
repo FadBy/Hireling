@@ -5,7 +5,7 @@ from watchtimer import Timer
 from random import randint
 from sprites import *
 from various import *
-from map import player
+from map import *
 
 
 class EnemySniper(Enemy):
@@ -23,8 +23,8 @@ class EnemySniper(Enemy):
 
     def attack(self):
         if not self.rapidity:
-            playerx = player.rect_f[X] + player.rect_f[W] // 2
-            playery = player.rect_f[Y] + player.rect_f[H] // 2
+            playerx = self.player.rect_f[X] + self.player.rect_f[W] // 2
+            playery = self.player.rect_f[Y] + self.player.rect_f[H] // 2
             enemyx = self.rect_f[X] + self.rect_f[W] // 2
             enemyy = self.rect_f[Y] + self.rect_f[H] // 2
             angle = atan(abs(playerx - enemyx) / abs(playery - enemyy)) * 180 / pi
