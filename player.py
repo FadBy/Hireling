@@ -9,7 +9,7 @@ from interface import Interface
 class Player(Character):
     def __init__(self):
         super().__init__(middle, motionful)
-        self.timers = {"weapon": [0.3, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
+        self.timers = {"weapon": [0.1, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
                        "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
                        "after_jerk": [0.15, self.stop_timer_after_jerk]}
         self.animation = []
@@ -41,8 +41,8 @@ class Player(Character):
         self.tick = 0
         self.change_x = 0
         self.change_y = 0
-        self.health = 5
         self.not_damaged = False
+        self.interface = Interface()
         self.full_health = 5
         self.rapidity = False
         self.condition = "stand"
@@ -54,7 +54,7 @@ class Player(Character):
         self.count_set_illusion = 0
         self.after_jerk = False
         self.weapon = True
-        self.interface = Interface()
+        self.ammo_in_magazine = self.interface.ammo_in_magazine
         self.test = 0
 
     def move(self, speed):
@@ -105,10 +105,13 @@ class Player(Character):
     def attack(self, attacked_side):
         if self.weapon:
             if not self.rapidity:
-                self.rapidity = True
-                Timer(*self.timers["weapon"]).start()
-                bullet = Bullet(self, convert_side_in_angle(attacked_side))
-        if self.not_attacking:
+                self.ammo_in_magazine -= 1
+                if self.interface.changes(self.health, self.ammo_in_magazine) != 'empty':
+                    self.ammo_in_magazine = self.interface.ammo_in_magazine
+                    self.rapidity = True
+                    Timer(*self.timers["weapon"]).start()
+                    bullet = Bullet(self, convert_side_in_angle(attacked_side))
+        if (not self.weapon or self.interface.ammo_in_magazine == 0) and self.not_attacking:
             if attacked_side == 'up':
                 fst, snd, trd, fth = PLAYER["player_back1"], PLAYER["player_back2"], \
                                      PLAYER["player_back201"], PLAYER["player_back3"]
@@ -184,10 +187,15 @@ class Player(Character):
     def hit_from_collider(self, hp):
         self.condition = 'stand'
         if not self.not_damaged:
-            self.health -= hp
+            self.interface.health -= hp
             self.not_damaged = True
             Timer(*self.timers["health"]).start()
-            self.interface.change_hp(self.health)
+            self.interface.changes(self.health, self.interface.ammo_in_magazine)
+
+    def heal(self, hp):
+        if self.interface.health < self.full_health:
+            self.interface.health += 1
+            self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
 
     def hit_from_enemy(self, hp):
         super().hit_from_enemy(hp)
