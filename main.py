@@ -1,47 +1,5 @@
 from map import *
-from random import randint
-from enemy_sniper import EnemySniper
-from aid_kit import Aid
-from sprite import Sprite
-from watchtimer import Timer
 from functions import *
-from enemy_sniper import EnemySniper
-
-
-def spawn_enemies_instead():
-    for i in spawns:
-        rect = i.rect
-        i.kill()
-        enemy = EnemySniper(player, rect[X], rect[Y])
-
-
-def spawn():
-    enemy = EnemySniper(randint(arenaroom1.spawn_area[X], arenaroom1.spawn_area[X] + arenaroom1.spawn_area[W]),
-                        randint(arenaroom1.spawn_area[Y], arenaroom1.spawn_area[Y] + arenaroom1.spawn_area[H]))
-    aid = Aid(200, 200)
-    arena = arenas[player.arena[1]]
-    for i in range(COUNT_OF_ENEMIES):
-        spawn_zone = Sprite(spawns, object_sprites, middle)
-        spawn_zone.image = TEXTURES_DEFAULT["spawn_delay"]
-        spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(arena.spawn_area[X],
-                                                                     arena.spawn_area[X] +
-                                                                     arena.spawn_area[W]),
-                                                             randint(arena.spawn_area[Y],
-                                                                     arena.spawn_area[Y] +
-                                                                     arena.spawn_area[H]))
-        spawn_zone.rect = pygame.Rect(spawn_zone.rect_f)
-        while len(pygame.sprite.spritecollide(spawn_zone, spawns, False)) > 1:
-            spawn_zone.kill()
-            spawn_zone = Sprite(spawns, object_sprites, middle)
-            spawn_zone.image = TEXTURES_DEFAULT["spawn_delay"]
-            spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(arena.spawn_area[X],
-                                                                         arena.spawn_area[X] +
-                                                                         arena.spawn_area[W]),
-                                                                 randint(arena.spawn_area[Y],
-                                                                         arena.spawn_area[Y] +
-                                                                         arena.spawn_area[H]))
-            spawn_zone.rect = pygame.Rect(spawn_zone.rect_f)
-    Timer(1, spawn_enemies_instead).start()
 
 
 def check_colliders():
@@ -75,6 +33,11 @@ def change_all_pos():
 
 
 def enemy_action():
+    if len(enemies) == 0 and player.battle and len(spawns) == 0:
+        player.battle = False
+        doors = player.arena.doors
+        for i in doors:
+            i.stop_blocking()
     for i in enemies:
         if i.health <= 0:
             i.kill()
@@ -105,6 +68,8 @@ TEST_COLLIDER = True
 PRINT_FPS = False
 ENEMYS_ATTACK = True
 
+player.set_arena(arenas[0])
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -112,6 +77,7 @@ while running:
             running = False
     tick = clock.tick() / 1000
     pressed = player.check_pressed()
+    screen.fill((0, 0, 0))
     if pressed != '':
         running = pressed
     for i in motionful:
@@ -120,7 +86,6 @@ while running:
     check_colliders()
     change_all_pos()
     enemy_action()
-    screen.fill((0, 0, 0))
     if ENEMYS_ATTACK:
         enemy_action()
     draw_all_sprites()

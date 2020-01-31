@@ -2,6 +2,7 @@ from various import *
 from sprites import *
 from character import Character
 from collider import Collider
+from functions import set_change_coord
 
 
 class Enemy(Character):
@@ -9,8 +10,10 @@ class Enemy(Character):
         super().__init__(middle, motionful, enemies)
         self.player = player
         self.tag = 'enemy'
+        self.angle = 0
         self.damage_collide = None
         self.damage_bullet = None
+        self.speed = None
         self.image = BULLETS["vorog"]
         self.rect_f = list(self.image.get_rect())
         self.rect_f[X] = x
@@ -30,6 +33,13 @@ class Enemy(Character):
                                                          self.rect_f[H] - self.height_person, True)
                           }
 
+    def move(self):
+        coord = set_change_coord(self.angle, self.speed)
+        self.rect_f[X] += coord[X] * self.tick
+        self.rect_f[Y] += coord[Y] * self.tick
+        for i in self.colliders:
+            self.colliders[i].move(coord[X] * self.tick, coord[Y] * self.tick)
+
     def unit_collided(self, collider, unit):
         pass
 
@@ -37,3 +47,4 @@ class Enemy(Character):
         super().kill()
         for i in self.colliders:
             self.colliders[i].kill()
+

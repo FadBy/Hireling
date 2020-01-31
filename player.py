@@ -13,13 +13,13 @@ class Player(Character):
                        "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
                        "after_jerk": [0.15, self.stop_timer_after_jerk]}
         self.animation = []
-        self.damage_bullet = 1
+        self.damage_bullet = 1000
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
         self.rect_f[X] = width // 2 - self.rect_f[2] // 2
         self.rect_f[Y] = height // 2 - self.rect_f[3] // 2
         self.rect = pygame.Rect(self.rect_f)
-        self.speed_run = 500
+        self.speed_run = 1000
         self.tag = "player"
         self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
         self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
@@ -33,7 +33,8 @@ class Player(Character):
                                                          self.height_person,
                                                          self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
                                                          self.rect_f[H] - self.height_person, True)}
-        self.arena = [False, 0]
+        self.arena = None
+        self.battle = False
         self.frame = 0
         self.length_jerk = 300
         self.speed_jerk = 1000
@@ -135,31 +136,38 @@ class Player(Character):
             if not self.after_jerk:
                 self.condition = "stand"
                 pressed_btns = pygame.key.get_pressed()
+                movement_buttons = {"a": False, "w": False, "d": False, "s": False}
+                if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_d]:
+                    movement_buttons["a"] = True
+                if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_s]:
+                    movement_buttons["w"] = True
+                if pressed_btns[pygame.K_d] and not pressed_btns[pygame.K_a]:
+                    movement_buttons["d"] = True
+                if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_w]:
+                    movement_buttons["s"] = True
                 self.image = PLAYER["player_face"]
+                if movement_buttons["a"] and movement_buttons["d"] and movement_buttons["w"]:
+                    print()
                 if pressed_btns[pygame.K_ESCAPE]:
                     return ingame_menu_start()
-                if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_w] and not pressed_btns[
-                    pygame.K_s]:
+                if movement_buttons["a"] and not movement_buttons["w"] and not movement_buttons["s"]:
                     self.image = PLAYER["player_left"]
                     self.run("left")
-                if pressed_btns[pygame.K_d] and not pressed_btns[pygame.K_w] and not pressed_btns[
-                    pygame.K_s]:
+                if movement_buttons["d"] and not movement_buttons["w"] and not movement_buttons["s"]:
                     self.image = PLAYER["player_right"]
                     self.run("right")
-                if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_a] and not pressed_btns[
-                    pygame.K_d]:
+                if movement_buttons["w"] and not movement_buttons["a"] and not movement_buttons["d"]:
                     self.image = PLAYER["player_back1"]
                     self.run("up")
-                if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_a] and not pressed_btns[
-                    pygame.K_d]:
+                if movement_buttons["s"] and not movement_buttons["a"] and not movement_buttons["d"]:
                     self.run("down")
-                if pressed_btns[pygame.K_d] and pressed_btns[pygame.K_w]:
+                if movement_buttons["d"] and movement_buttons["w"]:
                     self.run("right-up")
-                if pressed_btns[pygame.K_a] and pressed_btns[pygame.K_w]:
+                if movement_buttons["a"] and movement_buttons["w"]:
                     self.run("left-up")
-                if pressed_btns[pygame.K_a] and pressed_btns[pygame.K_s]:
+                if movement_buttons["a"] and movement_buttons["s"]:
                     self.run("left-down")
-                if pressed_btns[pygame.K_d] and pressed_btns[pygame.K_s]:
+                if movement_buttons["d"] and movement_buttons["s"]:
                     self.run("right-down")
                 if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
                     self.attack("left-up")
@@ -207,10 +215,5 @@ class Player(Character):
                 unit.owner.colliders["collide_with_enemy"]:
             self.hit_from_collider(unit.owner.damage_collide)
 
-        # self.test += 1
-        # print(self.test)
-        # if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \
-        #         unit.owner.colliders["collide_with_enemy"]:
-        #     self.hit_from_collider(unit.owner.damage_collide)
-        # elif unit.owner.tag == "bullet":
-        #     self.hit_from_enemy(unit.owner.owner.damage_bullet)
+    def set_arena(self, arena):
+        self.arena = arena

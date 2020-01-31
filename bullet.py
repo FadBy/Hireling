@@ -46,7 +46,7 @@ class Bullet(Sprite):
             self.delete_from_all()
             print("asdwdasdwd")
         if (unit.owner.tag == "player" or unit.owner.tag == "enemy") and unit.owner.tag != self.owner.tag:
-            unit.owner.hit_from_enemy(unit.owner.damage_bullet)
+            unit.owner.hit_from_enemy(self.owner.damage_bullet)
 
     def delete_from_all(self):
         self.kill()

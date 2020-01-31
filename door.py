@@ -7,7 +7,7 @@ from sprites import *
 class Door(Sprite):
     def __init__(self, owner, way, images, x, y):
         super().__init__(middle, owner, decors, owner.owner.doors)
-        self.arena = owner.owner.arena
+        self.is_arena = owner.owner.is_arena
         self.owner = owner
         self.player = owner.owner.player
         self.way = way
@@ -37,8 +37,10 @@ class Door(Sprite):
 
     def draw(self, screen):
         super().draw(screen)
-        if not self.battle and self.arena and self.image == self.image_close and self.was_open and pygame.sprite.collide_rect(
-                self.player.colliders["default"], self.owner.owner.colliders["check_door"]):
+        if not self.battle and self.is_arena and self.image == self.image_close and self.was_open and \
+                pygame.sprite.collide_rect(self.player.colliders["default"], self.owner.owner.colliders["check_door"]):
+            self.player.set_arena(self.owner.owner)
+            self.player.battle = True
             self.battle = True
             self.image = self.image_blocked
             self.colliders["locked"] = Collider(self, 0, 0, self.rect_f[W], self.rect_f[H])
@@ -51,3 +53,9 @@ class Door(Sprite):
             self.image = self.image_open
             if not self.was_open:
                 self.was_open = True
+
+    def stop_blocking(self):
+        self.battle = False
+        self.was_open = False
+        self.colliders["locked"].kill()
+        del self.colliders["locked"]

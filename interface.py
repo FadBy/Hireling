@@ -10,7 +10,7 @@ class Interface(Group):
         super().__init__()
         interface_content.append(self)
         self.tag = "health"
-        self.health = 2
+        self.health = 5
         self.bandolier = 10
         self.ammo_in_magazine = 30
         self.full_ammo = 30

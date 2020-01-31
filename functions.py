@@ -1,4 +1,4 @@
-from math import sqrt, tan, pi
+from math import sqrt, tan, pi, atan
 import pygame
 from various import *
 from sprites import *
@@ -44,6 +44,26 @@ def set_change_coord(angle, speed):
         if 0 < angle < 180:
             yspeed = -yspeed
     return [xspeed, yspeed]
+
+
+def calculate_angle(main, second):
+    main = [main[X] + main[W] // 2, main[Y] + main[H] // 2]
+    second = [second[X] + second[W] // 2, second[Y] + second[H] // 2]
+    angle = atan(abs(second[X] - main[X]) / abs(second[Y] - main[Y])) * 180 / pi
+    if second[X] > main[X] and second[Y] < main[Y]:
+        return 90 - angle
+    elif second[X] < main[X] and second[Y] < main[Y]:
+        return 90 + angle
+    elif second[X] < main[X] and second[Y] > main[Y]:
+        return 270 - angle
+    else:
+        return 270 + angle
+
+
+def calculate_distance(main, second):
+    main = [main[X] + main[W] // 2, main[Y] + main[H] // 2]
+    second = [second[X] + second[W] // 2, second[Y] + second[H] // 2]
+    return sqrt((main[X] - second[X]) ** 2 + (main[Y] - second[Y]) ** 2)
 
 
 def ingame_menu_start():

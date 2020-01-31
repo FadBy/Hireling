@@ -7,12 +7,13 @@ from random import randint
 from sprite import Sprite
 from watchtimer import Timer
 from enemy_sniper import EnemySniper
+from aid_kit import Aid
 
 
 class Room:
-    def __init__(self, player, images, x, y, w, h, doors, arena=False):
+    def __init__(self, player, images, x, y, w, h, doors, is_arena=False):
         rooms.append(self)
-        self.arena = arena
+        self.is_arena = is_arena
         self.player = player
         self.doors = []
         self.height = images["wall_block_hor"].get_rect()[H]
@@ -60,26 +61,26 @@ class Room:
             enemy = EnemySniper(self.player, rect[X], rect[Y])
 
     def spawn(self):
-        arena = arenas[self.player.arena[1]]
+        aid = Aid(self.player, 200, 200)
         for i in range(COUNT_OF_ENEMIES):
             spawn_zone = Sprite(spawns, object_sprites, background)
             spawn_zone.image = TEXTURES_DEFAULT["spawn_delay"]
-            spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(int(arena.colliders["default"].rect_f[X]),
-                                                                         int(arena.colliders["default"].rect[X]) +
-                                                                         int(arena.colliders["default"].rect[W])),
-                                                                 randint(int(arena.colliders["default"].rect[Y]),
-                                                                         int(arena.colliders["default"].rect[Y]) +
-                                                                         int(arena.colliders["default"].rect[H])))
+            spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(int(self.colliders["default"].rect_f[X]),
+                                                                         int(self.colliders["default"].rect[X]) +
+                                                                         int(self.colliders["default"].rect[W])),
+                                                                 randint(int(self.colliders["default"].rect[Y]),
+                                                                         int(self.colliders["default"].rect[Y]) +
+                                                                         int(self.colliders["default"].rect[H])))
             spawn_zone.rect = pygame.Rect(spawn_zone.rect_f)
             while len(pygame.sprite.spritecollide(spawn_zone, spawns, False)) > 1:
                 spawn_zone.kill()
                 spawn_zone = Sprite(spawns, object_sprites, background)
                 spawn_zone.image = TEXTURES_DEFAULT["spawn_delay"]
-                spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(int(arena.colliders["default"].rect[X]),
-                                                                             int(arena.colliders["default"].rect[X]) +
-                                                                             int(arena.colliders["default"].rect[W])),
-                                                                     randint(int(arena.colliders["default"].rect[Y]),
-                                                                             int(arena.colliders["default"].rect[Y]) +
-                                                                             int(arena.colliders["default"].rect[H])))
+                spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(int(self.colliders["default"].rect[X]),
+                                                                             int(self.colliders["default"].rect[X]) +
+                                                                             int(self.colliders["default"].rect[W])),
+                                                                     randint(int(self.colliders["default"].rect[Y]),
+                                                                             int(self.colliders["default"].rect[Y]) +
+                                                                             int(self.colliders["default"].rect[H])))
                 spawn_zone.rect = pygame.Rect(spawn_zone.rect_f)
         Timer(1, self.spawn_enemies_instead).start()

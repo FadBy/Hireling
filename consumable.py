@@ -1,14 +1,13 @@
 from various import *
 from sprites import *
-from character import Character
 from collider import Collider
-from map import player
 from sprite import Sprite
 
 
 class Consumable(Sprite):
-    def __init__(self, x, y):
+    def __init__(self, player, x, y):
         super().__init__(middle, motionful)
+        self.player = player
         self.tag = 'consumable'
         self.image = ITEMS["aid"]
         self.tick = None
@@ -22,9 +21,9 @@ class Consumable(Sprite):
 
     def changes(self, type, quantity):
         if type == 'heal':
-            player.heal(quantity)
+            self.player.heal(quantity)
         elif type == 'load':
-            player.load(quantity)
+            self.player.load(quantity)
 
     def set_tick(self, tick):
         self.tick = tick
