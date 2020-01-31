@@ -1,5 +1,7 @@
 from map import *
 from random import randint
+from enemy_sniper import EnemySniper
+from aid_kit import Aid
 from sprite import Sprite
 from watchtimer import Timer
 from functions import *
@@ -14,6 +16,9 @@ def spawn_enemies_instead():
 
 
 def spawn():
+    enemy = EnemySniper(randint(arenaroom1.spawn_area[X], arenaroom1.spawn_area[X] + arenaroom1.spawn_area[W]),
+                        randint(arenaroom1.spawn_area[Y], arenaroom1.spawn_area[Y] + arenaroom1.spawn_area[H]))
+    aid = Aid(200, 200)
     arena = arenas[player.arena[1]]
     for i in range(COUNT_OF_ENEMIES):
         spawn_zone = Sprite(spawns, object_sprites, middle)
@@ -107,7 +112,6 @@ while running:
             running = False
     tick = clock.tick() / 1000
     pressed = player.check_pressed()
-    screen.fill((0, 0, 0))
     if pressed != '':
         running = pressed
     for i in motionful:
@@ -115,10 +119,12 @@ while running:
     change_all_pos()
     check_colliders()
     change_all_pos()
+    enemy_action()
+    screen.fill((0, 0, 0))
     if ENEMYS_ATTACK:
         enemy_action()
     draw_all_sprites()
-    if player.health <= 0:
+    if player.interface.health <= 0:
         running = False
     if PRINT_FPS:
         print(int(clock.get_fps()))

@@ -14,7 +14,7 @@ arenas = []
 spawns = pygame.sprite.Group()
 
 
-size = width, height = 1280, 720
+size = width, height = 960, 540
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
