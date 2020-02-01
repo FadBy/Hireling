@@ -6,7 +6,7 @@ from sprites import *
 
 class Door(Sprite):
     def __init__(self, owner, way, images, x, y):
-        super().__init__(middle, owner, decors, owner.owner.doors)
+        super().__init__(background, owner, decors, owner.owner.doors)
         self.is_arena = owner.owner.is_arena
         self.owner = owner
         self.player = owner.owner.player

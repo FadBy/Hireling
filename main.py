@@ -66,7 +66,8 @@ pygame.init()
 
 TEST_COLLIDER = True
 PRINT_FPS = False
-ENEMYS_ATTACK = True
+ENEMYS_ATTACK = False
+
 
 player.set_arena(arenas[0])
 
@@ -83,13 +84,14 @@ while running:
     for i in motionful:
         i.set_tick(tick)
     change_all_pos()
+    if player.test:
+        print()
     check_colliders()
     change_all_pos()
-    enemy_action()
     if ENEMYS_ATTACK:
         enemy_action()
     draw_all_sprites()
-    if player.interface.health <= 0:
+    if player.health <= 0:
         running = False
     if PRINT_FPS:
         print(int(clock.get_fps()))

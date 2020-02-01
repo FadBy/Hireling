@@ -12,18 +12,16 @@ class Player(Character):
         self.timers = {"weapon": [0.1, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
                        "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
                        "after_jerk": [0.15, self.stop_timer_after_jerk]}
-        self.animation = []
-        self.damage_bullet = 1000
+        self.tag = "player"
         self.image = PLAYER["player_face"]
+
         self.rect_f = list(self.image.get_rect())
         self.rect_f[X] = width // 2 - self.rect_f[2] // 2
         self.rect_f[Y] = height // 2 - self.rect_f[3] // 2
         self.rect = pygame.Rect(self.rect_f)
-        self.speed_run = 1000
-        self.tag = "player"
         self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
         self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
-                                              self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
+                                              self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect[W],
                                               self.rect_f[H] - self.height_person),
                           "bullet_hit": Collider(self, INDENT_UNIT_COLLIDET * self.rect_f[W],
                                                  INDENT_UNIT_COLLIDET * self.rect_f[H],
@@ -33,37 +31,53 @@ class Player(Character):
                                                          self.height_person,
                                                          self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
                                                          self.rect_f[H] - self.height_person, True)}
-        self.arena = None
-        self.battle = False
-        self.frame = 0
-        self.length_jerk = 300
-        self.speed_jerk = 1000
-        self.not_attacking = True
+
         self.tick = 0
+        self.arena = None
         self.change_x = 0
         self.change_y = 0
-        self.not_damaged = False
-        self.interface = Interface()
-        self.full_health = 5
-        self.rapidity = False
         self.condition = "stand"
         self.angle = 270
-        self.jerk_delay = False
         self.illusions = []
         self.current_length_jerk = 0
-        self.test = False
         self.count_set_illusion = 0
-        self.after_jerk = False
-        self.weapon = True
-        self.ammo_in_magazine = self.interface.ammo_in_magazine
-        self.test = 0
 
-    def move(self, speed):
-        if self.condition == "jerk":
-            self.current_length_jerk += speed * self.tick
-        coord = set_change_coord(self.angle, speed)
-        self.change_x += coord[X] * self.tick
-        self.change_y += coord[Y] * self.tick
+        self.animation = []
+        self.frame = 0
+        self.not_attacking = True
+
+        self.speed_run = 1000
+        self.speed_jerk = 1000
+        self.length_jerk = 300
+
+        self.damage_bullet = 1
+
+        self.weapon = True
+        self.battle = False
+
+        self.not_damaged = False
+        self.rapidity = False
+        self.jerk_delay = False
+        self.after_jerk = False
+
+        self.full_health = 5
+        self.health = 5
+        self.bandolier = 10
+        self.ammo_in_magazine = 30
+        self.full_ammo = 30
+        self.interface = Interface(self)
+
+        self.test = False
+
+    def move(self, x, y):
+        self.change_x += x * self.tick
+        self.change_y += y * self.tick
+
+    def set_change_moving(self, x, y):
+        if x != 0:
+            self.change_x = x
+        if y != 0:
+            self.change_y = y
 
     def stop_timer_illusion(self):
         self.illusions[0].kill()
@@ -94,8 +108,10 @@ class Player(Character):
         self.angle = convert_side_in_angle(side)
         if pygame.key.get_pressed()[pygame.K_SPACE] and not self.jerk_delay:
             self.jerk()
-        else:
-            self.move(self.speed_run)
+        if self.condition == "jerk":
+            self.current_length_jerk += self.speed_run * self.tick
+        coord = set_change_coord(self.angle, self.speed_run)
+        self.move(*coord)
 
     def stop_timer_jerk(self):
         self.jerk_delay = False
@@ -137,6 +153,8 @@ class Player(Character):
                 self.condition = "stand"
                 pressed_btns = pygame.key.get_pressed()
                 movement_buttons = {"a": False, "w": False, "d": False, "s": False}
+                if pressed_btns[pygame.K_l]:
+                    self.test = True
                 if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_d]:
                     movement_buttons["a"] = True
                 if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_s]:
