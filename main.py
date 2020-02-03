@@ -19,6 +19,7 @@ def check_colliders():
 def change_all_pos():
     for i in rooms:
         i.move_camera(player.change_x, player.change_y)
+
     for i in collider_group:
         if i.owner.tag != "player":
             i.move_camera(player.change_x, player.change_y)
@@ -54,7 +55,7 @@ def draw_all_sprites():
     if TEST_COLLIDER:
         for i in collider_group:
             if i.trigger:
-                color = (0, 255, 0)
+                color = (255, 0, 0)
             else:
                 color = (255, 255, 255)
             pygame.draw.rect(screen, color, pygame.Rect(*i.rect_f), 5)
@@ -66,7 +67,7 @@ pygame.init()
 
 TEST_COLLIDER = True
 PRINT_FPS = False
-ENEMYS_ATTACK = False
+ENEMYS_ATTACK = True
 
 
 player.set_arena(arenas[0])
@@ -77,6 +78,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     tick = clock.tick() / 1000
+    for i in motionful:
+        i.set_tick(tick)
     pressed = player.check_pressed()
     screen.fill((0, 0, 0))
     if pressed != '':
@@ -84,8 +87,6 @@ while running:
     for i in motionful:
         i.set_tick(tick)
     change_all_pos()
-    if player.test:
-        print()
     check_colliders()
     change_all_pos()
     if ENEMYS_ATTACK:

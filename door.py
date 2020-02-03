@@ -15,6 +15,7 @@ class Door(Sprite):
         self.tag = "door"
         self.was_open = False
         self.battle = False
+        self.layer_collider = 3
         if way == "horisontal":
             self.image_close = images["door_close_hor"]
             self.image_open = images["door_open_hor"]
@@ -43,6 +44,7 @@ class Door(Sprite):
             self.player.battle = True
             self.battle = True
             self.image = self.image_blocked
+            print("set")
             self.colliders["locked"] = Collider(self, 0, 0, self.rect_f[W], self.rect_f[H])
             self.owner.owner.spawn()
         elif not self.battle:
@@ -55,6 +57,7 @@ class Door(Sprite):
                 self.was_open = True
 
     def stop_blocking(self):
+        print("del")
         self.battle = False
         self.was_open = False
         self.colliders["locked"].kill()

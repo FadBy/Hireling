@@ -14,6 +14,7 @@ class Room:
     def __init__(self, player, images, x, y, w, h, doors, is_arena=False):
         rooms.append(self)
         self.is_arena = is_arena
+        self.spawn_time = 2
         self.player = player
         self.doors = []
         self.height = images["wall_block_hor"].get_rect()[H]
@@ -83,4 +84,4 @@ class Room:
                                                                              int(self.colliders["default"].rect[Y]) +
                                                                              int(self.colliders["default"].rect[H])))
                 spawn_zone.rect = pygame.Rect(spawn_zone.rect_f)
-        Timer(1, self.spawn_enemies_instead).start()
+        Timer(self.spawn_time, self.spawn_enemies_instead).start()

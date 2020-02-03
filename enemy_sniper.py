@@ -11,7 +11,7 @@ from functions import calculate_angle, calculate_distance
 class EnemySniper(Enemy):
     def __init__(self, player, x, y):
         super().__init__(player, x, y)
-        self.range = 200
+        self.range = 500
         self.speed_run = 200
         self.health = 5
         self.min_rapidity = 500
@@ -36,9 +36,13 @@ class EnemySniper(Enemy):
 
     def run(self):
         distance = calculate_distance(self.rect_f, self.player.rect_f)
+        print(distance)
         if distance > self.range:
+            print(True)
             self.angle = calculate_angle(self.rect_f, self.player.rect_f)
             self.speed = self.speed_run
+        else:
+            self.speed = 0
 
 
 

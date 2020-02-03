@@ -60,7 +60,8 @@ class Wall(Group):
                              METR))
             else:
                 self.colliders.append(Collider(self, 0, 0, self.width, self.height))
-                self.colliders.append(Collider(self, self.rect_f[2] - self.width, 0, self.width, self.height))
+                self.colliders.append(
+                    Collider(self, self.rect_f[2] - self.width, 0, self.width, self.height))
 
         else:
             self.rect_f = [x + owner.rect_f[0], y + owner.rect_f[1], self.width,
@@ -74,4 +75,3 @@ class Wall(Group):
                     wall_surface.rect_f = list(wall_surface.image.get_rect())
                     wall_surface.rect_f[0], wall_surface.rect_f[1] = self.rect_f[0], self.rect_f[1] + i * METR
                     self.colliders.append(Collider(self, 0, METR * i, self.rect_f[2], METR))
-

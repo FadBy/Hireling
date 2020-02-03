@@ -40,13 +40,18 @@ class Enemy(Character):
         self.speed = 0
 
     def move(self):
-        coord = set_change_coord(self.angle, self.speed)
-        self.rect_f[X] += coord[X] * self.tick
-        self.rect_f[Y] += coord[Y] * self.tick
+        if self.change_x == 0 and self.change_y == 0:
+            coord = list(map(lambda x: x * self.tick, set_change_coord(self.angle, self.speed)))
+        else:
+            coord = [self.change_x, self.change_y]
+            self.change_x = 0
+            self.change_y = 0
+        self.rect_f[X] += coord[X]
+        self.rect_f[Y] += coord[Y]
         for i in self.colliders:
-            self.colliders[i].move(coord[X] * self.tick, coord[Y] * self.tick)
+            self.colliders[i].move(coord[X], coord[Y])
 
-    def set_change_moving(self, x, y):
+    def move_by_collider(self, x, y):
         if x != 0:
             self.change_x = x
         if y != 0:

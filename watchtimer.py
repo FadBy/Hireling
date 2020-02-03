@@ -8,6 +8,5 @@ class Timer(MainTimer):
         self.function = function
 
     def start(self):
-        super().__init__(self.time, self.function)
-        super().start()
+        MainTimer(self.time, self.function).start()
 
