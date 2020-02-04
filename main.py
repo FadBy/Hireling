@@ -1,15 +1,5 @@
 from map import *
-from random import randint
-from enemy_sniper import EnemySniper
-from aid_kit import Aid
-from sprite import Sprite
-
-
-def spawn():
-    #enemy = EnemySniper(randint(arenaroom1.spawn_area[X], arenaroom1.spawn_area[X] + arenaroom1.spawn_area[W]),
-    #                    randint(arenaroom1.spawn_area[Y], arenaroom1.spawn_area[Y] + arenaroom1.spawn_area[H]))
-    aid = Aid(200, 200)
-
+from functions import *
 
 
 def check_colliders():
@@ -43,6 +33,11 @@ def change_all_pos():
 
 
 def enemy_action():
+    if len(enemies) == 0 and player.battle and len(spawns) == 0:
+        player.battle = False
+        doors = player.arena.doors
+        for i in doors:
+            i.stop_blocking()
     for i in enemies:
         if i.health <= 0:
             i.kill()
@@ -59,7 +54,7 @@ def draw_all_sprites():
     if TEST_COLLIDER:
         for i in collider_group:
             if i.trigger:
-                color = (0, 255, 0)
+                color = (255, 0, 0)
             else:
                 color = (255, 255, 255)
             pygame.draw.rect(screen, color, pygame.Rect(*i.rect_f), 5)
@@ -69,14 +64,12 @@ def draw_all_sprites():
 
 pygame.init()
 
-spawn()
-
-TEST_COLLIDER = False
+TEST_COLLIDER = True
 PRINT_FPS = False
-ENEMYS_ATTACK = False
-STOP_KADR = True
+ENEMYS_ATTACK = True
 
-test = False
+
+player.set_arena(arenas[0])
 
 running = True
 while running:
@@ -84,6 +77,8 @@ while running:
         if event.type == pygame.QUIT:
             running = False
     tick = clock.tick() / 1000
+    for i in motionful:
+        i.set_tick(tick)
     pressed = player.check_pressed()
     if pressed != '':
         running = pressed
@@ -92,7 +87,6 @@ while running:
     change_all_pos()
     check_colliders()
     change_all_pos()
-    enemy_action()
     screen.fill((0, 0, 0))
     if ENEMYS_ATTACK:
         enemy_action()

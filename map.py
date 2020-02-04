@@ -11,6 +11,5 @@ transhub = Room(player, TEXTURES_DEFAULT, width // 2 - 3 * METR, height // 2 - 2
                 [["down", 2], ["up", 2]])
 transroom1 = Room(player, TEXTURES_DEFAULT, width // 2 - 8 * METR, height // 2 - 32 * METR, 14, 4,
                   [["down", 7], ["left", 2], ["right", 2]])
-arenas = []
 arenas.append(Room(player, TEXTURES_DEFAULT, width // 2 - 29 * METR, height // 2 - 39 * METR, 20, 16, [["right", 9]],
                   True))

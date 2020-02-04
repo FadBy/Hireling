@@ -6,8 +6,8 @@ from sprites import *
 
 class Door(Sprite):
     def __init__(self, owner, way, images, x, y):
-        super().__init__(middle, owner, decors, owner.owner.doors)
-        self.arena = owner.owner.arena
+        super().__init__(background, owner, decors, owner.owner.doors)
+        self.is_arena = owner.owner.is_arena
         self.owner = owner
         self.player = owner.owner.player
         self.way = way
@@ -15,6 +15,7 @@ class Door(Sprite):
         self.tag = "door"
         self.was_open = False
         self.battle = False
+        self.layer_collider = 3
         if way == "horisontal":
             self.image_close = images["door_close_hor"]
             self.image_open = images["door_open_hor"]
@@ -37,11 +38,15 @@ class Door(Sprite):
 
     def draw(self, screen):
         super().draw(screen)
-        if not self.battle and self.arena and self.image == self.image_close and self.was_open and pygame.sprite.collide_rect(
-                self.player.colliders["default"], self.owner.owner.colliders["check_door"]):
+        if not self.battle and self.is_arena and self.image == self.image_close and self.was_open and \
+                pygame.sprite.collide_rect(self.player.colliders["default"], self.owner.owner.colliders["check_door"]):
+            self.player.set_arena(self.owner.owner)
+            self.player.battle = True
             self.battle = True
             self.image = self.image_blocked
+            print("set")
             self.colliders["locked"] = Collider(self, 0, 0, self.rect_f[W], self.rect_f[H])
+            self.owner.owner.spawn()
         elif not self.battle:
             self.image = self.image_close
 
@@ -50,3 +55,10 @@ class Door(Sprite):
             self.image = self.image_open
             if not self.was_open:
                 self.was_open = True
+
+    def stop_blocking(self):
+        print("del")
+        self.battle = False
+        self.was_open = False
+        self.colliders["locked"].kill()
+        del self.colliders["locked"]

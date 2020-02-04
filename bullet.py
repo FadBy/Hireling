@@ -41,13 +41,12 @@ class Bullet(Sprite):
         self.tick = tick
 
     def unit_collided(self, collider, unit):
-        if unit.owner.tag != "bullet" and (unit.owner in decors or unit.owner.tag != self.owner.tag):
+        if unit.owner in decors or (
+                unit.owner.tag != self.owner.tag and (unit.owner in enemies or unit.owner.tag == "player") and unit == unit.owner.colliders["bullet_hit"]):
             self.delete_from_all()
-        if (unit.owner.tag == "player" or unit.owner.tag == "enemy") and not collider == unit.owner.colliders[
-            "bullet_hit"] and unit.owner.tag != self.owner.tag:
-            print()
         if (unit.owner.tag == "player" or unit.owner.tag == "enemy") and unit.owner.tag != self.owner.tag:
-            unit.owner.hit_from_enemy(unit.owner.damage_bullet)
+            if unit == unit.owner.colliders["bullet_hit"]:
+                unit.owner.hit_from_enemy(self.owner.damage_bullet)
 
     def delete_from_all(self):
         self.kill()
