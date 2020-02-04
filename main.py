@@ -6,15 +6,10 @@ from sprite import Sprite
 
 
 def spawn():
-    enemy = EnemySniper(randint(arenaroom1.spawn_area[X], arenaroom1.spawn_area[X] + arenaroom1.spawn_area[W]),
-                        randint(arenaroom1.spawn_area[Y], arenaroom1.spawn_area[Y] + arenaroom1.spawn_area[H]))
+    #enemy = EnemySniper(randint(arenaroom1.spawn_area[X], arenaroom1.spawn_area[X] + arenaroom1.spawn_area[W]),
+    #                    randint(arenaroom1.spawn_area[Y], arenaroom1.spawn_area[Y] + arenaroom1.spawn_area[H]))
     aid = Aid(200, 200)
-    arena = arenas[player.arena[1]]
-    for i in range(3):
-        spawn_zone = Sprite(enemies)
-        spawn_zone.image = TEXTURES_DEFAULT["spawn_delay"]
-        spawn_zone.rect_f = spawn_zone.image.get_rect().move(randint(arena.rect_f[X], arena.rect_f[X] + arena.rect_f[W]),
-                                                   randint(arena.rect_f[Y], arena.rect_f[Y] + arena.rect_f[H]))
+
 
 
 def check_colliders():
