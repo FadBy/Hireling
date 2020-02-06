@@ -11,7 +11,8 @@ def check_colliders():
                     if u.trigger:
                         u.unit_collided(i.colliders[j])
                     elif not i.colliders[j].trigger:
-                        u.default_collided(i.colliders[j])
+                        if u.layer >= i.colliders[j].layer:
+                            u.default_collided(i.colliders[j])
                     if i.colliders[j].trigger:
                         i.colliders[j].unit_collided(u)
 
@@ -34,10 +35,7 @@ def change_all_pos():
 
 def enemy_action():
     if len(enemies) == 0 and player.battle and len(spawns) == 0:
-        player.battle = False
-        doors = player.arena.doors
-        for i in doors:
-            i.stop_blocking()
+        player.arena.end_of_battle()
     for i in enemies:
         if i.health <= 0:
             i.kill()
@@ -54,7 +52,7 @@ def draw_all_sprites():
     if TEST_COLLIDER:
         for i in collider_group:
             if i.trigger:
-                color = (0, 255, 0)
+                color = (255, 0, 0)
             else:
                 color = (255, 255, 255)
             pygame.draw.rect(screen, color, pygame.Rect(*i.rect_f), 5)
@@ -62,20 +60,30 @@ def draw_all_sprites():
         i.draw(screen)
 
 
+def start():
+    player.set_arena(arenas[0])
+    for i in arenas:
+        if i != player.arena:
+            i.block_all_doors()
+
+
 pygame.init()
 
-TEST_COLLIDER = True
+TEST_COLLIDER = False
 PRINT_FPS = False
 ENEMYS_ATTACK = True
 
-player.set_arena(arenas[0])
+start()
+
 
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    tick = clock.tick() / 1000
+    tick = clock.tick(40) / 1000
+    for i in motionful:
+        i.set_tick(tick)
     pressed = player.check_pressed()
     screen.fill((0, 0, 0))
     if pressed != '':
@@ -85,11 +93,10 @@ while running:
     change_all_pos()
     check_colliders()
     change_all_pos()
-    enemy_action()
     if ENEMYS_ATTACK:
         enemy_action()
     draw_all_sprites()
-    if player.interface.health <= 0:
+    if player.health <= 0:
         running = False
     if PRINT_FPS:
         print(int(clock.get_fps()))

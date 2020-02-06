@@ -18,6 +18,8 @@ class Character(Sprite):
         self.tick = None
         self.rapidity = False
         self.colliders = {}
+        self.past_motion_x = 0
+        self.past_motion_y = 0
 
     def hit_from_enemy(self, hp):
         self.health -= hp

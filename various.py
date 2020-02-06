@@ -12,6 +12,7 @@ enemies = pygame.sprite.Group()
 decors = []
 arenas = []
 spawns = pygame.sprite.Group()
+animations = []
 
 
 size = width, height = 960, 540
@@ -35,9 +36,18 @@ WIDTH_UNIT_COLLIDER = 0.2
 HEIGHT_UNIT_COLLIDER = 0.5
 INDENT_UNIT_COLLIDET = 0.2
 
-FPS = 60
+
+FPS = 40
 
 COUNT_OF_ILLUSIONS = 4
 
-COUNT_OF_ENEMIES = 3
+COUNT_OF_ENEMIES = 1
+SPEED_BULLET_PLAYER = 600
+SPEED_BULLET_ENEMY = 300
 
+NOCLIP = False
+
+SIZE_ROOM = [20, 16]
+SIZE_TRANS = [14, 4]
+SIZE_HUB = [14, 7]
+SIZE_TRANSHUB = [4, 20]

@@ -2,7 +2,7 @@ from various import *
 from sprites import *
 from character import Character
 from collider import Collider
-from functions import set_change_coord
+from functions import set_change_coord, calculate_angle
 
 
 class Enemy(Character):
@@ -10,17 +10,13 @@ class Enemy(Character):
         super().__init__(middle, motionful, enemies)
         self.player = player
         self.tag = 'enemy'
-        self.angle = 0
-        self.damage_collide = 0
-        self.damage_bullet = 0
-        self.speed = 0
-        self.tick = 0
         self.image = BULLETS["vorog"]
         self.rect_f = list(self.image.get_rect())
         self.rect_f[X] = x
         self.rect_f[Y] = y
         self.rect = pygame.Rect(self.rect_f)
         self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
+        self.layer_collider = 2
         self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
                                               self.rect_f[W] - 2 * WIDTH_UNIT_COLLIDER * self.rect_f[W],
                                               self.rect_f[H] - self.height_person),
@@ -34,12 +30,38 @@ class Enemy(Character):
                                                          self.rect_f[H] - self.height_person, True)
                           }
 
+        self.angle = 0
+        self.tick = 0
+        self.change_y = 0
+        self.change_x = 0
+
+        self.weapon = None
+
+        self.damage_collide = 0
+        self.damage_bullet = 0
+
+        self.speed = 0
+
     def move(self):
-        coord = set_change_coord(self.angle, self.speed)
-        self.rect_f[X] += coord[X] * self.tick
-        self.rect_f[Y] += coord[Y] * self.tick
+        if self.change_x == 0 and self.change_y == 0:
+            coord = list(map(lambda x: x * self.tick, set_change_coord(self.angle, self.speed)))
+        else:
+            coord = [self.change_x, self.change_y]
+            self.change_x = 0
+            self.change_y = 0
+        self.rect_f[X] += coord[X]
+        self.rect_f[Y] += coord[Y]
         for i in self.colliders:
-            self.colliders[i].move(coord[X] * self.tick, coord[Y] * self.tick)
+            self.colliders[i].move(coord[X], coord[Y])
+
+    def attack(self):
+        self.weapon.shoot(calculate_angle(self.rect_f, self.player.rect_f))
+
+    def move_by_collider(self, x, y):
+        if x != 0:
+            self.change_x = x
+        if y != 0:
+            self.change_y = y
 
     def unit_collided(self, collider, unit):
         pass

@@ -1,9 +1,8 @@
-from bullet import Bullet
 from watchtimer import Timer
-from collider import Collider
-from functions import *
 from character import *
 from interface import Interface
+from animator import Animator
+from melle import Melle
 
 
 class Player(Character):
@@ -11,59 +10,75 @@ class Player(Character):
         super().__init__(middle, motionful)
         self.timers = {"weapon": [0.1, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
                        "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
-                       "after_jerk": [0.15, self.stop_timer_after_jerk]}
-        self.animation = []
-        self.damage_bullet = 1000
+                       "after_jerk": [0.15, self.stop_timer_after_jerk], "after_melle": []}
+        self.tag = "player"
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
-        self.rect_f[X] = width // 2 - self.rect_f[2] // 2
-        self.rect_f[Y] = height // 2 - self.rect_f[3] // 2
+        self.rect_f[X] = width // 2 - self.rect_f[W] // 2
+        self.rect_f[Y] = height // 2 - self.rect_f[H] // 2
         self.rect = pygame.Rect(self.rect_f)
-        self.speed_run = 1000
-        self.tag = "player"
         self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
-        self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
-                                              self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
-                                              self.rect_f[H] - self.height_person),
-                          "bullet_hit": Collider(self, INDENT_UNIT_COLLIDET * self.rect_f[W],
+        self.layer_collider = 1
+        self.colliders = {"bullet_hit": Collider(self, INDENT_UNIT_COLLIDET * self.rect_f[W],
                                                  INDENT_UNIT_COLLIDET * self.rect_f[H],
                                                  self.rect_f[W] - 2 * INDENT_UNIT_COLLIDET * self.rect_f[W],
                                                  self.rect_f[H] - INDENT_UNIT_COLLIDET * self.rect_f[H], True),
                           "collide_with_enemy": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W],
                                                          self.height_person,
                                                          self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
-                                                         self.rect_f[H] - self.height_person, True)}
-        self.arena = None
-        self.battle = False
-        self.frame = 0
-        self.length_jerk = 300
-        self.speed_jerk = 1000
-        self.not_attacking = True
+                                                         self.rect_f[H] - self.height_person, True),
+                          }
+        if not NOCLIP:
+            self.colliders["default"] = Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
+                                                 self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect[W],
+                                                 self.rect_f[H] - self.height_person)
         self.tick = 0
+        self.arena = None
         self.change_x = 0
         self.change_y = 0
-        self.not_damaged = False
-        self.interface = Interface()
-        self.full_health = 5
-        self.rapidity = False
         self.condition = "stand"
         self.angle = 270
-        self.jerk_delay = False
         self.illusions = []
         self.current_length_jerk = 0
-        self.test = False
         self.count_set_illusion = 0
-        self.after_jerk = False
-        self.weapon = True
-        self.ammo_in_magazine = self.interface.ammo_in_magazine
-        self.test = 0
 
-    def move(self, speed):
-        if self.condition == "jerk":
-            self.current_length_jerk += speed * self.tick
-        coord = set_change_coord(self.angle, speed)
-        self.change_x += coord[X] * self.tick
-        self.change_y += coord[Y] * self.tick
+        self.animation = []
+        self.frame = 0
+        self.not_attacking = True
+
+        self.speed = 0
+        self.speed_run = 1000
+        self.speed_jerk = 1000
+        self.length_jerk = 300
+
+        self.weapons = [Melle(self)]
+        self.weapon = self.weapons[0]
+        self.battle = False
+
+        self.not_damaged = False
+        self.rapidity = False
+        self.jerk_delay = False
+        self.after_jerk = False
+
+        self.full_health = 5
+        self.health = 5
+
+        self.interface = Interface(self)
+
+        self.active_animation = None
+        self.animation_attack_melee_up = Animator(self, [PLAYER["player_back1"], PLAYER["player_back2"],
+                                                         PLAYER["player_back3"], PLAYER["player_back201"]],
+                                                  PLAYER["player_back1"], 0.5)
+
+    def move(self, x, y):
+        self.change_x += x * self.tick
+        self.change_y += y * self.tick
+
+    def move_by_collider(self, x, y):
+        if x != 0:
+            self.change_x = x
+        if y != 0:
+            self.change_y = y
 
     def stop_timer_illusion(self):
         self.illusions[0].kill()
@@ -87,7 +102,9 @@ class Player(Character):
             self.current_length_jerk = 0
             Timer(*self.timers["after_jerk"]).start()
             Timer(*self.timers["jerk"]).start()
-        self.move(self.speed_jerk)
+        self.current_length_jerk += self.speed_jerk * self.tick
+        coord = set_change_coord(self.angle, self.speed_jerk)
+        self.move(*coord)
 
     def run(self, side):
         self.condition = "run"
@@ -95,7 +112,8 @@ class Player(Character):
         if pygame.key.get_pressed()[pygame.K_SPACE] and not self.jerk_delay:
             self.jerk()
         else:
-            self.move(self.speed_run)
+            coord = set_change_coord(self.angle, self.speed_run)
+            self.move(*coord)
 
     def stop_timer_jerk(self):
         self.jerk_delay = False
@@ -104,32 +122,8 @@ class Player(Character):
         self.not_damaged = False
 
     def attack(self, attacked_side):
-        if self.weapon:
-            if not self.rapidity:
-                self.ammo_in_magazine -= 1
-                if self.interface.changes(self.interface.health, self.ammo_in_magazine) != 'empty':
-                    self.ammo_in_magazine = self.interface.ammo_in_magazine
-                    self.rapidity = True
-                    Timer(*self.timers["weapon"]).start()
-                    bullet = Bullet(self, convert_side_in_angle(attacked_side))
-        if (not self.weapon or self.interface.ammo_in_magazine == 0) and self.not_attacking:
-            if attacked_side == 'up':
-                fst, snd, trd, fth = PLAYER["player_back1"], PLAYER["player_back2"], \
-                                     PLAYER["player_back201"], PLAYER["player_back3"]
-                self.animation = []
-                for i in range(2):
-                    self.animation.append(snd)
-                for i in range(2):
-                    self.animation.append(trd)
-                for i in range(3):
-                    self.animation.append(fth)
-                self.image = self.animation[self.frame]
-                if self.frame < len(self.animation) - 1:
-                    self.frame += 1
-                else:
-                    if not self.weapon:
-                        self.not_attacking = False
-                    self.frame = 0
+        if not self.rapidity:
+            self.weapon.shoot(convert_side_in_angle(attacked_side))
 
     def check_pressed(self):
         if not self.condition == "jerk":
@@ -145,9 +139,6 @@ class Player(Character):
                     movement_buttons["d"] = True
                 if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_w]:
                     movement_buttons["s"] = True
-                self.image = PLAYER["player_face"]
-                if movement_buttons["a"] and movement_buttons["d"] and movement_buttons["w"]:
-                    print()
                 if pressed_btns[pygame.K_ESCAPE]:
                     return ingame_menu_start()
                 if movement_buttons["a"] and not movement_buttons["w"] and not movement_buttons["s"]:
@@ -160,6 +151,7 @@ class Player(Character):
                     self.image = PLAYER["player_back1"]
                     self.run("up")
                 if movement_buttons["s"] and not movement_buttons["a"] and not movement_buttons["d"]:
+                    self.image = PLAYER["player_face"]
                     self.run("down")
                 if movement_buttons["d"] and movement_buttons["w"]:
                     self.run("right-up")
@@ -195,24 +187,21 @@ class Player(Character):
     def hit_from_collider(self, hp):
         self.condition = 'stand'
         if not self.not_damaged:
-            self.interface.health -= hp
+            self.health -= hp
             self.not_damaged = True
             Timer(*self.timers["health"]).start()
-            self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
+            self.interface.change_hp()
 
     def heal(self, hp):
-        if self.interface.health < self.full_health:
-            self.interface.health += hp
-            self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
-
-    def load(self, bullet_count):
-        self.interface.ammo_in_magazine += bullet_count
-        self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
-        self.ammo_in_magazine = self.interface.ammo_in_magazine
+        if self.health + hp < self.full_health:
+            self.health += hp
+        else:
+            self.health = self.full_health
+        self.interface.change_hp()
 
     def hit_from_enemy(self, hp):
-        self.interface.health -= hp
-        self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
+        self.health -= hp
+        self.interface.change_hp()
 
     def unit_collided(self, collider, unit):
         pass
