@@ -8,6 +8,8 @@ class Collider(Sprite):
         self.trigger = trigger
         self.image = pygame.Surface((w, h))
         self.rect_f = [x + owner.rect_f[X], y + owner.rect_f[Y], w, h]
+        if not trigger:
+            self.layer = owner.layer_collider
         self.past_rect = self.rect_f.copy()
         self.rect = pygame.Rect(self.rect_f)
         self.owner = owner
@@ -49,30 +51,30 @@ class Collider(Sprite):
             else:
                 change_x = collider_rect[X] + collider_rect[W] - player_rect[X]
         else:
-            if player_past[Y] + player_past[H] < collider_past[Y] + collider_past[H] and player_past[X] < \
+            if player_past[Y] + player_past[H] <= collider_past[Y] + collider_past[H] and player_past[X] <= \
                     collider_past[X]:
-                if player_past[Y] + player_past[H] - collider_past[Y] > player_past[X] + player_past[W] - \
+                if player_past[Y] + player_past[H] - collider_past[Y] >= player_past[X] + player_past[W] - \
                         collider_past[X]:
                     change_x = collider_rect[X] - player_rect[X] - player_rect[W]
                 else:
                     change_y = collider_rect[Y] - player_rect[Y] - player_rect[H]
-            elif player_past[Y] < collider_past[Y] and player_past[X] \
-                    > collider_past[X]:
-                if player_past[Y] + player_past[H] - collider_past[Y] > collider_past[X] + collider_past[W] - \
+            elif player_past[Y] <= collider_past[Y] and player_past[X] \
+                    >= collider_past[X]:
+                if player_past[Y] + player_past[H] - collider_past[Y] >= collider_past[X] + collider_past[W] - \
                         player_past[X]:
                     change_x = collider_rect[X] + collider_rect[W] - player_rect[X]
                 else:
                     change_y = collider_rect[Y] - player_rect[Y] - player_rect[H]
-            elif player_past[Y] > collider_past[Y] and player_past[X] + player_past[W] > collider_past[X] + \
+            elif player_past[Y] >= collider_past[Y] and player_past[X] + player_past[W] >= collider_past[X] + \
                     player_past[W]:
-                if collider_past[X] + collider_past[W] - player_past[X] > collider_past[Y] + collider_past[H] - \
+                if collider_past[X] + collider_past[W] - player_past[X] >= collider_past[Y] + collider_past[H] - \
                         player_past[Y]:
                     change_y = collider_rect[Y] + collider_rect[H] - player_rect[Y]
                 else:
                     change_x = collider_rect[X] + collider_rect[W] - player_rect[X]
-            elif player_past[X] + player_past[W] < collider_past[X] + collider_past[W] and player_past[Y] + \
-                    player_past[H] > collider_past[Y] + collider_past[H]:
-                if player_past[X] + player_past[W] - collider_past[X] > collider_past[Y] + collider_past[H] - \
+            elif player_past[X] + player_past[W] <= collider_past[X] + collider_past[W] and player_past[Y] + \
+                    player_past[H] >= collider_past[Y] + collider_past[H]:
+                if player_past[X] + player_past[W] - collider_past[X] >= collider_past[Y] + collider_past[H] - \
                         player_past[Y]:
                     change_y = collider_rect[Y] + collider_rect[H] - player_rect[Y]
                 else:

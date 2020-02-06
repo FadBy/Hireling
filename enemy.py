@@ -2,7 +2,7 @@ from various import *
 from sprites import *
 from character import Character
 from collider import Collider
-from functions import set_change_coord
+from functions import set_change_coord, calculate_angle
 
 
 class Enemy(Character):
@@ -16,6 +16,7 @@ class Enemy(Character):
         self.rect_f[Y] = y
         self.rect = pygame.Rect(self.rect_f)
         self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
+        self.layer_collider = 2
         self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
                                               self.rect_f[W] - 2 * WIDTH_UNIT_COLLIDER * self.rect_f[W],
                                               self.rect_f[H] - self.height_person),
@@ -34,6 +35,8 @@ class Enemy(Character):
         self.change_y = 0
         self.change_x = 0
 
+        self.weapon = None
+
         self.damage_collide = 0
         self.damage_bullet = 0
 
@@ -50,6 +53,9 @@ class Enemy(Character):
         self.rect_f[Y] += coord[Y]
         for i in self.colliders:
             self.colliders[i].move(coord[X], coord[Y])
+
+    def attack(self):
+        self.weapon.shoot(calculate_angle(self.rect_f, self.player.rect_f))
 
     def move_by_collider(self, x, y):
         if x != 0:

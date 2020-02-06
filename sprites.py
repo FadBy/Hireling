@@ -18,7 +18,8 @@ TEXTURES_DEFAULT = {"wall_block_ver": load_image("textures_default/wall_block_ve
                     "corner_up": load_image("textures_default/corner_up.png"),
                     "corner_down": load_image("textures_default/corner_down.png"),
                     "door_blocked_ver": load_image("textures_default/door_blocked_ver.png"),
-                    "spawn_delay": load_image("textures_default/spawn_delay.png")
+                    "spawn_delay": load_image("textures_default/spawn_delay.png"),
+                    "door_blocked_hor": load_image("textures_default/door_blocked_hor.png")
                     }
 
 PLAYER = {"player_back1": load_image('player/player_back1.png'),
@@ -58,7 +59,10 @@ INGAME_MENU = {"ingame_menu": load_image("ingame_menu/Ingame_menu.jpg"),
                "ingame_menu_exit": load_image("ingame_menu/Ingame_menu_exit_tapped.jpg")}
 
 BULLETS = {"player_bullet": load_image("bullets/player_bullet.png"),
-           "vorog": load_image("bullets/vorogg.png")}
+           "vorog": load_image("bullets/vorogg.png"),
+           "vorog_rat": load_image("bullets/vorog_rat.png")}
 
 ITEMS = {"aid": load_image('items/aid.png'),
-         "bullet_case": load_image('items/bullet_case.png')}
+         "bullet_case": load_image('items/bullet_case.png'),
+         "shotgun": load_image("items/shotgun.png"),
+         "pistol": load_image("items/pistol.png")}

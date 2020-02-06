@@ -11,7 +11,8 @@ def check_colliders():
                     if u.trigger:
                         u.unit_collided(i.colliders[j])
                     elif not i.colliders[j].trigger:
-                        u.default_collided(i.colliders[j])
+                        if u.layer >= i.colliders[j].layer:
+                            u.default_collided(i.colliders[j])
                     if i.colliders[j].trigger:
                         i.colliders[j].unit_collided(u)
 
@@ -19,7 +20,6 @@ def check_colliders():
 def change_all_pos():
     for i in rooms:
         i.move_camera(player.change_x, player.change_y)
-
     for i in collider_group:
         if i.owner.tag != "player":
             i.move_camera(player.change_x, player.change_y)
@@ -35,10 +35,7 @@ def change_all_pos():
 
 def enemy_action():
     if len(enemies) == 0 and player.battle and len(spawns) == 0:
-        player.battle = False
-        doors = player.arena.doors
-        for i in doors:
-            i.stop_blocking()
+        player.arena.end_of_battle()
     for i in enemies:
         if i.health <= 0:
             i.kill()
@@ -63,21 +60,28 @@ def draw_all_sprites():
         i.draw(screen)
 
 
+def start():
+    player.set_arena(arenas[0])
+    for i in arenas:
+        if i != player.arena:
+            i.block_all_doors()
+
+
 pygame.init()
 
-TEST_COLLIDER = True
+TEST_COLLIDER = False
 PRINT_FPS = False
 ENEMYS_ATTACK = True
 
+start()
 
-player.set_arena(arenas[0])
 
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    tick = clock.tick() / 1000
+    tick = clock.tick(40) / 1000
     for i in motionful:
         i.set_tick(tick)
     pressed = player.check_pressed()

@@ -6,21 +6,27 @@ from sprite import Sprite
 
 
 class Bullet(Sprite):
-    def __init__(self, owner, angle):
+    def __init__(self, owner, angle, distance=0):
         super().__init__(middle, motionful)
+        self.tag = "bullet"
+        self.distance = distance
+        self.passed_distance = 0
         self.image = BULLETS["player_bullet"]
         self.angle = angle
         self.owner = owner
         self.rect_f = list(self.image.get_rect())
         self.set_pos()
         self.rect = pygame.Rect(*self.rect_f)
-        self.speed = 300
+        if self.owner.tag == "player":
+            self.speed = SPEED_BULLET_PLAYER
+        else:
+            self.speed = SPEED_BULLET_ENEMY
         self.xspeed = None
         self.yspeed = None
         self.tick = 0
         self.xspeed, self.yspeed = set_change_coord(angle, self.speed)
         self.colliders = {"default": Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], trigger=True)}
-        self.tag = "bullet"
+
 
     def set_pos(self):
         self.rect_f[X], self.rect_f[Y] = self.owner.rect_f[X] + self.owner.rect_f[W] // 2, self.owner.rect_f[Y] + \
@@ -33,6 +39,13 @@ class Bullet(Sprite):
     def move(self):
         self.rect_f[X] += self.xspeed * self.tick
         self.rect_f[Y] += self.yspeed * self.tick
+        if self.distance:
+            if self.passed_distance < self.distance:
+                self.passed_distance += self.speed * self.tick
+            else:
+                self.kill()
+                for i in self.colliders:
+                    self.colliders[i].kill()
         self.rect = pygame.Rect(*self.rect_f)
         for i in self.colliders:
             self.colliders[i].move(self.xspeed * self.tick, self.yspeed * self.tick)
@@ -46,7 +59,7 @@ class Bullet(Sprite):
             self.delete_from_all()
         if (unit.owner.tag == "player" or unit.owner.tag == "enemy") and unit.owner.tag != self.owner.tag:
             if unit == unit.owner.colliders["bullet_hit"]:
-                unit.owner.hit_from_enemy(self.owner.damage_bullet)
+                unit.owner.hit_from_enemy(self.owner.weapon.damage)
 
     def delete_from_all(self):
         self.kill()
