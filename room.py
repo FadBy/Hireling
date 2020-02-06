@@ -8,6 +8,7 @@ from sprite import Sprite
 from watchtimer import Timer
 from enemy_sniper import EnemySniper
 from aid_kit import Aid
+from bullet_case import Bullet_case
 
 
 class Room:
@@ -62,6 +63,7 @@ class Room:
 
     def spawn(self):
         aid = Aid(self.player, 200, 200)
+        bullet_case = Bullet_case(self.player, 100, 100)
         for i in range(COUNT_OF_ENEMIES):
             spawn_zone = Sprite(spawns, object_sprites, background)
             spawn_zone.image = TEXTURES_DEFAULT["spawn_delay"]

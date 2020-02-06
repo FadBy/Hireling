@@ -202,8 +202,13 @@ class Player(Character):
 
     def heal(self, hp):
         if self.interface.health < self.full_health:
-            self.interface.health += 1
+            self.interface.health += hp
             self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
+
+    def load(self, bullet_count):
+        self.interface.ammo_in_magazine += bullet_count
+        self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
+        self.ammo_in_magazine = self.interface.ammo_in_magazine
 
     def hit_from_enemy(self, hp):
         self.interface.health -= hp

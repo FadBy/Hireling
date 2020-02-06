@@ -11,9 +11,10 @@ class Enemy(Character):
         self.player = player
         self.tag = 'enemy'
         self.angle = 0
-        self.damage_collide = None
-        self.damage_bullet = None
-        self.speed = None
+        self.damage_collide = 0
+        self.damage_bullet = 0
+        self.speed = 0
+        self.tick = 0
         self.image = BULLETS["vorog"]
         self.rect_f = list(self.image.get_rect())
         self.rect_f[X] = x

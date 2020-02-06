@@ -19,11 +19,15 @@ class Interface(Group):
     def changes(self, hp, ammo):
         self.health = hp
         self.ammo_in_magazine = ammo
+        if self.ammo_in_magazine > self.full_ammo:
+            delta = self.ammo_in_magazine - self.full_ammo
+            self.ammo_in_magazine = self.full_ammo
+            self.bandolier += delta
         if self.ammo_in_magazine <= 0:
-            if self.bandolier >= 30:
+            if self.bandolier >= self.full_ammo:
                 self.bandolier -= self.full_ammo
-                self.ammo_in_magazine += 30
-            elif self.bandolier < 30:
+                self.ammo_in_magazine += self.full_ammo
+            elif self.bandolier < self.full_ammo:
                 self.ammo_in_magazine += self.bandolier
                 self.bandolier = 0
         if self.bandolier > 0 or self.ammo_in_magazine >= 0:
@@ -41,6 +45,9 @@ class Interface(Group):
             dividing_line.rect_f = list(dividing_line.image.get_rect())
             dividing_line.rect_f[X], dividing_line.rect_f[Y] = width - 90, height - 150
             dividing_line.rect = pygame.Rect(dividing_line.rect_f)
+            print(self.ammo_in_magazine)
+            if self.ammo_in_magazine <= 0:
+                self.ammo_in_magazine = 0
             for i in range(len(str(self.ammo_in_magazine))):
                 filled = Sprite(self)
                 filled.image = PLAYER[str(self.ammo_in_magazine)[i]]

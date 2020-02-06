@@ -5,11 +5,11 @@ from sprite import Sprite
 
 
 class Consumable(Sprite):
-    def __init__(self, player, x, y):
+    def __init__(self, player, x, y, image):
         super().__init__(middle, motionful)
         self.player = player
         self.tag = 'consumable'
-        self.image = ITEMS["aid"]
+        self.image = image
         self.tick = None
         self.rect_f = list(self.image.get_rect())
         self.rect_f[X] = x
