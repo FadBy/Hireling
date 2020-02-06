@@ -39,7 +39,6 @@ class Player(Character):
         self.change_x = 0
         self.change_y = 0
         self.not_damaged = False
-        self.interface = Interface()
         self.full_health = 5
         self.rapidity = False
         self.condition = "stand"
