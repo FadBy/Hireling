@@ -11,9 +11,11 @@ interface_content = []
 enemies = pygame.sprite.Group()
 decors = []
 arenas = []
+transes = []
 spawns = pygame.sprite.Group()
 animations = []
 
+passed_room = 0
 
 size = width, height = 960, 540
 clock = pygame.time.Clock()
@@ -31,7 +33,6 @@ H = 3
 
 METR = 75
 WIDTH_WALL_COLLIDER = 0.75
-WALL_SHIFT = 21
 WIDTH_UNIT_COLLIDER = 0.2
 HEIGHT_UNIT_COLLIDER = 0.5
 INDENT_UNIT_COLLIDET = 0.2
@@ -43,11 +44,19 @@ COUNT_OF_ILLUSIONS = 4
 
 COUNT_OF_ENEMIES = 0
 SPEED_BULLET_PLAYER = 600
-SPEED_BULLET_ENEMY = 300
+SPEED_BULLET_ENEMY = 250
 
 NOCLIP = False
+GOD = False
+DELETE_ENEMIES = False
 
 SIZE_ROOM = [20, 16]
 SIZE_TRANS = [14, 4]
 SIZE_HUB = [14, 7]
 SIZE_TRANSHUB = [4, 20]
+
+COUNT_TYPES_ENEMIES = 2
+
+GET_FIRST_WEAPON = 2
+
+COUNT_OF_ARENAS = 4

@@ -80,10 +80,30 @@ INGAME_MENU = {"ingame_menu": load_image("ingame_menu/Ingame_menu.jpg"),
                "ingame_menu_exit": load_image("ingame_menu/Ingame_menu_exit_tapped.jpg")}
 
 BULLETS = {"player_bullet": load_image("bullets/player_bullet.png"),
-           "vorog": load_image("bullets/vorogg.png"),
-           "vorog_rat": load_image("bullets/vorog_rat.png")}
+           "enemy_back": load_image("bullets/enemy_back.png"),
+           "enemy_back_shot_1": load_image("bullets/enemy_back_shot_1.png"),
+           "enemy_back_shot_2": load_image("bullets/enemy_back_shot_2.png"),
+           "enemy_face": load_image("bullets/enemy_face.png"),
+           "enemy_face_shot_1": load_image("bullets/enemy_face_shot_1.png"),
+           "enemy_face_shot_2": load_image("bullets/enemy_face_shot_2.png"),
+           "enemy_left": load_image("bullets/enemy_left.png"),
+           "enemy_left_shot_1": load_image("bullets/enemy_left_shot_1.png"),
+           "enemy_left_shot_2": load_image("bullets/enemy_left_shot_2.png"),
+           "enemy_right": load_image("bullets/enemy_right.png"),
+           "enemy_right_shot_1": load_image("bullets/enemy_right_shot_1.png"),
+           "enemy_right_shot_2": load_image("bullets/enemy_right_shot_2.png"),
+
+           "enemy_2_back": load_image("bullets/enemy_2_back.png"),
+           "enemy_2_back_shot_1": load_image("bullets/enemy_2_back.png"),
+           "enemy_2_back_shot_2": load_image("bullets/enemy_2_back.png"),
+           "enemy_2_face": load_image("bullets/enemy_2_face.png"),
+           "enemy_2_face_shot_1": load_image("bullets/enemy_2_face_shot.png"),
+           "enemy_2_left": load_image("bullets/enemy_2_left.png"),
+           "enemy_2_left_shot_1": load_image("bullets/enemy_2_left_shot.png"),
+           "enemy_2_right": load_image("bullets/enemy_2_right.png"),
+           "enemy_2_right_shot_1": load_image("bullets/enemy_2_right_shot.png")}
 
 ITEMS = {"aid": load_image('items/aid.png'),
          "bullet_case": load_image('items/bullet_case.png'),
          "shotgun": load_image("items/shotgun.png"),
-         "pistol": load_image("items/pistol.png")}
+         "machine_gun": load_image("items/machine_gun.png")}

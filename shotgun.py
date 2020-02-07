@@ -13,10 +13,14 @@ class Shotgun(Weapon):
         self.owner = owner
         self.time_rapidity = 0.5
         self.tag = "weapon"
-        self.time_reload = 2
-        self.damage = 0.5
+        if GOD:
+            self.time_reload = 0.1
+            self.damage = 999
+        else:
+            self.time_reload = 2
+            self.damage = 0.5
         self.image = ITEMS["shotgun"]
-        self.rect_f = self.image.get_rect().move(x, y)
+        self.rect_f = self.image.get_rect().move(x - self.image.get_rect()[X] // 2, y - self.image.get_rect()[Y] // 2)
         self.rect = pygame.Rect(self.rect_f)
 
         self.bandolier = 10

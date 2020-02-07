@@ -4,6 +4,7 @@ from interface import Interface
 from animator import Animator
 from melle import Melle
 from pistol import Pistol
+from various import GOD
 
 
 class Player(Character):
@@ -34,6 +35,7 @@ class Player(Character):
                                                  self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect[W],
                                                  self.rect_f[H] - self.height_person)
         self.tick = 0
+        self.passed_rooms = 0
         self.arena = None
         self.change_x = 0
         self.change_y = 0
@@ -43,12 +45,12 @@ class Player(Character):
         self.current_length_jerk = 0
         self.count_set_illusion = 0
 
-        self.animation = []
-        self.frame = 0
-        self.not_attacking = True
-
         self.speed = 0
-        self.speed_run = 500
+
+        if GOD:
+            self.speed_run = 1500
+        else:
+            self.speed_run = 500
         self.speed_jerk = 1000
         self.length_jerk = 300
 
@@ -60,9 +62,12 @@ class Player(Character):
         self.rapidity = False
         self.jerk_delay = False
         self.after_jerk = False
-
-        self.full_health = 5
-        self.health = 5
+        if GOD:
+            self.full_health = 100
+            self.health = 100
+        else:
+            self.full_health = 5
+            self.health = 5
 
         self.interface = Interface(self)
 
@@ -145,6 +150,7 @@ class Player(Character):
             if i.shootable:
                 i.load_bullets()
         self.interface.set_ammo()
+
     def check_pressed(self):
         if not self.condition == "jerk":
             if not self.after_jerk:
@@ -164,28 +170,16 @@ class Player(Character):
                 if pressed_btns[pygame.K_ESCAPE]:
                     return ingame_menu_start()
                 if movement_buttons["a"] and not movement_buttons["w"] and not movement_buttons["s"]:
-                    if self.active_animation != self.animation_run_left:
-                        self.active_animation.cancel()
-                        self.active_animation = self.animation_run_left
-                    self.active_animation.start()
+                    self.change_animation(self.animation_run_left)
                     self.run("left")
                 if movement_buttons["d"] and not movement_buttons["w"] and not movement_buttons["s"]:
-                    if self.active_animation != self.animation_run_right:
-                        self.active_animation.cancel()
-                        self.active_animation = self.animation_run_right
-                    self.active_animation.start()
+                    self.change_animation(self.animation_run_right)
                     self.run("right")
                 if movement_buttons["w"] and not movement_buttons["a"] and not movement_buttons["d"]:
-                    if self.active_animation != self.animation_run_back:
-                        self.active_animation.cancel()
-                        self.active_animation = self.animation_run_back
-                    self.active_animation.start()
+                    self.change_animation(self.animation_run_back)
                     self.run("up")
                 if movement_buttons["s"] and not movement_buttons["a"] and not movement_buttons["d"]:
-                    if self.active_animation != self.animation_run_face:
-                        self.active_animation.cancel()
-                        self.active_animation = self.animation_run_face
-                    self.active_animation.start()
+                    self.change_animation(self.animation_run_face)
                     self.run("down")
                 if not movement_buttons["s"] and not movement_buttons["w"] and not movement_buttons["d"] and not \
                         movement_buttons["a"]:
