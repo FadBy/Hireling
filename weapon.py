@@ -15,6 +15,7 @@ class Weapon(Sprite):
 
         self.reload_process = False
         self.rapidity = False
+        self.shootable = True
 
         self.bandolier = 0
         self.ammo_in_magazine = 0
@@ -28,6 +29,9 @@ class Weapon(Sprite):
             self.owner.weapons.append(self)
             self.owner.weapon = self
             self.owner.interface.set_ammo()
+
+    def load_bullets(self):
+        self.bandolier += self.full_ammo
 
     def stop_timer_rapidity(self):
         self.rapidity = False

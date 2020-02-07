@@ -23,7 +23,7 @@ class Consumable(Sprite):
         if type == 'heal':
             self.player.heal(quantity)
         elif type == 'load':
-            self.player.load(quantity)
+            self.player.load_bullets()
 
     def set_tick(self, tick):
         self.tick = tick

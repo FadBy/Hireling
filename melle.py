@@ -10,6 +10,7 @@ class Melle(Weapon):
         self.time_attack = 0.7
         self.rapidity = False
         self.damage = 3
+        self.shootable = False
         self.collider = Collider(self.owner, self.owner.rect_f[W] * 0.3, -0.15 * self.owner.rect_f[H],
                                  self.owner.rect_f[W] * 0.4, self.owner.rect_f[H] * 0.4, True)
         self.timer = Timer(self.time_attack, self.stop_timer_rapidity)

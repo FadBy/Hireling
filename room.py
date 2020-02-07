@@ -6,11 +6,11 @@ from collider import Collider
 from random import randint
 from sprite import Sprite
 from watchtimer import Timer
-from enemy_sniper import EnemySniper
 from aid_kit import Aid
 from automat import Automat
 from shotgun import Shotgun
 from enemy_rat import EnemyRat
+from bullet_case import BulletCase
 
 
 class Room:
@@ -90,6 +90,7 @@ class Room:
 
     def spawn_consumables(self):
         Aid(self.player, 200, 200)
+        BulletCase(self.player, 100, 100)
         Automat(self.player, self.rect_f[X] + 10 * METR, self.rect_f[Y] + 5 * METR)
         Shotgun(self.player, self.rect_f[X] + 15 * METR, self.rect_f[Y] + 5 * METR)
 

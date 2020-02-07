@@ -5,7 +5,7 @@ from collider import Collider
 from consumable import Consumable
 
 
-class Bullet_case(Consumable):
+class BulletCase(Consumable):
     def __init__(self, player, x, y):
         super().__init__(player, x, y, ITEMS['bullet_case'])
         self.player = player

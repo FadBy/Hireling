@@ -140,6 +140,11 @@ class Player(Character):
         if not self.rapidity:
             self.weapon.shoot(convert_side_in_angle(attacked_side))
 
+    def load_bullets(self):
+        for i in self.weapons:
+            if i.shootable:
+                i.load_bullets()
+        self.interface.set_ammo()
     def check_pressed(self):
         if not self.condition == "jerk":
             if not self.after_jerk:
