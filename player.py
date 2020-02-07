@@ -3,6 +3,7 @@ from character import *
 from interface import Interface
 from animator import Animator
 from melle import Melle
+from pistol import Pistol
 
 
 class Player(Character):
@@ -47,11 +48,11 @@ class Player(Character):
         self.not_attacking = True
 
         self.speed = 0
-        self.speed_run = 1000
+        self.speed_run = 500
         self.speed_jerk = 1000
         self.length_jerk = 300
 
-        self.weapons = [Melle(self)]
+        self.weapons = [Melle(self), Pistol(self)]
         self.weapon = self.weapons[0]
         self.battle = False
 
@@ -65,10 +66,24 @@ class Player(Character):
 
         self.interface = Interface(self)
 
-        self.active_animation = None
         self.animation_attack_melee_up = Animator(self, [PLAYER["player_back1"], PLAYER["player_back2"],
                                                          PLAYER["player_back3"], PLAYER["player_back201"]],
                                                   PLAYER["player_back1"], 0.5)
+        self.animation_run_back = Animator(self, [PLAYER["player_back_run_1"], PLAYER["player_back_run_2"],
+                                                  PLAYER["player_back_run_3"], PLAYER["player_back_run_4"],
+                                                  PLAYER["player_back_run_5"]], PLAYER["player_back1"], 0.75)
+        self.animation_run_face = Animator(self, [PLAYER["player_face_run_1"], PLAYER["player_face_run_2"],
+                                                  PLAYER["player_face_run_3"], PLAYER["player_face_run_4"]],
+                                           PLAYER["player_face"], 0.75)
+        self.animation_run_right = Animator(self, [PLAYER["player_right_run_1"], PLAYER["player_right_run_2"],
+                                                   PLAYER["player_right_run_3"], PLAYER["player_right_run_4"],
+                                                   PLAYER["player_right_run_5"], PLAYER["player_right_run_6"]],
+                                            PLAYER["player_right"], 0.75)
+        self.animation_run_left = Animator(self, [PLAYER["player_left_run_1"], PLAYER["player_left_run_2"],
+                                                  PLAYER["player_left_run_3"], PLAYER["player_left_run_4"],
+                                                  PLAYER["player_left_run_5"], PLAYER["player_left_run_6"]],
+                                           PLAYER["player_left"], 0.75)
+        self.active_animation = self.animation_run_face
 
     def move(self, x, y):
         self.change_x += x * self.tick
@@ -139,27 +154,49 @@ class Player(Character):
                     movement_buttons["d"] = True
                 if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_w]:
                     movement_buttons["s"] = True
+                if pressed_btns[pygame.K_r]:
+                    self.weapon.reload()
                 if pressed_btns[pygame.K_ESCAPE]:
                     return ingame_menu_start()
                 if movement_buttons["a"] and not movement_buttons["w"] and not movement_buttons["s"]:
-                    self.image = PLAYER["player_left"]
+                    if self.active_animation != self.animation_run_left:
+                        self.active_animation.cancel()
+                        self.active_animation = self.animation_run_left
+                    self.active_animation.start()
                     self.run("left")
                 if movement_buttons["d"] and not movement_buttons["w"] and not movement_buttons["s"]:
-                    self.image = PLAYER["player_right"]
+                    if self.active_animation != self.animation_run_right:
+                        self.active_animation.cancel()
+                        self.active_animation = self.animation_run_right
+                    self.active_animation.start()
                     self.run("right")
                 if movement_buttons["w"] and not movement_buttons["a"] and not movement_buttons["d"]:
-                    self.image = PLAYER["player_back1"]
+                    if self.active_animation != self.animation_run_back:
+                        self.active_animation.cancel()
+                        self.active_animation = self.animation_run_back
+                    self.active_animation.start()
                     self.run("up")
                 if movement_buttons["s"] and not movement_buttons["a"] and not movement_buttons["d"]:
-                    self.image = PLAYER["player_face"]
+                    if self.active_animation != self.animation_run_face:
+                        self.active_animation.cancel()
+                        self.active_animation = self.animation_run_face
+                    self.active_animation.start()
                     self.run("down")
+                if not movement_buttons["s"] and not movement_buttons["w"] and not movement_buttons["d"] and not \
+                        movement_buttons["a"]:
+                    self.active_animation.cancel()
+                    self.image = self.active_animation.default
                 if movement_buttons["d"] and movement_buttons["w"]:
+                    self.active_animation.start()
                     self.run("right-up")
                 if movement_buttons["a"] and movement_buttons["w"]:
+                    self.active_animation.start()
                     self.run("left-up")
                 if movement_buttons["a"] and movement_buttons["s"]:
+                    self.active_animation.start()
                     self.run("left-down")
                 if movement_buttons["d"] and movement_buttons["s"]:
+                    self.active_animation.start()
                     self.run("right-down")
                 if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
                     self.attack("left-up")
@@ -177,9 +214,22 @@ class Player(Character):
                     self.attack('up')
                 elif pressed_btns[pygame.K_DOWN]:
                     self.attack('down')
-                else:
-                    self.frame = 0
-                    self.not_attacking = True
+                if pressed_btns[pygame.K_1]:
+                    self.weapon = self.weapons[0]
+                    self.interface.set_ammo()
+                elif pressed_btns[pygame.K_2]:
+                    self.weapon = self.weapons[1]
+                    self.interface.set_ammo()
+                elif pressed_btns[pygame.K_3]:
+                    if len(self.weapons) > 2:
+                        self.weapon = self.weapons[2]
+                        self.interface.set_ammo()
+                elif pressed_btns[pygame.K_4]:
+                    if len(self.weapons) > 3:
+                        self.weapon = self.weapons[3]
+                        self.interface.set_ammo()
+
+
         else:
             self.jerk()
         return ''

@@ -1,5 +1,6 @@
 from sprite import Sprite
 from various import *
+from watchtimer import Timer
 
 
 class Weapon(Sprite):
@@ -12,6 +13,7 @@ class Weapon(Sprite):
         self.damage = 0
         self.colliders = None
 
+        self.reload_process = False
         self.rapidity = False
 
         self.bandolier = 0
@@ -23,9 +25,24 @@ class Weapon(Sprite):
             self.kill()
             self.rect_f = self.owner.rect_f.copy()
             self.colliders["default"].kill()
+            self.owner.weapons.append(self)
             self.owner.weapon = self
             self.owner.interface.set_ammo()
 
-
     def stop_timer_rapidity(self):
         self.rapidity = False
+
+    def stop_timer_reload(self):
+        if self.bandolier + self.ammo_in_magazine >= self.full_ammo:
+            self.bandolier -= self.full_ammo - self.ammo_in_magazine
+            self.ammo_in_magazine += self.full_ammo - self.ammo_in_magazine
+        else:
+            self.ammo_in_magazine = self.bandolier + self.ammo_in_magazine
+            self.bandolier = 0
+        self.owner.interface.set_ammo()
+        self.reload_process = False
+
+    def reload(self):
+        if self.ammo_in_magazine != self.full_ammo and self.bandolier != 0 and not self.reload_process:
+            Timer(self.time_reload, self.stop_timer_reload).start()
+            self.reload_process = True

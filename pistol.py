@@ -1,28 +1,21 @@
-from weapon import Weapon
-from sprites import ITEMS
-import pygame
-from bullet import Bullet
-from collider import Collider
+from one_shoot_weapon import OneShootWeapon
+from watchtimer import Timer
 
 
-class Pistol(Weapon):
+class Pistol(OneShootWeapon):
     def __init__(self, owner):
         super().__init__(owner)
-        self.owner = owner
-        self.time_rapidity = 0.3
+        self.kill()
+        self.time_rapidity = 0.7
         self.time_reload = 1
         self.damage = 1
 
-        self.bandolier = 10
-        self.ammo_in_magazine = 30
-        self.full_ammo = 30
+        self.bandolier = 14
+        self.ammo_in_magazine = 7
+        self.full_ammo = 7
 
-        self.owner.interface.changes(self.owner.health, self.ammo_in_magazine)
+        self.timer_rapidity = Timer(self.time_rapidity, self.stop_timer_rapidity)
 
-    def shoot(self, angle):
-        Bullet(self.owner, angle)
-        self.ammo_in_magazine -= 1
-        self.owner.interface.changes(self.owner.health, self.ammo_in_magazine)
 
 
 
