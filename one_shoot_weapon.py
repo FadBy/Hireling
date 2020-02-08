@@ -1,7 +1,7 @@
 from weapon import Weapon
 from watchtimer import Timer
 from bullet import Bullet
-
+import sounds
 
 class OneShootWeapon(Weapon):
     def __init__(self, owner):

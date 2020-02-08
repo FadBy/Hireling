@@ -5,6 +5,7 @@ from functions import calculate_angle, calculate_distance
 from various import *
 from collider import Collider
 
+
 class EnemyRat(Enemy):
     def __init__(self, player, x, y):
         super().__init__(player, x, y)
@@ -21,7 +22,8 @@ class EnemyRat(Enemy):
         self.rect = pygame.Rect(self.rect_f)
         self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
         self.layer_collider = 2
-        self.images = {"left": BULLETS["enemy_2_left"], "right": BULLETS["enemy_2_right"], "up": BULLETS["enemy_2_back"],
+        self.images = {"left": BULLETS["enemy_2_left"], "right": BULLETS["enemy_2_right"],
+                       "up": BULLETS["enemy_2_back"],
                        "down": BULLETS["enemy_2_face"]}
         self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
                                               self.rect_f[W] - 2 * WIDTH_UNIT_COLLIDER * self.rect_f[W],

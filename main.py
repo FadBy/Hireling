@@ -69,12 +69,14 @@ def start():
 
 pygame.init()
 
-TEST_COLLIDER = True
-PRINT_FPS = False
+TEST_COLLIDER = False
+PRINT_FPS = True
 ENEMYS_ATTACK = True
 
 start()
 
+
+dead = False
 running = True
 while running:
     for event in pygame.event.get():
@@ -97,7 +99,11 @@ while running:
     draw_all_sprites()
     if player.health <= 0:
         running = False
+        dead = True
     if PRINT_FPS:
         print(int(clock.get_fps()))
     pygame.display.flip()
 pygame.quit()
+
+if dead:
+    os.system("menu.py")
