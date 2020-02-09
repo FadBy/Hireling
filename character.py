@@ -36,4 +36,3 @@ class Character(Sprite):
             self.active_animation.cancel()
             self.active_animation = anim
         self.active_animation.start()
-

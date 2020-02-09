@@ -6,7 +6,7 @@ print(os.getcwd())
 
 mixer.init(frequency=44100, size=-16, channels=2, buffer=4096)
 soundtrack = mixer.music.load('data/soundtrack/Ugh.wav')
-mixer.music.set_volume(0.1)
+mixer.music.set_volume(0.2)
 
 
 def load_sound(name):
@@ -34,7 +34,7 @@ splash.set_volume(0.6)
 pick_up = load_sound('soundtrack/pick_up.ogg')
 pick_up.set_volume(0.6)
 pick_up2 = load_sound('soundtrack/pick_up2.ogg')
-pick_up2.set_volume(1)
+pick_up2.set_volume(1.5)
 strike = load_sound('soundtrack/strike.ogg')
 strike.set_volume(0.6)
 hit = load_sound('soundtrack/hit.ogg')

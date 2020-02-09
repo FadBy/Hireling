@@ -1,5 +1,7 @@
 from various import *
 from sprites import *
+from sounds import *
+import time
 
 
 class Menu:
@@ -30,6 +32,7 @@ class Menu:
                 return False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
+                    click.play()
                     self.arrow = pygame.transform.scale(CURSOR['arrow_tapped'],
                                                         (self.x_size // 1280 * 50, self.y_size // 720 * 47))
                     if mouse_x > self.start_sprite.rect.x and mouse_y > self.start_sprite.rect.y:
@@ -73,7 +76,7 @@ pygame.mouse.set_visible(0)
 menu = Menu()
 while running:
     running = menu.render()
-
+time.sleep(1)
 pygame.quit()
 
 if menu.start_game:

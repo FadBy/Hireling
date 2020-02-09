@@ -31,20 +31,20 @@ class Collider(Sprite):
         change_x = 0
         change_y = 0
         ver = collider_past[X] < player_past[X] < collider_past[X] + collider_past[W] or collider_past[X] < \
-               player_past[X] + player_past[W] < collider_past[X] + collider_past[W]
+              player_past[X] + player_past[W] < collider_past[X] + collider_past[W]
         hor = collider_past[Y] < player_past[Y] < collider_past[Y] + collider_past[H] or collider_past[Y] < \
               player_past[Y] + player_past[H] < collider_past[Y] + collider_past[H]
         ver = False
         hor = False
         if ver and not hor:
-            #if player.owner.tag == "enemy":
+            # if player.owner.tag == "enemy":
             #    print("aga1")
             if player_past[Y] < collider_past[Y]:
                 change_y = collider_rect[Y] - player_rect[Y] - player_rect[H]
             else:
                 change_y = collider_rect[Y] + collider_rect[H] - player_rect[Y]
         elif hor and not ver:
-            #if player.owner.tag == "enemy":
+            # if player.owner.tag == "enemy":
             #    print("aga2")
             if player_past[X] < collider_past[X]:
                 change_x = collider_rect[X] - player_rect[X] - player_rect[W]
@@ -79,7 +79,6 @@ class Collider(Sprite):
                     change_y = collider_rect[Y] + collider_rect[H] - player_rect[Y]
                 else:
                     change_x = collider_rect[X] - player_rect[X] - player_rect[W]
-
 
         # player_rect = player.rect_f
         # collider_rect = self.rect_f

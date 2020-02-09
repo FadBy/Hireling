@@ -230,21 +230,17 @@ class Player(Character):
                     else:
                         self.step_stop = 0
                 if pressed_btns[pygame.K_1]:
-                    click.play()
                     self.weapon = self.weapons[0]
                     self.interface.set_ammo()
                 elif pressed_btns[pygame.K_2]:
-                    click.play()
                     self.weapon = self.weapons[1]
                     self.interface.set_ammo()
                 elif pressed_btns[pygame.K_3]:
                     if len(self.weapons) > 2:
-                        click.play()
                         self.weapon = self.weapons[2]
                         self.interface.set_ammo()
                 elif pressed_btns[pygame.K_4]:
                     if len(self.weapons) > 3:
-                        click.play()
                         self.weapon = self.weapons[3]
                         self.interface.set_ammo()
         else:

@@ -108,6 +108,7 @@ while running:
     if PRINT_FPS:
         print(int(clock.get_fps()))
     pygame.display.flip()
+time.sleep(0.5)
 pygame.quit()
 
 if dead:

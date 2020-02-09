@@ -26,4 +26,3 @@ class Automat(OneShootWeapon):
         self.colliders = {"default": Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], True)}
 
         self.timer_rapidity = Timer(self.time_rapidity, self.stop_timer_rapidity)
-

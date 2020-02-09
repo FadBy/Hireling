@@ -88,5 +88,3 @@ class EnemySniper(Enemy):
                 else:
                     self.change_animation(self.animation_shot_back_2)
         super().attack()
-
-

@@ -2,6 +2,7 @@ from math import sqrt, tan, pi, atan
 import pygame
 from various import *
 from sprites import *
+from sounds import *
 
 
 def convert_side_in_angle(side):
@@ -74,6 +75,7 @@ def ingame_menu_start():
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
+                    click.play()
                     if mouse_x > width * 3 // 4 - 41 / 128 * width and mouse_y > height * 15 // 16 - 35 / 72 * height:
                         if mouse_x < width * 3 // 4 - 21.5 / 128 * width:
                             if mouse_y < height * 15 // 16 - 29 / 72 * height:

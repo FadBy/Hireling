@@ -30,5 +30,3 @@ class Sprite(pygame.sprite.Sprite):
             if self in i:
                 i.remove(self)
         super().kill()
-
-

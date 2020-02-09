@@ -5,6 +5,7 @@ from functions import set_change_coord
 from sprite import Sprite
 from sounds import *
 
+
 class Bullet(Sprite):
     def __init__(self, owner, angle, distance=0):
         super().__init__(middle, motionful)
@@ -26,7 +27,6 @@ class Bullet(Sprite):
         self.tick = 0
         self.xspeed, self.yspeed = set_change_coord(angle, self.speed)
         self.colliders = {"default": Collider(self, 0, 0, self.rect_f[W], self.rect_f[H], trigger=True)}
-
 
     def set_pos(self):
         self.rect_f[X], self.rect_f[Y] = self.owner.rect_f[X] + self.owner.rect_f[W] // 2, self.owner.rect_f[Y] + \
@@ -55,7 +55,8 @@ class Bullet(Sprite):
 
     def unit_collided(self, collider, unit):
         if unit.owner in decors or (
-                unit.owner.tag != self.owner.tag and (unit.owner in enemies or unit.owner.tag == "player") and unit == unit.owner.colliders["bullet_hit"]):
+                unit.owner.tag != self.owner.tag and (unit.owner in enemies or unit.owner.tag == "player") and unit ==
+                unit.owner.colliders["bullet_hit"]):
             self.delete_from_all()
         if (unit.owner.tag == "player" or unit.owner.tag == "enemy") and unit.owner.tag != self.owner.tag:
             if unit == unit.owner.colliders["bullet_hit"]:

@@ -3,6 +3,7 @@ from various import *
 from watchtimer import Timer
 from sounds import *
 
+
 class Weapon(Sprite):
     def __init__(self, owner):
         super().__init__(middle, object_sprites)

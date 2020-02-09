@@ -3,6 +3,7 @@ from watchtimer import Timer
 from bullet import Bullet
 from random import randint
 
+
 class EnemyShotgun(Weapon):
     def __init__(self, owner):
         super().__init__(owner)
@@ -16,7 +17,6 @@ class EnemyShotgun(Weapon):
         self.angle_dispertion = 60
 
     def shoot(self, angle):
-
         for i in range(self.count_bullets):
             bullet = Bullet(self.owner, angle + randint(-self.angle_dispertion // 2,
                                                         self.angle_dispertion // 2), self.distance_bullet)

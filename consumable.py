@@ -4,6 +4,7 @@ from collider import Collider
 from sprite import Sprite
 from sounds import *
 
+
 class Consumable(Sprite):
     def __init__(self, player, x, y, image):
         super().__init__(middle, motionful)
@@ -17,7 +18,7 @@ class Consumable(Sprite):
         self.rect = pygame.Rect(self.rect_f)
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
         self.colliders = {"default": Collider(self, 0, self.height_person, self.rect_f[W],
-                                 self.rect_f[H] - self.height_person, True)}
+                                              self.rect_f[H] - self.height_person, True)}
 
     def changes(self, type, quantity):
         if type == 'heal':
@@ -29,4 +30,3 @@ class Consumable(Sprite):
 
     def set_tick(self, tick):
         self.tick = tick
-

@@ -5,6 +5,7 @@ from collider import Collider
 from functions import set_change_coord, calculate_angle
 from sounds import *
 
+
 class Enemy(Character):
     def __init__(self, player, x, y):
         super().__init__(middle, motionful, enemies)

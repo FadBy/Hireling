@@ -28,4 +28,3 @@ class Melle(Weapon):
             self.timer.start()
             self.rapidity = True
             self.owner.animation_attack_melee_up.start()
-
