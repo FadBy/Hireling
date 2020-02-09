@@ -3,7 +3,7 @@ from various import *
 from sprites import *
 from functions import set_change_coord
 from sprite import Sprite
-
+from sounds import *
 
 class Bullet(Sprite):
     def __init__(self, owner, angle, distance=0):
@@ -60,6 +60,12 @@ class Bullet(Sprite):
         if (unit.owner.tag == "player" or unit.owner.tag == "enemy") and unit.owner.tag != self.owner.tag:
             if unit == unit.owner.colliders["bullet_hit"]:
                 unit.owner.hit_from_enemy(self.owner.weapon.damage)
+                print(unit.owner.health)
+                if unit.owner.tag == 'player':
+                    if unit.owner.health > 1:
+                        hit.play()
+                else:
+                    strike.play()
 
     def delete_from_all(self):
         self.kill()

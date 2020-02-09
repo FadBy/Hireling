@@ -17,7 +17,7 @@ animations = []
 
 passed_room = 0
 
-size = width, height = 960, 540
+size = width, height = 1280, 720
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
@@ -36,7 +36,6 @@ WIDTH_WALL_COLLIDER = 0.75
 WIDTH_UNIT_COLLIDER = 0.2
 HEIGHT_UNIT_COLLIDER = 0.5
 INDENT_UNIT_COLLIDET = 0.2
-
 
 FPS = 40
 

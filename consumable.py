@@ -2,7 +2,7 @@ from various import *
 from sprites import *
 from collider import Collider
 from sprite import Sprite
-
+from sounds import *
 
 class Consumable(Sprite):
     def __init__(self, player, x, y, image):
@@ -21,8 +21,10 @@ class Consumable(Sprite):
 
     def changes(self, type, quantity):
         if type == 'heal':
+            pick_up.play()
             self.player.heal(quantity)
         elif type == 'load':
+            pick_up2.play()
             self.player.load_bullets()
 
     def set_tick(self, tick):

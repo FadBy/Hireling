@@ -20,9 +20,3 @@ class Pistol(OneShootWeapon):
         self.full_ammo = 7
 
         self.timer_rapidity = Timer(self.time_rapidity, self.stop_timer_rapidity)
-
-
-
-
-
-

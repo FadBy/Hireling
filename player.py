@@ -5,6 +5,7 @@ from animator import Animator
 from melle import Melle
 from pistol import Pistol
 from various import GOD
+from sounds import *
 
 
 class Player(Character):
@@ -44,6 +45,7 @@ class Player(Character):
         self.illusions = []
         self.current_length_jerk = 0
         self.count_set_illusion = 0
+        self.step_stop = 0
 
         self.speed = 0
 
@@ -134,6 +136,13 @@ class Player(Character):
         else:
             coord = set_change_coord(self.angle, self.speed_run)
             self.move(*coord)
+            if self.step_stop == 0:
+                steps.play()
+                self.step_stop += 1
+            elif 0 < self.step_stop < 8:
+                self.step_stop += 1
+            else:
+                self.step_stop = 0
 
     def stop_timer_jerk(self):
         self.jerk_delay = False
@@ -213,22 +222,31 @@ class Player(Character):
                     self.attack('up')
                 elif pressed_btns[pygame.K_DOWN]:
                     self.attack('down')
+                    if self.step_stop == 0:
+                        steps.play()
+                        self.step_stop += 1
+                    elif 0 < self.step_stop < 8:
+                        self.step_stop += 1
+                    else:
+                        self.step_stop = 0
                 if pressed_btns[pygame.K_1]:
+                    click.play()
                     self.weapon = self.weapons[0]
                     self.interface.set_ammo()
                 elif pressed_btns[pygame.K_2]:
+                    click.play()
                     self.weapon = self.weapons[1]
                     self.interface.set_ammo()
                 elif pressed_btns[pygame.K_3]:
                     if len(self.weapons) > 2:
+                        click.play()
                         self.weapon = self.weapons[2]
                         self.interface.set_ammo()
                 elif pressed_btns[pygame.K_4]:
                     if len(self.weapons) > 3:
+                        click.play()
                         self.weapon = self.weapons[3]
                         self.interface.set_ammo()
-
-
         else:
             self.jerk()
         return ''

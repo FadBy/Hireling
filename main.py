@@ -1,5 +1,7 @@
 from map import *
 from functions import *
+import time
+from sounds import *
 
 
 def check_colliders():
@@ -46,7 +48,7 @@ def enemy_action():
 def draw_all_sprites():
     for i in background:
         i.draw(screen)
-    middle.sort(key=lambda x: x.rect[Y] + x.rect[H])
+    middle.sort(key=lambda x: x.rect_f[Y] + x.rect_f[H])
     for i in middle:
         i.draw(screen)
     if TEST_COLLIDER:
@@ -75,7 +77,6 @@ ENEMYS_ATTACK = True
 
 start()
 
-
 dead = False
 running = True
 while running:
@@ -100,6 +101,10 @@ while running:
     if player.interface.health <= 0:
         running = False
         dead = True
+        screen.fill((0, 0, 0))
+        pygame.display.flip()
+        dying.play()
+        time.sleep(1)
     if PRINT_FPS:
         print(int(clock.get_fps()))
     pygame.display.flip()

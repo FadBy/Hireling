@@ -6,7 +6,6 @@ class Menu:
     def __init__(self):
         self.start_game = False
         self.max_resolution = self.max_x_size, self.max_y_size = 1920, 1080
-        self.middle_resolution = self.middle_x_size, self.middle_y_size = 1600, 900
         self.min_resolution = self.min_x_size, self.min_y_size = 1280, 720
         self.resolution = self.x_size, self.y_size = size
         self.background = pygame.transform.scale(MENU['menu'], self.resolution)
@@ -66,6 +65,7 @@ class Menu:
         pygame.display.flip()
         return True
 
+
 pygame.init()
 running = True
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
@@ -78,4 +78,3 @@ pygame.quit()
 
 if menu.start_game:
     os.system("main.py")
-

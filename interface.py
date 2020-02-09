@@ -2,6 +2,7 @@ from various import *
 from sprites import *
 from sprite import Sprite
 from group import Group
+from sounds import *
 import pygame
 
 

@@ -1,7 +1,7 @@
 from sprite import Sprite
 from various import *
 from watchtimer import Timer
-
+from sounds import *
 
 class Weapon(Sprite):
     def __init__(self, owner):
@@ -48,5 +48,6 @@ class Weapon(Sprite):
 
     def reload(self):
         if self.ammo_in_magazine != self.full_ammo and self.bandolier != 0 and not self.reload_process:
+            reload.play()
             Timer(self.time_reload, self.stop_timer_reload).start()
             self.reload_process = True
