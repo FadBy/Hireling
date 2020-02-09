@@ -2,6 +2,7 @@ from weapon import Weapon
 from watchtimer import Timer
 from bullet import Bullet
 from random import randint
+from various import koef_dif
 
 
 class EnemyGun(Weapon):
@@ -10,7 +11,10 @@ class EnemyGun(Weapon):
         self.kill()
         self.owner = owner
         self.rapidity = False
-        self.damage = 1
+        if owner.player.difficult != 1:
+            self.damage = 1 * (owner.player.difficult - 1) * koef_dif
+        else:
+            self.damage = 1
         self.max_rapidity = 2500
         self.min_rapidity = 1000
 

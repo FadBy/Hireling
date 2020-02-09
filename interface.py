@@ -32,9 +32,10 @@ class Interface(Group):
         self.display_bandolier()
 
     def display_hp(self):
-        for i in self.healths:
-            i.kill()
-        for i in range(int(self.health) - 1, -1, -1):
+        l = len(self.healths)
+        for i in range(l):
+            self.healths[0].kill()
+        for i in range(int(self.health)):
             sprite = Sprite(self, self.healths)
             sprite.image = PLAYER["health_point"]
             sprite.rect_f = list(sprite.image.get_rect())
@@ -62,7 +63,7 @@ class Interface(Group):
             reserve.rect = pygame.Rect(reserve.rect_f)
 
     def change_hp(self):
-        self.health = int(self.player.health)
+        self.health = self.player.health
         self.display_hp()
 
     def set_ammo(self):

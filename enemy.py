@@ -3,6 +3,7 @@ from sprites import *
 from character import Character
 from collider import Collider
 from functions import set_change_coord, calculate_angle
+from animator import Animator
 
 
 class Enemy(Character):
@@ -13,11 +14,15 @@ class Enemy(Character):
         self.images = {}
 
         self.angle = 0
+        self.side = "down"
         self.tick = 0
         self.change_y = 0
         self.change_x = 0
 
         self.weapon = None
+
+        self.animation_frame = 4
+        self.animation_duration = 0.3
 
         self.damage_collide = 0
         self.damage_bullet = 0
@@ -58,11 +63,20 @@ class Enemy(Character):
 
     def rotate(self):
         if 315 <= self.angle % 360 <= 360 or 0 <= self.angle <= 45:
-            self.image = self.images["right"]
+            if self.side != "right":
+                self.image = self.images["right"]
+                self.side = "right"
         elif 45 <= self.angle % 360 <= 135:
-            self.image = self.images["up"]
+            if self.side != "up":
+                self.image = self.images["up"]
+                self.side = "up"
         elif 135 <= self.angle % 360 <= 225:
-            self.image = self.images["left"]
+            if self.side != "left":
+                self.image = self.images["left"]
+                self.side = "left"
         else:
-            self.image = self.images["down"]
+            if self.side != "down":
+                self.image = self.images["down"]
+                self.side = "down"
+
 

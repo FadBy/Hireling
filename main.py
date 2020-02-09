@@ -1,5 +1,6 @@
 from map import *
 from functions import *
+import time
 
 
 def check_colliders():
@@ -80,7 +81,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    tick = clock.tick(40) / 1000
+    tick = clock.tick() / 1000
     for i in motionful:
         i.set_tick(tick)
     pressed = player.check_pressed()
@@ -91,7 +92,8 @@ while running:
         i.set_tick(tick)
     change_all_pos()
     check_colliders()
-    change_all_pos()
+    if player.change_x != 0 or player.change_y != 0:
+        change_all_pos()
     if ENEMYS_ATTACK:
         enemy_action()
     draw_all_sprites()

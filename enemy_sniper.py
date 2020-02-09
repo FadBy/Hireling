@@ -13,7 +13,10 @@ class EnemySniper(Enemy):
         super().__init__(player, x, y)
         self.range = 400
         self.speed_run = 50
-        self.health = 3
+        if player.difficult != 1:
+            self.health = 3 * (player.difficult - 1) * koef_dif
+        else:
+            self.health = 3
         self.min_rapidity = 500
         self.max_rapidity = 2500
         self.damage_collide = 1
@@ -25,7 +28,6 @@ class EnemySniper(Enemy):
         self.rect = pygame.Rect(self.rect_f)
         self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
         self.layer_collider = 2
-        self.animation_duration = 0.3
         self.shot_count = 2
         self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
                                               self.rect_f[W] - 2 * WIDTH_UNIT_COLLIDER * self.rect_f[W],
@@ -39,22 +41,22 @@ class EnemySniper(Enemy):
                                                          self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
                                                          self.rect_f[H] - self.height_person, True)
                           }
-        self.animation_shot_back_1 = Animator(self, [BULLETS["enemy_back_shot_1"]] * 2, BULLETS["enemy_back"],
-                                              self.animation_duration)
-        self.animation_shot_back_2 = Animator(self, [BULLETS["enemy_back_shot_2"]] * 2, BULLETS["enemy_back"],
-                                              self.animation_duration)
-        self.animation_shot_left_1 = Animator(self, [BULLETS["enemy_left_shot_1"]] * 2, BULLETS["enemy_left"],
-                                              self.animation_duration)
-        self.animation_shot_left_2 = Animator(self, [BULLETS["enemy_left_shot_2"]] * 2, BULLETS["enemy_left"],
-                                              self.animation_duration)
-        self.animation_shot_right_1 = Animator(self, [BULLETS["enemy_right_shot_1"]] * 2, BULLETS["enemy_right"],
-                                               self.animation_duration)
-        self.animation_shot_right_2 = Animator(self, [BULLETS["enemy_right_shot_2"]] * 2, BULLETS["enemy_right"],
-                                               self.animation_duration)
-        self.animation_shot_face_1 = Animator(self, [BULLETS["enemy_face_shot_1"]] * 2, BULLETS["enemy_face"],
-                                              self.animation_duration)
-        self.animation_shot_face_2 = Animator(self, [BULLETS["enemy_face_shot_2"]] * 2, BULLETS["enemy_face"],
-                                              self.animation_duration)
+        self.animation_shot_back_1 = Animator(self, [BULLETS["enemy_back_shot_1"]] * self.animation_frame + [
+            BULLETS["enemy_back"]], BULLETS["enemy_back"], self.animation_duration)
+        self.animation_shot_back_2 = Animator(self, [BULLETS["enemy_back_shot_2"]] * self.animation_frame + [
+            BULLETS["enemy_back"]], BULLETS["enemy_back"], self.animation_duration)
+        self.animation_shot_left_1 = Animator(self, [BULLETS["enemy_left_shot_1"]] * self.animation_frame + [
+            BULLETS["enemy_left"]], BULLETS["enemy_left"], self.animation_duration)
+        self.animation_shot_left_2 = Animator(self, [BULLETS["enemy_left_shot_2"]] * self.animation_frame + [
+            BULLETS["enemy_left"]], BULLETS["enemy_left"], self.animation_duration)
+        self.animation_shot_right_1 = Animator(self, [BULLETS["enemy_right_shot_1"]] * self.animation_frame + [
+            BULLETS["enemy_right"]], BULLETS["enemy_right"], self.animation_duration)
+        self.animation_shot_right_2 = Animator(self, [BULLETS["enemy_right_shot_2"]] * self.animation_frame + [
+            BULLETS["enemy_right"]], BULLETS["enemy_right"], self.animation_duration)
+        self.animation_shot_face_1 = Animator(self, [BULLETS["enemy_face_shot_1"]] * self.animation_frame + [
+            BULLETS["enemy_face"]], BULLETS["enemy_face"], self.animation_duration)
+        self.animation_shot_face_2 = Animator(self, [BULLETS["enemy_face_shot_2"]] * self.animation_frame + [
+            BULLETS["enemy_face"]], BULLETS["enemy_face"], self.animation_duration)
         self.active_animation = self.animation_shot_face_1
 
     def move(self):
@@ -70,23 +72,21 @@ class EnemySniper(Enemy):
         if not self.weapon.rapidity:
             shot = randint(1, self.shot_count)
             if shot == 1:
-                if self.image == self.images["down"]:
+                if self.side == "down":
                     self.change_animation(self.animation_shot_face_1)
-                elif self.image == self.images["left"]:
+                elif self.side == "left":
                     self.change_animation(self.animation_shot_left_1)
-                elif self.image == self.images["right"]:
+                elif self.side == "right":
                     self.change_animation(self.animation_shot_right_1)
                 else:
                     self.change_animation(self.animation_shot_back_1)
             else:
-                if self.image == self.images["down"]:
+                if self.side == "down":
                     self.change_animation(self.animation_shot_face_2)
-                elif self.image == self.images["left"]:
+                elif self.side == "left":
                     self.change_animation(self.animation_shot_left_2)
-                elif self.image == self.images["right"]:
+                elif self.side == "right":
                     self.change_animation(self.animation_shot_right_2)
                 else:
                     self.change_animation(self.animation_shot_back_2)
         super().attack()
-
-

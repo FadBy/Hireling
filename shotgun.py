@@ -49,4 +49,7 @@ class Shotgun(Weapon):
                     bullet = Bullet(self.owner, angle + randint(-self.angle_dispertion // 2,
                                                                 self.angle_dispertion // 2), self.distance_bullet)
                 self.owner.interface.set_ammo()
+            else:
+                self.reload()
+
 

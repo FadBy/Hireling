@@ -28,3 +28,5 @@ class OneShootWeapon(Weapon):
                 self.timer_rapidity.start()
                 Bullet(self.owner, angle)
                 self.owner.interface.set_ammo()
+            else:
+                self.reload()

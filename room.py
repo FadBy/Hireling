@@ -31,10 +31,10 @@ class Room:
         self.enemies = []
         self.types_enemyes = {1: "enemy_rat", 2: "enemy_sniper"}
         if not DELETE_ENEMIES:
-            self.max_enemies_one_room = 6
-            self.min_enemies_one_room = 4
-            self.min_enemies_one_wave = 2
-            self.max_enemies_one_wave = 4
+            self.max_enemies_one_room = 1
+            self.min_enemies_one_room = 1
+            self.min_enemies_one_wave = 1
+            self.max_enemies_one_wave = 1
         else:
             self.max_enemies_one_room = 0
             self.min_enemies_one_room = 0
@@ -153,6 +153,8 @@ class Room:
     def end_of_battle(self):
         if self.left == 0:
             self.player.passed_rooms += 1
+            if self.player.passed_rooms % 4 == 0:
+                self.player.difficult += 1
             self.player.battle = False
             for i in self.doors:
                 i.unblock()

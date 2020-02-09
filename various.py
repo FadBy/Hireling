@@ -16,8 +16,8 @@ spawns = pygame.sprite.Group()
 animations = []
 
 passed_room = 0
-
-size = width, height = 960, 540
+# 960, 540
+size = width, height = 1280, 720
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
 
@@ -60,3 +60,5 @@ COUNT_TYPES_ENEMIES = 2
 GET_FIRST_WEAPON = 2
 
 COUNT_OF_ARENAS = 4
+
+koef_dif = 1.25

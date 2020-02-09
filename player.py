@@ -69,6 +69,8 @@ class Player(Character):
             self.full_health = 5
             self.health = 5
 
+        self.difficult = 1
+
         self.interface = Interface(self)
 
         self.animation_attack_melee_up = Animator(self, [PLAYER["player_back1"], PLAYER["player_back2"],
@@ -249,13 +251,14 @@ class Player(Character):
         self.interface.change_hp()
 
     def hit_from_enemy(self, hp):
-        self.health -= hp
-        self.interface.change_hp()
+        if self.condition != "jerk":
+            self.health -= hp
+            self.interface.change_hp()
 
     def unit_collided(self, collider, unit):
         pass
         if unit.owner.tag == "enemy" and collider == self.colliders["collide_with_enemy"] and unit == \
-                unit.owner.colliders["collide_with_enemy"]:
+                unit.owner.colliders["collide_with_enemy"] and self.condition != "jerk":
             self.hit_from_collider(unit.owner.damage_collide)
 
     def set_arena(self, arena):
