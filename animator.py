@@ -24,11 +24,11 @@ class Animator:
             self.owner.image = self.animation[self.frame]
             self.timer.start()
         else:
-            self.owner.image = self.default
             self.started = False
             self.frame = 0
 
     def cancel(self):
-        self.timer.cancel()
-        self.frame = 0
-        self.started = False
+        if self.started:
+            self.timer.cancel()
+            self.frame = 0
+            self.started = False

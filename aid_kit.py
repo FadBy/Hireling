@@ -7,7 +7,7 @@ from consumable import Consumable
 
 class Aid(Consumable):
     def __init__(self, player, x, y):
-        super().__init__(player, x, y)
+        super().__init__(player, x, y, ITEMS['aid'])
         self.heal = 1
         self.rect_f[X] = x
         self.rect_f[Y] = y
@@ -17,6 +17,9 @@ class Aid(Consumable):
     def unit_collided(self, collider, unit):
         if unit.owner.tag == "player":
             super().changes('heal', self.heal)
+            self.kill()
+            for i in self.colliders:
+                self.colliders[i].kill()
 
     def move(self):
         pass

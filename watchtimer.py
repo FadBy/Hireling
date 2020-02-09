@@ -6,7 +6,12 @@ class Timer(MainTimer):
         super().__init__(time, function)
         self.time = time
         self.function = function
+        self.timer = MainTimer(self.time, self.function)
 
     def start(self):
-        MainTimer(self.time, self.function).start()
+        self.timer = MainTimer(self.time, self.function)
+        self.timer.start()
+
+    def cancel(self):
+        self.timer.cancel()
 

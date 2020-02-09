@@ -2,7 +2,7 @@ from various import *
 from sprites import *
 from character import Character
 from collider import Collider
-from functions import set_change_coord
+from functions import set_change_coord, calculate_angle
 
 
 class Enemy(Character):
@@ -10,29 +10,14 @@ class Enemy(Character):
         super().__init__(middle, motionful, enemies)
         self.player = player
         self.tag = 'enemy'
-        self.image = BULLETS["vorog"]
-        self.rect_f = list(self.image.get_rect())
-        self.rect_f[X] = x
-        self.rect_f[Y] = y
-        self.rect = pygame.Rect(self.rect_f)
-        self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
-        self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
-                                              self.rect_f[W] - 2 * WIDTH_UNIT_COLLIDER * self.rect_f[W],
-                                              self.rect_f[H] - self.height_person),
-                          "bullet_hit": Collider(self, INDENT_UNIT_COLLIDET * self.rect_f[W],
-                                                 INDENT_UNIT_COLLIDET * self.rect_f[H],
-                                                 self.rect_f[W] - 2 * INDENT_UNIT_COLLIDET * self.rect_f[W],
-                                                 self.rect_f[H] - INDENT_UNIT_COLLIDET * self.rect_f[H], True),
-                          "collide_with_enemy": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W],
-                                                         self.height_person,
-                                                         self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
-                                                         self.rect_f[H] - self.height_person, True)
-                          }
+        self.images = {}
 
         self.angle = 0
         self.tick = 0
         self.change_y = 0
         self.change_x = 0
+
+        self.weapon = None
 
         self.damage_collide = 0
         self.damage_bullet = 0
@@ -50,6 +35,12 @@ class Enemy(Character):
         self.rect_f[Y] += coord[Y]
         for i in self.colliders:
             self.colliders[i].move(coord[X], coord[Y])
+        self.rotate()
+
+    def attack(self):
+        self.angle = calculate_angle(self.rect_f, self.player.rect_f)
+        self.weapon.shoot(self.angle)
+        self.rotate()
 
     def move_by_collider(self, x, y):
         if x != 0:
@@ -64,4 +55,14 @@ class Enemy(Character):
         super().kill()
         for i in self.colliders:
             self.colliders[i].kill()
+
+    def rotate(self):
+        if 315 <= self.angle % 360 <= 360 or 0 <= self.angle <= 45:
+            self.image = self.images["right"]
+        elif 45 <= self.angle % 360 <= 135:
+            self.image = self.images["up"]
+        elif 135 <= self.angle % 360 <= 225:
+            self.image = self.images["left"]
+        else:
+            self.image = self.images["down"]
 

@@ -1,10 +1,10 @@
-from bullet import Bullet
 from watchtimer import Timer
-from collider import Collider
-from functions import *
 from character import *
 from interface import Interface
 from animator import Animator
+from melle import Melle
+from pistol import Pistol
+from various import GOD
 
 
 class Player(Character):
@@ -16,14 +16,12 @@ class Player(Character):
         self.tag = "player"
         self.image = PLAYER["player_face"]
         self.rect_f = list(self.image.get_rect())
-        self.rect_f[X] = width // 2 - self.rect_f[2] // 2
-        self.rect_f[Y] = height // 2 - self.rect_f[3] // 2
+        self.rect_f[X] = width // 2 - self.rect_f[W] // 2
+        self.rect_f[Y] = height // 2 - self.rect_f[H] // 2
         self.rect = pygame.Rect(self.rect_f)
         self.height_person = self.rect_f[H] * HEIGHT_UNIT_COLLIDER
-        self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
-                                              self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect[W],
-                                              self.rect_f[H] - self.height_person),
-                          "bullet_hit": Collider(self, INDENT_UNIT_COLLIDET * self.rect_f[W],
+        self.layer_collider = 1
+        self.colliders = {"bullet_hit": Collider(self, INDENT_UNIT_COLLIDET * self.rect_f[W],
                                                  INDENT_UNIT_COLLIDET * self.rect_f[H],
                                                  self.rect_f[W] - 2 * INDENT_UNIT_COLLIDET * self.rect_f[W],
                                                  self.rect_f[H] - INDENT_UNIT_COLLIDET * self.rect_f[H], True),
@@ -31,53 +29,66 @@ class Player(Character):
                                                          self.height_person,
                                                          self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect_f[W],
                                                          self.rect_f[H] - self.height_person, True),
-                          "zone_melle": Collider(self, self.rect_f[W] * 0.3, -0.15 * self.rect_f[H], self.rect_f[W] * 0.4, self.rect_f[H] * 0.4, True)}
-
-
+                          }
+        if not NOCLIP:
+            self.colliders["default"] = Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
+                                                 self.rect_f[W] - WIDTH_UNIT_COLLIDER * 2 * self.rect[W],
+                                                 self.rect_f[H] - self.height_person)
         self.tick = 0
+        self.passed_rooms = 0
         self.arena = None
         self.change_x = 0
         self.change_y = 0
-        self.not_damaged = False
-        self.full_health = 5
-        self.rapidity = False
         self.condition = "stand"
         self.angle = 270
         self.illusions = []
         self.current_length_jerk = 0
-        self.test = False
         self.count_set_illusion = 0
 
-        self.animation = []
-        self.frame = 0
-        self.not_attacking = True
-
         self.speed = 0
-        self.speed_run = 1000
+
+        if GOD:
+            self.speed_run = 1500
+        else:
+            self.speed_run = 500
         self.speed_jerk = 1000
         self.length_jerk = 300
 
-        self.damage_bullet = 1
-        self.damage_melle = 2
-
-        self.weapon = True
+        self.weapons = [Melle(self), Pistol(self)]
+        self.weapon = self.weapons[0]
         self.battle = False
 
         self.not_damaged = False
         self.rapidity = False
         self.jerk_delay = False
         self.after_jerk = False
+        if GOD:
+            self.full_health = 100
+            self.health = 100
+        else:
+            self.full_health = 5
+            self.health = 5
 
-        self.full_health = 5
-        self.health = 5
-        self.bandolier = 0
-        self.ammo_in_magazine = 0
-        self.full_ammo = 0
         self.interface = Interface(self)
 
-        self.active_animation = None
         self.animation_attack_melee_up = Animator(self, [PLAYER["player_back1"], PLAYER["player_back2"],
-                                                      PLAYER["player_back3"], PLAYER["player_back201"]], PLAYER["player_back1"], 0.5)
+                                                         PLAYER["player_back3"], PLAYER["player_back201"]],
+                                                  PLAYER["player_back1"], 0.5)
+        self.animation_run_back = Animator(self, [PLAYER["player_back_run_1"], PLAYER["player_back_run_2"],
+                                                  PLAYER["player_back_run_3"], PLAYER["player_back_run_4"],
+                                                  PLAYER["player_back_run_5"]], PLAYER["player_back1"], 0.75)
+        self.animation_run_face = Animator(self, [PLAYER["player_face_run_1"], PLAYER["player_face_run_2"],
+                                                  PLAYER["player_face_run_3"], PLAYER["player_face_run_4"]],
+                                           PLAYER["player_face"], 0.75)
+        self.animation_run_right = Animator(self, [PLAYER["player_right_run_1"], PLAYER["player_right_run_2"],
+                                                   PLAYER["player_right_run_3"], PLAYER["player_right_run_4"],
+                                                   PLAYER["player_right_run_5"], PLAYER["player_right_run_6"]],
+                                            PLAYER["player_right"], 0.75)
+        self.animation_run_left = Animator(self, [PLAYER["player_left_run_1"], PLAYER["player_left_run_2"],
+                                                  PLAYER["player_left_run_3"], PLAYER["player_left_run_4"],
+                                                  PLAYER["player_left_run_5"], PLAYER["player_left_run_6"]],
+                                           PLAYER["player_left"], 0.75)
+        self.active_animation = self.animation_run_face
 
     def move(self, x, y):
         self.change_x += x * self.tick
@@ -131,22 +142,14 @@ class Player(Character):
         self.not_damaged = False
 
     def attack(self, attacked_side):
-        if self.weapon:
-            if not self.rapidity:
-                self.ammo_in_magazine -= 1
-                if self.interface.changes(self.interface.health, self.ammo_in_magazine) != 'empty':
-                    self.ammo_in_magazine = self.interface.ammo_in_magazine
-                    self.rapidity = True
-                    Timer(*self.timers["weapon"]).start()
-                    bullet = Bullet(self, convert_side_in_angle(attacked_side))
-        if (not self.weapon or self.interface.ammo_in_magazine == 0) and self.not_attacking:
-            if attacked_side == 'up':
-                colliders = pygame.sprite.spritecollide(self.colliders["zone_melle"], enemies, False)
-                if not self.animation_attack_melee_up.started:
-                    for i in colliders:
-                        if pygame.sprite.collide_rect(self.colliders["zone_melle"], i.colliders["collide_with_enemy"]):
-                            i.hit_from_enemy(self.damage_melle)
-                self.animation_attack_melee_up.start()
+        if not self.rapidity:
+            self.weapon.shoot(convert_side_in_angle(attacked_side))
+
+    def load_bullets(self):
+        for i in self.weapons:
+            if i.shootable:
+                i.load_bullets()
+        self.interface.set_ammo()
 
     def check_pressed(self):
         if not self.condition == "jerk":
@@ -162,29 +165,37 @@ class Player(Character):
                     movement_buttons["d"] = True
                 if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_w]:
                     movement_buttons["s"] = True
-                if movement_buttons["a"] and movement_buttons["d"] and movement_buttons["w"]:
-                    print()
+                if pressed_btns[pygame.K_r]:
+                    self.weapon.reload()
                 if pressed_btns[pygame.K_ESCAPE]:
                     return ingame_menu_start()
                 if movement_buttons["a"] and not movement_buttons["w"] and not movement_buttons["s"]:
-                    self.image = PLAYER["player_left"]
+                    self.change_animation(self.animation_run_left)
                     self.run("left")
                 if movement_buttons["d"] and not movement_buttons["w"] and not movement_buttons["s"]:
-                    self.image = PLAYER["player_right"]
+                    self.change_animation(self.animation_run_right)
                     self.run("right")
                 if movement_buttons["w"] and not movement_buttons["a"] and not movement_buttons["d"]:
-                    self.image = PLAYER["player_back1"]
+                    self.change_animation(self.animation_run_back)
                     self.run("up")
                 if movement_buttons["s"] and not movement_buttons["a"] and not movement_buttons["d"]:
-                    self.image = PLAYER["player_face"]
+                    self.change_animation(self.animation_run_face)
                     self.run("down")
+                if not movement_buttons["s"] and not movement_buttons["w"] and not movement_buttons["d"] and not \
+                        movement_buttons["a"]:
+                    self.active_animation.cancel()
+                    self.image = self.active_animation.default
                 if movement_buttons["d"] and movement_buttons["w"]:
+                    self.active_animation.start()
                     self.run("right-up")
                 if movement_buttons["a"] and movement_buttons["w"]:
+                    self.active_animation.start()
                     self.run("left-up")
                 if movement_buttons["a"] and movement_buttons["s"]:
+                    self.active_animation.start()
                     self.run("left-down")
                 if movement_buttons["d"] and movement_buttons["s"]:
+                    self.active_animation.start()
                     self.run("right-down")
                 if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
                     self.attack("left-up")
@@ -202,9 +213,22 @@ class Player(Character):
                     self.attack('up')
                 elif pressed_btns[pygame.K_DOWN]:
                     self.attack('down')
-                else:
-                    self.frame = 0
-                    self.not_attacking = True
+                if pressed_btns[pygame.K_1]:
+                    self.weapon = self.weapons[0]
+                    self.interface.set_ammo()
+                elif pressed_btns[pygame.K_2]:
+                    self.weapon = self.weapons[1]
+                    self.interface.set_ammo()
+                elif pressed_btns[pygame.K_3]:
+                    if len(self.weapons) > 2:
+                        self.weapon = self.weapons[2]
+                        self.interface.set_ammo()
+                elif pressed_btns[pygame.K_4]:
+                    if len(self.weapons) > 3:
+                        self.weapon = self.weapons[3]
+                        self.interface.set_ammo()
+
+
         else:
             self.jerk()
         return ''
@@ -212,19 +236,21 @@ class Player(Character):
     def hit_from_collider(self, hp):
         self.condition = 'stand'
         if not self.not_damaged:
-            self.interface.health -= hp
+            self.health -= hp
             self.not_damaged = True
             Timer(*self.timers["health"]).start()
-            self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
+            self.interface.change_hp()
 
     def heal(self, hp):
-        if self.interface.health < self.full_health:
-            self.interface.health += 1
-            self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
+        if self.health + hp < self.full_health:
+            self.health += hp
+        else:
+            self.health = self.full_health
+        self.interface.change_hp()
 
     def hit_from_enemy(self, hp):
-        self.interface.health -= hp
-        self.interface.changes(self.interface.health, self.interface.ammo_in_magazine)
+        self.health -= hp
+        self.interface.change_hp()
 
     def unit_collided(self, collider, unit):
         pass
