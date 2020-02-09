@@ -132,6 +132,7 @@ class Player(Character):
         self.condition = "run"
         self.angle = convert_side_in_angle(side)
         if pygame.key.get_pressed()[pygame.K_SPACE] and not self.jerk_delay:
+            blink.play()
             self.jerk()
         else:
             coord = set_change_coord(self.angle, self.speed_run)
@@ -222,13 +223,6 @@ class Player(Character):
                     self.attack('up')
                 elif pressed_btns[pygame.K_DOWN]:
                     self.attack('down')
-                    if self.step_stop == 0:
-                        steps.play()
-                        self.step_stop += 1
-                    elif 0 < self.step_stop < 8:
-                        self.step_stop += 1
-                    else:
-                        self.step_stop = 0
                 if pressed_btns[pygame.K_1]:
                     self.weapon = self.weapons[0]
                     self.interface.set_ammo()

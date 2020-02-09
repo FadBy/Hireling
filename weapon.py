@@ -24,6 +24,7 @@ class Weapon(Sprite):
 
     def unit_collided(self, collider, unit):
         if unit.owner.tag == "player":
+            pick_up2.play()
             self.kill()
             self.rect_f = self.owner.rect_f.copy()
             self.colliders["default"].kill()
