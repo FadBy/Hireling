@@ -13,15 +13,11 @@ class Menu:
         self.background = pygame.transform.scale(MENU['menu'], self.resolution)
         self.arrow = pygame.transform.scale(CURSOR['arrow'], (self.x_size // 1280 * 50, self.y_size // 720 * 47))
         self.start_sprite = pygame.sprite.Sprite()
-        self.options_sprite = pygame.sprite.Sprite()
         self.exit_sprite = pygame.sprite.Sprite()
         self.start_sprite.rect = MENU['start_collider'].get_rect()
-        self.options_sprite.rect = MENU['options_collider'].get_rect()
         self.exit_sprite.rect = MENU['exit_collider'].get_rect()
         self.start_sprite.rect.x = self.x_size / self.max_x_size * 687
         self.start_sprite.rect.y = self.y_size / self.max_y_size * 367
-        self.options_sprite.rect.x = self.x_size / self.max_x_size * 687
-        self.options_sprite.rect.y = self.y_size / self.max_y_size * 500
         self.exit_sprite.rect.x = self.x_size / self.max_x_size * 687
         self.exit_sprite.rect.y = self.y_size / self.max_y_size * 625
 
@@ -44,10 +40,6 @@ class Menu:
                             pygame.display.flip()
                             pygame.time.Clock().tick(FPS)
                             return False
-                    if mouse_x > self.options_sprite.rect.x and mouse_y > self.options_sprite.rect.y:
-                        if mouse_x < self.options_sprite.rect.x + 585 * self.x_size / self.max_x_size \
-                                and mouse_y < self.options_sprite.rect.y + 105 * self.y_size / self.max_y_size:
-                            self.background = pygame.transform.scale(MENU["options_tapped"], self.resolution)
                     if mouse_x > self.exit_sprite.rect.x and mouse_y > self.exit_sprite.rect.y:
                         if mouse_x < self.exit_sprite.rect.x + 585 * self.x_size / self.max_x_size \
                                 and mouse_y < self.exit_sprite.rect.y + 105 * self.y_size / self.max_y_size:

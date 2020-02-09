@@ -1,4 +1,4 @@
-from wall import Walls
+from wall import Wall
 from surface import Surface
 from various import *
 from sprites import *

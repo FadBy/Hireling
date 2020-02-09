@@ -86,8 +86,11 @@ def ingame_menu_start():
                     if mouse_x > width * 3 // 4 - 41 / 128 * width and mouse_y > height * 15 // 16 - 27.5 / 72 * height:
                         if mouse_x < width * 3 // 4 - 21.5 / 128 * width:
                             if mouse_y < height * 15 // 16 - 21.5 / 72 * height:
+                                paused = False
                                 little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu_options'],
                                                                      (width // 2, width // 2))
+                                pygame.display.set_mode(size, pygame.FULLSCREEN)
+                                running = True
                     if mouse_x > width * 3 // 4 - 41 / 128 * width and mouse_y > height * 15 // 16 - 20 / 72 * height:
                         if mouse_x < width * 3 // 4 - 21.5 / 128 * width:
                             if mouse_y < height * 15 // 16 - 14 / 72 * height:
