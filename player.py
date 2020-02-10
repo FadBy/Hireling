@@ -4,8 +4,8 @@ from interface import Interface
 from animator import Animator
 from melle import Melle
 from pistol import Pistol
-from various import GOD
-from sounds import *
+from functions import *
+from collider import *
 
 
 class Player(Character):

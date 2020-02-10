@@ -7,19 +7,22 @@ import time
 class Menu:
     def __init__(self):
         self.start_game = False
+        self.mouse_size = (self.x_size // 1280 * 50, self.y_size // 720 * 47)
         self.max_resolution = self.max_x_size, self.max_y_size = 1920, 1080
         self.min_resolution = self.min_x_size, self.min_y_size = 1280, 720
         self.resolution = self.x_size, self.y_size = size
         self.background = pygame.transform.scale(MENU['menu'], self.resolution)
-        self.arrow = pygame.transform.scale(CURSOR['arrow'], (self.x_size // 1280 * 50, self.y_size // 720 * 47))
+        self.arrow = pygame.transform.scale(CURSOR['arrow'], self.mouse_size)
         self.start_sprite = pygame.sprite.Sprite()
         self.exit_sprite = pygame.sprite.Sprite()
         self.start_sprite.rect = MENU['start_collider'].get_rect()
         self.exit_sprite.rect = MENU['exit_collider'].get_rect()
-        self.start_sprite.rect.x = self.x_size / self.max_x_size * 687
-        self.start_sprite.rect.y = self.y_size / self.max_y_size * 367
-        self.exit_sprite.rect.x = self.x_size / self.max_x_size * 687
-        self.exit_sprite.rect.y = self.y_size / self.max_y_size * 625
+        self.button_1_coord_x, self.button_1_coord_y = 687, 367
+        self.button_2_coord_x, self.button_2_coord_y = 687, 625
+        self.start_sprite.rect.x = self.x_size / self.max_x_size * self.button_1_coord_x
+        self.start_sprite.rect.y = self.y_size / self.max_y_size * self.button_1_coord_y
+        self.exit_sprite.rect.x = self.x_size / self.max_x_size * self.button_2_coord_x
+        self.exit_sprite.rect.y = self.y_size / self.max_y_size * self.button_2_coord_y
 
     def render(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()

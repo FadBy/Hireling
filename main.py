@@ -73,7 +73,7 @@ def start():
 
 pygame.init()
 
-TEST_COLLIDER = True
+TEST_COLLIDER = False
 PRINT_FPS = False
 ENEMYS_ATTACK = True
 
@@ -82,7 +82,6 @@ start()
 dead = False
 running = True
 while running:
-    screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -90,6 +89,7 @@ while running:
     for i in motionful:
         i.set_tick(tick)
     pressed = player.check_pressed()
+    screen.fill((0, 0, 0))
     if pressed != '':
         running = pressed
     for i in motionful:
