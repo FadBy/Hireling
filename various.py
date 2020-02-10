@@ -14,7 +14,6 @@ arenas = []
 transes = []
 spawns = pygame.sprite.Group()
 animations = []
-
 passed_room = 0
 
 size = width, height = 1280, 720
@@ -39,7 +38,7 @@ INDENT_UNIT_COLLIDET = 0.2
 
 FPS = 40
 
-COUNT_OF_ILLUSIONS = 4
+COUNT_OF_ILLUSIONS = 3
 
 COUNT_OF_ENEMIES = 0
 SPEED_BULLET_PLAYER = 800

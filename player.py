@@ -118,10 +118,7 @@ class Player(Character):
             self.illusions.remove(ilus)
 
     def stop_timer_illusion(self):
-        if len(self.illusions) != 0:
-            middle.remove(self.illusions[0])
-            object_sprites.remove(self.illusions[0])
-            del self.illusions[0]
+        pass
 
     def stop_timer_after_jerk(self):
         self.after_jerk = False
