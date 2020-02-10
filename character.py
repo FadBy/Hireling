@@ -1,7 +1,4 @@
 from sprite import Sprite
-from various import *
-from functions import *
-from collider import Collider
 
 
 class Character(Sprite):

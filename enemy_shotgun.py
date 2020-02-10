@@ -23,6 +23,6 @@ class EnemyShotgun(Weapon):
     def shoot(self, angle):
         for i in range(self.count_bullets):
             Bullet(self.owner, angle + randint(-self.angle_dispertion // 2,
-                                                        self.angle_dispertion // 2), self.distance_bullet)
+                                               self.angle_dispertion // 2), self.distance_bullet)
         Timer(self.time_rapidity, self.stop_timer_rapidity).start()
         self.rapidity = True

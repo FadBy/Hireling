@@ -1,6 +1,5 @@
 import os
 from pygame import mixer
-import time
 
 mixer.init(frequency=44100, size=-16, channels=2, buffer=4096)
 soundtrack = mixer.music.load('data/soundtrack/Ugh.wav')

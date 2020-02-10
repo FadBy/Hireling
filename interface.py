@@ -26,6 +26,8 @@ class Interface(Group):
         self.distance_symbols = 20
         self.coord_divide = [width - 90, height - 150]
         self.coord_weapon = [width - 250, height - 150]
+        self.coord_health = [20, 30]
+        self.distance_hp = 75
         self.weapon = self.player.weapon
         self.set_interface()
 
@@ -55,7 +57,7 @@ class Interface(Group):
             sprite = Sprite(self, self.healths)
             sprite.image = PLAYER["health_point"]
             sprite.rect_f = list(sprite.image.get_rect())
-            sprite.rect_f[X], sprite.rect_f[Y] = 20 + i * 75, 30
+            sprite.rect_f[X], sprite.rect_f[Y] = self.coord_health[X] + i * self.distance_hp, self.coord_health[Y]
             sprite.rect = pygame.Rect(sprite.rect_f)
 
     def display_ammo(self):

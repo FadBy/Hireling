@@ -45,9 +45,14 @@ class Room:
         self.count_enemies_one_wave = None
         self.chance_spawn_aid = 60
         self.left = None
+        self.width_default = 3 * METR
+        self.width_check_door = 2 * METR
         self.colliders = {
-            "default": Collider(self, 3 * METR, 3 * METR, self.rect_f[W] - 6 * METR, self.rect_f[H] - 6 * METR, True),
-            "check_door": Collider(self, METR * 2, METR * 2, self.rect_f[W] - 4 * METR, self.rect_f[H] - 4 * METR,
+            "default": Collider(self, self.width_default, self.width_default, self.rect_f[W] - 2 * self.width_default,
+                                self.rect_f[H] - 2 * self.width_default, True),
+            "check_door": Collider(self, self.width_check_door, self.width_check_door,
+                                   self.rect_f[W] - 2 * self.width_check_door,
+                                   self.rect_f[H] - 2 * self.width_check_door,
                                    True)}
         for i in range(len(doors)):
             self.walls[doors[i][0]].append(doors[i])
@@ -73,10 +78,6 @@ class Room:
             self.max_enemies_one_wave = self.diff_one_wave[len(self.diff_one_wave)][1]
         self.max_enemies_one_room += 1
         self.min_enemies_one_room += 1
-
-
-
-
 
     def move_camera(self, x, y):
         self.rect_f[X] -= x

@@ -1,7 +1,5 @@
-from sprite import *
 from sprites import *
 from various import *
-from collider import Collider
 from consumable import Consumable
 
 

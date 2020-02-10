@@ -46,6 +46,8 @@ class Player(Character):
         self.current_length_jerk = 0
         self.count_set_illusion = 0
         self.step_stop = 0
+        self.max_steps = 8
+        self.min_steps = 0
 
         self.speed = 0
 
@@ -158,7 +160,7 @@ class Player(Character):
             if self.step_stop == 0:
                 steps.play()
                 self.step_stop += 1
-            elif 0 < self.step_stop < 8:
+            elif self.min_steps < self.step_stop < self.max_steps:
                 self.step_stop += 1
             else:
                 self.step_stop = 0

@@ -1,6 +1,7 @@
 from map import *
 from functions import *
 from sounds import *
+import time
 
 
 def check_colliders():

@@ -28,8 +28,6 @@ class Weapon(Sprite):
         self.rect_f[X] = x
         self.rect_f[Y] = y
         self.rect = pygame.Rect(self.rect_f)
-        #middle.remove(self)
-        #object_sprites.remove(self)
 
     def unit_collided(self, collider, unit):
         if unit.owner.tag == "player":
