@@ -150,6 +150,7 @@ class Player(Character):
         self.condition = "run"
         self.angle = convert_side_in_angle(side)
         if pygame.key.get_pressed()[pygame.K_SPACE] and not self.jerk_delay:
+            blink.play()
             self.jerk()
         else:
             coord = set_change_coord(self.angle, self.speed_run)

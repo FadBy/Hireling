@@ -49,7 +49,10 @@ def set_change_coord(angle, speed):
 def calculate_angle(main, second):
     main = [main[X] + main[W] // 2, main[Y] + main[H] // 2]
     second = [second[X] + second[W] // 2, second[Y] + second[H] // 2]
-    angle = atan(abs(second[X] - main[X]) / abs(second[Y] - main[Y])) * 180 / pi
+    if abs(second[Y] - main[Y]) != 0:
+        angle = atan(abs(second[X] - main[X]) / abs(second[Y] - main[Y])) * 180 / pi
+    else:
+        angle = atan(abs(second[X] - main[X]) / abs(second[Y] - main[Y] - ANGLE_ZERO)) * 180 / pi
     if second[X] > main[X] and second[Y] < main[Y]:
         return 90 - angle
     elif second[X] < main[X] and second[Y] < main[Y]:

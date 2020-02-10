@@ -3,6 +3,7 @@ from collider import Collider
 from various import *
 from watchtimer import Timer
 from sprites import ITEMS
+from sounds import *
 
 
 class Melle(Weapon):
@@ -31,6 +32,8 @@ class Melle(Weapon):
 
     def shoot(self, angle):
         if not self.rapidity:
+            punch.play()
+            thrill.play()
             colliders = pygame.sprite.spritecollide(self.collider, enemies, False)
             for i in colliders:
                 if pygame.sprite.collide_rect(self.collider, i.colliders["collide_with_enemy"]):
