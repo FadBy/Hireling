@@ -60,7 +60,7 @@ class Menu:
         if pygame.mouse.get_focused():
             screen.blit(self.background, self.background.get_rect(bottomright=self.resolution))
             screen.blit(self.arrow, self.arrow.get_rect(
-                bottomright=self.mouse_size))
+                bottomright=(mouse_x + self.x_size // 1280 * 50, mouse_y + self.y_size // 720 * 47)))
         pygame.time.Clock().tick(FPS)
         pygame.display.flip()
         return True
