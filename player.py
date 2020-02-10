@@ -5,6 +5,7 @@ from animator import Animator
 from melle import Melle
 from pistol import Pistol
 from various import GOD
+from sounds import *
 
 
 class Player(Character):
@@ -44,6 +45,7 @@ class Player(Character):
         self.illusions = []
         self.current_length_jerk = 0
         self.count_set_illusion = 0
+        self.step_stop = 0
 
         self.speed = 0
 
@@ -71,10 +73,13 @@ class Player(Character):
 
         self.difficult = 1
 
+        self.sort_process = False
+
         self.interface = Interface(self)
 
         self.animation_attack_melee_up = Animator(self, [PLAYER["player_back1"], PLAYER["player_back2"],
-                                                         PLAYER["player_back3"], PLAYER["player_back201"]],
+                                                         PLAYER["player_back3"], PLAYER["player_back201"],
+                                                         PLAYER["player_back1"]],
                                                   PLAYER["player_back1"], 0.5)
         self.animation_run_back = Animator(self, [PLAYER["player_back_run_1"], PLAYER["player_back_run_2"],
                                                   PLAYER["player_back_run_3"], PLAYER["player_back_run_4"],
@@ -102,11 +107,24 @@ class Player(Character):
         if y != 0:
             self.change_y = y
 
+    def delete_illusion(self, ilus):
+        if ilus in middle:
+            middle.remove(ilus)
+        if ilus in object_sprites:
+            object_sprites.remove(ilus)
+        if ilus in self.illusions:
+            self.illusions.remove(ilus)
+
     def stop_timer_illusion(self):
-        self.illusions[0].kill()
+        if len(self.illusions) != 0:
+            middle.remove(self.illusions[0])
+            object_sprites.remove(self.illusions[0])
+            del self.illusions[0]
 
     def stop_timer_after_jerk(self):
         self.after_jerk = False
+        for i in self.illusions:
+            self.delete_illusion(self.illusions[0])
 
     def jerk(self):
         self.condition = "jerk"
@@ -136,6 +154,13 @@ class Player(Character):
         else:
             coord = set_change_coord(self.angle, self.speed_run)
             self.move(*coord)
+            if self.step_stop == 0:
+                steps.play()
+                self.step_stop += 1
+            elif 0 < self.step_stop < 8:
+                self.step_stop += 1
+            else:
+                self.step_stop = 0
 
     def stop_timer_jerk(self):
         self.jerk_delay = False
@@ -156,6 +181,8 @@ class Player(Character):
     def check_pressed(self):
         if not self.condition == "jerk":
             if not self.after_jerk:
+                for i in self.illusions:
+                    i.kill()
                 self.condition = "stand"
                 pressed_btns = pygame.key.get_pressed()
                 movement_buttons = {"a": False, "w": False, "d": False, "s": False}
@@ -185,8 +212,9 @@ class Player(Character):
                     self.run("down")
                 if not movement_buttons["s"] and not movement_buttons["w"] and not movement_buttons["d"] and not \
                         movement_buttons["a"]:
-                    self.active_animation.cancel()
-                    self.image = self.active_animation.default
+                    if self.active_animation != self.animation_attack_melee_up:
+                        self.active_animation.cancel()
+                        self.image = self.active_animation.default
                 if movement_buttons["d"] and movement_buttons["w"]:
                     self.active_animation.start()
                     self.run("right-up")
@@ -218,19 +246,21 @@ class Player(Character):
                 if pressed_btns[pygame.K_1]:
                     self.weapon = self.weapons[0]
                     self.interface.set_ammo()
+                    self.interface.set_weapon()
                 elif pressed_btns[pygame.K_2]:
                     self.weapon = self.weapons[1]
                     self.interface.set_ammo()
+                    self.interface.set_weapon()
                 elif pressed_btns[pygame.K_3]:
                     if len(self.weapons) > 2:
                         self.weapon = self.weapons[2]
                         self.interface.set_ammo()
+                        self.interface.set_weapon()
                 elif pressed_btns[pygame.K_4]:
                     if len(self.weapons) > 3:
                         self.weapon = self.weapons[3]
                         self.interface.set_ammo()
-
-
+                        self.interface.set_weapon()
         else:
             self.jerk()
         return ''

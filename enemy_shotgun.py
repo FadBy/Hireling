@@ -4,6 +4,7 @@ from bullet import Bullet
 from random import randint
 from various import koef_dif
 
+
 class EnemyShotgun(Weapon):
     def __init__(self, owner):
         super().__init__(owner)

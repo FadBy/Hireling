@@ -1,6 +1,7 @@
 from sprite import Sprite
 from various import *
 from watchtimer import Timer
+from sounds import *
 
 
 class Weapon(Sprite):
@@ -13,6 +14,8 @@ class Weapon(Sprite):
         self.damage = 0
         self.colliders = None
 
+        self.image = None
+
         self.reload_process = False
         self.rapidity = False
         self.shootable = True
@@ -20,6 +23,13 @@ class Weapon(Sprite):
         self.bandolier = 0
         self.ammo_in_magazine = 0
         self.full_ammo = 0
+
+    def set_in_interface(self, x, y):
+        self.rect_f[X] = x
+        self.rect_f[Y] = y
+        self.rect = pygame.Rect(self.rect_f)
+        #middle.remove(self)
+        #object_sprites.remove(self)
 
     def unit_collided(self, collider, unit):
         if unit.owner.tag == "player":
@@ -29,6 +39,7 @@ class Weapon(Sprite):
             self.owner.weapons.append(self)
             self.owner.weapon = self
             self.owner.interface.set_ammo()
+            self.owner.interface.set_weapon()
 
     def load_bullets(self):
         self.bandolier += self.full_ammo
@@ -48,5 +59,6 @@ class Weapon(Sprite):
 
     def reload(self):
         if self.ammo_in_magazine != self.full_ammo and self.bandolier != 0 and not self.reload_process:
+            reload.play()
             Timer(self.time_reload, self.stop_timer_reload).start()
             self.reload_process = True

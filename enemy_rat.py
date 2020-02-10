@@ -11,11 +11,10 @@ class EnemyRat(Enemy):
     def __init__(self, player, x, y):
         super().__init__(player, x, y)
         self.range = 300
-        self.speed_run = 100
-        self.speed_escape = 150
+        self.speed_run = 200
+        self.speed_escape = 300
         if player.difficult != 1:
             self.health = 2 * player.difficult * koef_dif
-            print(self.health)
         else:
             self.health = 2
         self.min_rapidity = 3000
@@ -29,8 +28,7 @@ class EnemyRat(Enemy):
         self.layer_collider = 2
         self.escape = None
         self.images = {"left": BULLETS["enemy_2_left"], "right": BULLETS["enemy_2_right"],
-                       "up": BULLETS["enemy_2_back"],
-                       "down": BULLETS["enemy_2_face"]}
+                       "up": BULLETS["enemy_2_back"], "down": BULLETS["enemy_2_face"]}
         self.colliders = {"default": Collider(self, WIDTH_UNIT_COLLIDER * self.rect_f[W], self.height_person,
                                               self.rect_f[W] - 2 * WIDTH_UNIT_COLLIDER * self.rect_f[W],
                                               self.rect_f[H] - self.height_person),

@@ -5,6 +5,7 @@ from bullet import Bullet
 from collider import Collider
 from various import *
 from random import randint
+from sounds import shotgun
 
 
 class Shotgun(Weapon):
@@ -42,6 +43,7 @@ class Shotgun(Weapon):
     def shoot(self, angle):
         if not self.rapidity and not self.reload_process:
             if self.ammo_in_magazine != 0:
+                shotgun.play()
                 self.ammo_in_magazine -= 1
                 self.rapidity = True
                 self.timer_rapidity.start()
@@ -51,5 +53,4 @@ class Shotgun(Weapon):
                 self.owner.interface.set_ammo()
             else:
                 self.reload()
-
 

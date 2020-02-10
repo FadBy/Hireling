@@ -1,11 +1,16 @@
 from one_shoot_weapon import OneShootWeapon
 from watchtimer import Timer
 from various import GOD
+from sprites import ITEMS
+import pygame
 
 
 class Pistol(OneShootWeapon):
     def __init__(self, owner):
         super().__init__(owner)
+        self.rect_f = [0] * 4
+        self.rect = pygame.Rect(self.rect_f)
+        self.image = ITEMS["pistol"]
         self.kill()
 
         self.time_rapidity = 0.7
@@ -20,9 +25,3 @@ class Pistol(OneShootWeapon):
         self.full_ammo = 7
 
         self.timer_rapidity = Timer(self.time_rapidity, self.stop_timer_rapidity)
-
-
-
-
-
-

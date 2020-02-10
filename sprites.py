@@ -105,4 +105,6 @@ BULLETS = {"player_bullet": load_image("bullets/player_bullet.png"),
 ITEMS = {"aid": load_image('items/aid.png'),
          "bullet_case": load_image('items/bullet_case.png'),
          "shotgun": load_image("items/shotgun.png"),
-         "machine_gun": load_image("items/machine_gun.png")}
+         "machine_gun": load_image("items/machine_gun.png"),
+         "pickaxe": load_image("items/pickaxe.png"),
+         "pistol": load_image("items/pistol.png")}

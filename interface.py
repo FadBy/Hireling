@@ -3,6 +3,7 @@ from sprites import *
 from sprite import Sprite
 from group import Group
 import pygame
+from math import ceil
 
 
 class Interface(Group):
@@ -19,23 +20,38 @@ class Interface(Group):
         self.ammo_in_magazine = 0
         self.full_ammo = 0
         self.dividing_line = None
+
+        self.coord_ammo = [width - 85, height - 130]
+        self.coord_bandolier = [width - 85, height - 60]
+        self.distance_symbols = 20
+        self.coord_divide = [width - 90, height - 150]
+        self.coord_weapon = [width - 250, height - 150]
+        self.weapon = self.player.weapon
         self.set_interface()
 
     def set_interface(self):
         self.dividing_line = Sprite(self)
         self.dividing_line.image = PLAYER["dividing_line"]
         self.dividing_line.rect_f = list(self.dividing_line.image.get_rect())
-        self.dividing_line.rect_f[X], self.dividing_line.rect_f[Y] = width - 90, height - 150
+        self.dividing_line.rect_f[X], self.dividing_line.rect_f[Y] = self.coord_divide[X], self.coord_divide[Y]
         self.dividing_line.rect = pygame.Rect(self.dividing_line.rect_f)
         self.display_hp()
         self.display_ammo()
         self.display_bandolier()
+        self.set_weapon()
+
+    def set_weapon(self):
+        self.weapon.kill()
+        self.player.weapon.set_in_interface(self.coord_weapon[X], self.coord_weapon[Y])
+        self.player.weapon.groups.append(self)
+        self.add(self.player.weapon)
+        self.weapon = self.player.weapon
 
     def display_hp(self):
         l = len(self.healths)
         for i in range(l):
             self.healths[0].kill()
-        for i in range(int(self.health)):
+        for i in range(ceil(self.health)):
             sprite = Sprite(self, self.healths)
             sprite.image = PLAYER["health_point"]
             sprite.rect_f = list(sprite.image.get_rect())
@@ -49,7 +65,7 @@ class Interface(Group):
             filled = Sprite(self, self.ammo_numbers)
             filled.image = PLAYER[str(self.ammo_in_magazine)[i]]
             filled.rect_f = list(self.dividing_line.image.get_rect())
-            filled.rect_f[X], filled.rect_f[Y] = width - 85 + i * 20, height - 130
+            filled.rect_f[X], filled.rect_f[Y] = self.coord_ammo[X] + i * self.distance_symbols, self.coord_ammo[Y]
             filled.rect = pygame.Rect(filled.rect_f)
 
     def display_bandolier(self):
@@ -59,7 +75,8 @@ class Interface(Group):
             reserve = Sprite(self, self.bandolier_numbers)
             reserve.image = PLAYER[str(self.bandolier)[i]]
             reserve.rect_f = list(self.dividing_line.image.get_rect())
-            reserve.rect_f[X], reserve.rect_f[Y] = width - 85 + i * 20, height - 60
+            reserve.rect_f[X] = self.coord_bandolier[X] + i * self.distance_symbols
+            reserve.rect_f[Y] = self.coord_bandolier[Y]
             reserve.rect = pygame.Rect(reserve.rect_f)
 
     def change_hp(self):

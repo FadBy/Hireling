@@ -1,6 +1,6 @@
 from map import *
 from functions import *
-import time
+from sounds import *
 
 
 def check_colliders():
@@ -47,7 +47,9 @@ def enemy_action():
 def draw_all_sprites():
     for i in background:
         i.draw(screen)
-    middle.sort(key=lambda x: x.rect[Y] + x.rect[H])
+    player.sort_process = True
+    middle.sort(key=lambda x: x.rect_f[Y] + x.rect_f[H])
+    player.sort_process = False
     for i in middle:
         i.draw(screen)
     if TEST_COLLIDER:
@@ -76,8 +78,10 @@ ENEMYS_ATTACK = True
 
 start()
 
+dead = False
 running = True
 while running:
+    screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -85,7 +89,6 @@ while running:
     for i in motionful:
         i.set_tick(tick)
     pressed = player.check_pressed()
-    screen.fill((0, 0, 0))
     if pressed != '':
         running = pressed
     for i in motionful:
@@ -99,7 +102,16 @@ while running:
     draw_all_sprites()
     if player.health <= 0:
         running = False
+        dead = True
+        screen.fill((0, 0, 0))
+        pygame.display.flip()
+        dying.play()
+        time.sleep(1)
     if PRINT_FPS:
         print(int(clock.get_fps()))
     pygame.display.flip()
+time.sleep(0.5)
 pygame.quit()
+
+if dead:
+    os.system("menu.py")

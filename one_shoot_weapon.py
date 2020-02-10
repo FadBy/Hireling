@@ -1,6 +1,7 @@
 from weapon import Weapon
 from watchtimer import Timer
 from bullet import Bullet
+from sounds import *
 
 
 class OneShootWeapon(Weapon):
@@ -23,6 +24,7 @@ class OneShootWeapon(Weapon):
     def shoot(self, angle):
         if not self.rapidity and not self.reload_process:
             if self.ammo_in_magazine != 0:
+                pistol_machinegun.play()
                 self.ammo_in_magazine -= 1
                 self.rapidity = True
                 self.timer_rapidity.start()

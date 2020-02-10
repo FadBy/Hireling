@@ -2,6 +2,7 @@ from various import *
 from sprites import *
 from collider import Collider
 from sprite import Sprite
+from sounds import *
 
 
 class Consumable(Sprite):
@@ -17,14 +18,15 @@ class Consumable(Sprite):
         self.rect = pygame.Rect(self.rect_f)
         self.height_person = self.rect_f[H] * WIDTH_UNIT_COLLIDER
         self.colliders = {"default": Collider(self, 0, self.height_person, self.rect_f[W],
-                                 self.rect_f[H] - self.height_person, True)}
+                                              self.rect_f[H] - self.height_person, True)}
 
     def changes(self, type, quantity):
         if type == 'heal':
+            pick_up.play()
             self.player.heal(quantity)
         elif type == 'load':
+            pick_up2.play()
             self.player.load_bullets()
 
     def set_tick(self, tick):
         self.tick = tick
-

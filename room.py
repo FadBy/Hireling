@@ -18,7 +18,7 @@ class Room:
     def __init__(self, player, images, x, y, w, h, doors, is_arena=False):
         rooms.append(self)
         self.is_arena = is_arena
-        self.spawn_time = 2
+        self.spawn_time = 1
         self.player = player
         self.doors = []
         self.height = images["wall_block_hor"].get_rect()[H]
@@ -30,11 +30,12 @@ class Room:
         self.walls = {"up": [], "down": [], "left": [], "right": []}
         self.enemies = []
         self.types_enemyes = {1: "enemy_rat", 2: "enemy_sniper"}
+        self.diff_one_wave = {1: [2, 3], 2: [3, 3], 3: [3, 4]}
         if not DELETE_ENEMIES:
-            self.max_enemies_one_room = 1
-            self.min_enemies_one_room = 1
-            self.min_enemies_one_wave = 1
-            self.max_enemies_one_wave = 1
+            self.max_enemies_one_room = 4
+            self.min_enemies_one_room = 2
+            self.min_enemies_one_wave = self.diff_one_wave[1][0]
+            self.max_enemies_one_wave = self.diff_one_wave[1][1]
         else:
             self.max_enemies_one_room = 0
             self.min_enemies_one_room = 0
@@ -63,6 +64,20 @@ class Room:
                                      self.walls[i])
         self.surface = Surface(self, images, self.width, self.height, w, h)
 
+    def change_difficult(self):
+        if self.player.difficult <= len(self.diff_one_wave):
+            self.min_enemies_one_wave = self.diff_one_wave[self.player.difficult][0]
+            self.max_enemies_one_wave = self.diff_one_wave[self.player.difficult][1]
+        else:
+            self.min_enemies_one_wave = self.diff_one_wave[len(self.diff_one_wave)][0]
+            self.max_enemies_one_wave = self.diff_one_wave[len(self.diff_one_wave)][1]
+        self.max_enemies_one_room += 1
+        self.min_enemies_one_room += 1
+
+
+
+
+
     def move_camera(self, x, y):
         self.rect_f[X] -= x
         self.rect_f[Y] -= y
@@ -79,11 +94,14 @@ class Room:
         pass
 
     def spawn_enemies_instead(self):
-        for i in spawns:
-            rect = i.rect
-            i.kill()
-            self.convert_name_in_enemy(self.enemies[0], rect[X], rect[Y])
-            del self.enemies[0]
+        if not self.player.sort_process:
+            for i in spawns:
+                rect = i.rect
+                i.kill()
+                self.convert_name_in_enemy(self.enemies[0], rect[X], rect[Y])
+                del self.enemies[0]
+        else:
+            Timer(self.spawn_time, self.spawn_enemies_instead).start()
 
     def convert_name_in_enemy(self, name, x, y):
         if name == "enemy_rat":
@@ -142,6 +160,7 @@ class Room:
             for i in self.doors:
                 i.block()
         Timer(self.spawn_time, self.spawn_enemies_instead).start()
+        print(self.left)
 
     def spawn_weapon(self):
         room = transes[GET_FIRST_WEAPON]
@@ -153,8 +172,9 @@ class Room:
     def end_of_battle(self):
         if self.left == 0:
             self.player.passed_rooms += 1
-            if self.player.passed_rooms % 4 == 0:
+            if self.player.passed_rooms % COUNT_OF_ARENAS == 0:
                 self.player.difficult += 1
+                self.change_difficult()
             self.player.battle = False
             for i in self.doors:
                 i.unblock()

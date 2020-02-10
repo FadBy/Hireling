@@ -15,7 +15,7 @@ class Aid(Consumable):
         self.rect = pygame.Rect(self.rect_f)
 
     def unit_collided(self, collider, unit):
-        if unit.owner.tag == "player":
+        if unit.owner.tag == "player" and unit == unit.owner.colliders["bullet_hit"]:
             super().changes('heal', self.heal)
             self.kill()
             for i in self.colliders:

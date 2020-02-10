@@ -9,8 +9,9 @@ hubroom = Room(player, TEXTURES_DEFAULT, width // 2 - 8 * METR, height // 2 - 5 
 transhub = Room(player, TEXTURES_DEFAULT, width // 2 - 3 * METR, height // 2 - 26.5 * METR, SIZE_TRANSHUB[X],
                 SIZE_TRANSHUB[Y],
                 [["down", 2], ["up", 2]])
-transes.append(Room(player, TEXTURES_DEFAULT, width // 2 - 8 * METR, height // 2 - 32 * METR, SIZE_TRANS[X], SIZE_TRANS[Y],
-               [["down", 7], ["left", 2], ["right", 2]]))
+transes.append(
+    Room(player, TEXTURES_DEFAULT, width // 2 - 8 * METR, height // 2 - 32 * METR, SIZE_TRANS[X], SIZE_TRANS[Y],
+         [["down", 7], ["left", 2], ["right", 2]]))
 transes.append(
     Room(player, TEXTURES_DEFAULT, width // 2 - 19 * METR, height // 2 - 54.5 * METR, SIZE_TRANS[Y], SIZE_TRANS[X],
          [["down", 2], ["up", 2]]))

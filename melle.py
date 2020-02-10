@@ -2,6 +2,7 @@ from weapon import Weapon
 from collider import Collider
 from various import *
 from watchtimer import Timer
+from sprites import ITEMS
 
 
 class Melle(Weapon):
@@ -9,10 +10,19 @@ class Melle(Weapon):
         super().__init__(owner)
         self.time_attack = 0.7
         self.rapidity = False
-        self.damage = 3
+        if not GOD:
+            self.damage = 2
+        else:
+            self.damage = 999
         self.shootable = False
-        self.collider = Collider(self.owner, self.owner.rect_f[W] * 0.3, -0.15 * self.owner.rect_f[H],
-                                 self.owner.rect_f[W] * 0.4, self.owner.rect_f[H] * 0.4, True)
+        self.image = ITEMS["pickaxe"]
+        self.rect_f = [0] * 4
+        self.rect = pygame.Rect(self.rect_f)
+        self.radius_ver = 200
+        self.radius_hor = 50
+        self.collider = Collider(self.owner, -self.radius_hor, -self.radius_ver,
+                                 self.owner.rect_f[W] + self.radius_hor * 2,
+                                 self.owner.rect_f[H] + self.radius_ver * 1.5, True)
         self.timer = Timer(self.time_attack, self.stop_timer_rapidity)
         self.kill()
 
@@ -28,4 +38,4 @@ class Melle(Weapon):
             self.timer.start()
             self.rapidity = True
             self.owner.animation_attack_melee_up.start()
-
+            self.owner.active_animation = self.owner.animation_attack_melee_up

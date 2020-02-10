@@ -14,4 +14,3 @@ class Timer(MainTimer):
 
     def cancel(self):
         self.timer.cancel()
-

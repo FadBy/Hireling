@@ -4,6 +4,7 @@ from character import Character
 from collider import Collider
 from functions import set_change_coord, calculate_angle
 from animator import Animator
+from sounds import *
 
 
 class Enemy(Character):
@@ -59,6 +60,7 @@ class Enemy(Character):
     def kill(self):
         super().kill()
         for i in self.colliders:
+            robo_dying.play()
             self.colliders[i].kill()
 
     def rotate(self):
@@ -78,5 +80,4 @@ class Enemy(Character):
             if self.side != "down":
                 self.image = self.images["down"]
                 self.side = "down"
-
 

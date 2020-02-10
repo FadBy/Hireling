@@ -2,6 +2,7 @@ from collider import Collider
 from sprite import Sprite
 from various import *
 from sprites import *
+from sounds import *
 
 
 class Door(Sprite):
@@ -41,6 +42,8 @@ class Door(Sprite):
         if not self.owner.owner.battle and self.is_arena and self.image == self.image_close and self.was_open and not \
                 self.owner.owner.used and \
                 pygame.sprite.collide_rect(self.player.colliders["default"], self.owner.owner.colliders["check_door"]):
+            detecting.play()
+            mixer.music.play(loops=1)
             self.was_open = False
             self.owner.owner.spawn()
             self.image = self.image_blocked
@@ -51,6 +54,7 @@ class Door(Sprite):
         if not unit.trigger and not self.blocked:
             self.image = self.image_open
             if not self.was_open:
+                doors.play()
                 self.was_open = True
 
     def block(self):
