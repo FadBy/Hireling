@@ -15,8 +15,6 @@ transes = []
 spawns = pygame.sprite.Group()
 animations = []
 
-passed_room = 0
-
 size = width, height = 1280, 720
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(size, pygame.NOFRAME)
@@ -39,15 +37,15 @@ INDENT_UNIT_COLLIDET = 0.2
 
 FPS = 40
 
-COUNT_OF_ILLUSIONS = 4
+COUNT_OF_ILLUSIONS = 3
 
 COUNT_OF_ENEMIES = 0
-SPEED_BULLET_PLAYER = 600
-SPEED_BULLET_ENEMY = 250
+SPEED_BULLET_PLAYER = 800
+SPEED_BULLET_ENEMY = 500
 ANGLE_ZERO = 0.01
 
 NOCLIP = False
-GOD = True
+GOD = False
 DELETE_ENEMIES = False
 
 SIZE_ROOM = [20, 16]
