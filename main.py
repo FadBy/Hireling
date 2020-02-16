@@ -114,7 +114,6 @@ while running:
             pygame.display.flip()
             dying.play()
             menu_go_on = True
-            start()
             screen = pygame.display.set_mode(size, pygame.NOFRAME)
             menu = Menu()
         if PRINT_FPS:
