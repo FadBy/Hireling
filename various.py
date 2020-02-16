@@ -14,7 +14,6 @@ arenas = []
 transes = []
 spawns = pygame.sprite.Group()
 animations = []
-passed_room = 0
 
 size = width, height = 1280, 720
 clock = pygame.time.Clock()

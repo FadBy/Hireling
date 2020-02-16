@@ -74,11 +74,10 @@ def start():
 
 pygame.init()
 
-TEST_COLLIDER = True
-PRINT_FPS = False
-ENEMYS_ATTACK = True
 
-start()
+TEST_COLLIDER = True
+PRINT_FPS = True
+ENEMYS_ATTACK = True
 
 running = True
 menu_go_on = True
@@ -88,6 +87,10 @@ menu = Menu()
 while running:
     if menu_go_on:
         menu_go_on = menu.render()
+        if not menu_go_on:
+            download_map()
+            print(player)
+            start()
     else:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -115,6 +118,7 @@ while running:
             dying.play()
             menu_go_on = True
             screen = pygame.display.set_mode(size, pygame.NOFRAME)
+            delete_all_lsts()
             menu = Menu()
         if PRINT_FPS:
             print(int(clock.get_fps()))

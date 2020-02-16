@@ -1,7 +1,6 @@
 from various import *
 from sprites import *
 from sounds import *
-import time
 
 
 class Menu:
