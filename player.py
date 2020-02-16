@@ -4,8 +4,8 @@ from interface import Interface
 from animator import Animator
 from melle import Melle
 from pistol import Pistol
-from various import GOD
-from sounds import *
+from functions import *
+from collider import Collider
 
 
 class Player(Character):
@@ -52,7 +52,7 @@ class Player(Character):
         self.speed = 0
 
         if GOD:
-            self.speed_run = 1500
+            self.speed_run = 1000
         else:
             self.speed_run = 500
         self.speed_jerk = 1000
