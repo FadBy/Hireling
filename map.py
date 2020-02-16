@@ -3,6 +3,7 @@ from room import Room
 from sprites import *
 from various import *
 
+
 player = Player()
 hubroom = Room(player, TEXTURES_DEFAULT, width // 2 - 8 * METR, height // 2 - 5 * METR, SIZE_HUB[X], SIZE_HUB[Y],
                [["up", 7], ["left", 2]])
@@ -28,7 +29,9 @@ arenas.append(
 arenas.append(
     Room(player, TEXTURES_DEFAULT, width // 2 - 29 * METR, height // 2 - 72 * METR, SIZE_ROOM[X], SIZE_ROOM[Y],
          [["down", 12], ["right", 9]], True))
-arenas.append(Room(player, TEXTURES_DEFAULT, width // 2 + 7 * METR, height // 2 - 72 * METR, SIZE_ROOM[X], SIZE_ROOM[Y],
-                   [["left", 9], ["down", 12]], True))
-arenas.append(Room(player, TEXTURES_DEFAULT, width // 2 + 7 * METR, height // 2 - 39 * METR, SIZE_ROOM[X], SIZE_ROOM[Y],
-                   [["left", 9], ["up", 12]], True))
+arenas.append(
+    Room(player, TEXTURES_DEFAULT, width // 2 + 7 * METR, height // 2 - 72 * METR, SIZE_ROOM[X], SIZE_ROOM[Y],
+         [["left", 9], ["down", 12]], True))
+arenas.append(
+    Room(player, TEXTURES_DEFAULT, width // 2 + 7 * METR, height // 2 - 39 * METR, SIZE_ROOM[X], SIZE_ROOM[Y],
+         [["left", 9], ["up", 12]], True))

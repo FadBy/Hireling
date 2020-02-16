@@ -70,6 +70,7 @@ def calculate_distance(main, second):
 
 
 def ingame_menu_start():
+    pygame.mouse.set_visible(1)
     btn_1_crd_x = width * 3 // 4 - 41 / 128 * width
     btn_1_crd_y = height * 15 // 16 - 35 / 72 * height
     btn_1_crd_x_2 = width * 3 // 4 - 21.5 / 128 * width
