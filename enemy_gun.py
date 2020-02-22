@@ -3,7 +3,7 @@ from watchtimer import Timer
 from bullet import Bullet
 from random import randint
 from various import koef_dif
-
+from sounds import *
 
 class EnemyGun(Weapon):
     def __init__(self, owner):
@@ -20,6 +20,7 @@ class EnemyGun(Weapon):
 
     def shoot(self, angle):
         if not self.rapidity:
+            sniper_shot.play()
             Bullet(self.owner, angle)
             Timer(randint(self.min_rapidity, self.max_rapidity) / 1000, self.stop_timer_rapidity).start()
             self.rapidity = True

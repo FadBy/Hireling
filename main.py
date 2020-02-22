@@ -75,7 +75,7 @@ def start():
 pygame.init()
 
 TEST_COLLIDER = False
-PRINT_FPS = True
+PRINT_FPS = False
 ENEMYS_ATTACK = True
 
 running = True
@@ -127,3 +127,4 @@ while running:
         pygame.display.flip()
 time.sleep(0.5)
 pygame.quit()
+
