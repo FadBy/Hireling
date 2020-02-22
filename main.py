@@ -73,7 +73,7 @@ def start():
 
 pygame.init()
 
-TEST_COLLIDER = True
+TEST_COLLIDER = False
 PRINT_FPS = False
 ENEMYS_ATTACK = True
 
