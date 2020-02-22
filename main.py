@@ -74,8 +74,7 @@ def start():
 
 pygame.init()
 
-
-TEST_COLLIDER = True
+TEST_COLLIDER = False
 PRINT_FPS = True
 ENEMYS_ATTACK = True
 
@@ -87,6 +86,9 @@ menu = Menu()
 while running:
     if menu_go_on:
         menu_go_on = menu.render()
+        print(menu_go_on)
+        if menu_go_on == "exit":
+            running = False
         if not menu_go_on:
             download_map()
             print(player)
@@ -125,4 +127,3 @@ while running:
         pygame.display.flip()
 time.sleep(0.5)
 pygame.quit()
-

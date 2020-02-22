@@ -28,8 +28,6 @@ class Menu:
     def render(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click.play()
@@ -51,7 +49,7 @@ class Menu:
                             screen.blit(self.background, self.background.get_rect(bottomright=self.resolution))
                             pygame.display.flip()
                             pygame.time.Clock().tick(FPS)
-                            return False
+                            return "exit"
             if event.type == pygame.MOUSEBUTTONUP:
                 self.arrow = pygame.transform.scale(CURSOR['arrow'],
                                                     self.mouse_size)
