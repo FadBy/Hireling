@@ -5,7 +5,7 @@ from animator import Animator
 from melle import Melle
 from pistol import Pistol
 from functions import *
-from collider import *
+from collider import Collider
 
 
 class Player(Character):
@@ -52,7 +52,7 @@ class Player(Character):
         self.speed = 0
 
         if GOD:
-            self.speed_run = 1500
+            self.speed_run = 1000
         else:
             self.speed_run = 500
         self.speed_jerk = 1000
@@ -118,7 +118,10 @@ class Player(Character):
             self.illusions.remove(ilus)
 
     def stop_timer_illusion(self):
-        pass
+        if len(self.illusions) != 0:
+            middle.remove(self.illusions[0])
+            object_sprites.remove(self.illusions[0])
+            del self.illusions[0]
 
     def stop_timer_after_jerk(self):
         self.after_jerk = False

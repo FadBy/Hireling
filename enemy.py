@@ -1,9 +1,6 @@
 from various import *
-from sprites import *
 from character import Character
-from collider import Collider
 from functions import set_change_coord, calculate_angle
-from animator import Animator
 from sounds import *
 
 

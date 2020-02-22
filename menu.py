@@ -1,7 +1,6 @@
 from various import *
 from sprites import *
 from sounds import *
-import time
 
 
 class Menu:
@@ -64,17 +63,3 @@ class Menu:
         pygame.time.Clock().tick(FPS)
         pygame.display.flip()
         return True
-
-
-pygame.init()
-running = True
-screen = pygame.display.set_mode(size, pygame.NOFRAME)
-pygame.mouse.set_visible(0)
-menu = Menu()
-while running:
-    running = menu.render()
-time.sleep(1)
-pygame.quit()
-
-if menu.start_game:
-    os.system("main.py")
