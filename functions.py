@@ -78,7 +78,7 @@ def ingame_menu_start():
     btn_2_crd_y = height * 15 // 16 - 27.5 / 72 * height
     btn_2_crd_y_2 = height * 15 // 16 - 21.5 / 72 * height
     btn_3_crd_y = height * 15 // 16 - 20 / 72 * height
-    btn_3_crd_y_2 =  height * 15 // 16 - 14 / 72 * height
+    btn_3_crd_y_2 = height * 15 // 16 - 14 / 72 * height
     paused = True
     little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'], (width // 2, width // 2))
     while paused:
