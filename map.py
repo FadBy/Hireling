@@ -5,7 +5,7 @@ from various import *
 
 
 def download_map():
-    player.__init__()
+    player.death()
     Room(player, TEXTURES_DEFAULT, width // 2 - 8 * METR, height // 2 - 5 * METR, SIZE_HUB[X], SIZE_HUB[Y],
          [["up", 7], ["left", 2]])
     Room(player, TEXTURES_DEFAULT, width // 2 - 3 * METR, height // 2 - 26.5 * METR, SIZE_TRANSHUB[X],
@@ -52,6 +52,5 @@ def delete_all_lsts():
     transes.clear()
     spawns.empty()
     animations.clear()
-
 
 player = Player()

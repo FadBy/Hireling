@@ -29,7 +29,7 @@ def change_all_pos():
     for i in object_sprites:
         i.move_camera(player.change_x, player.change_y)
     for i in motionful:
-        if i != player:
+        if i.tag != player.tag:
             i.move_camera(player.change_x, player.change_y)
             i.move()
     player.change_x = 0
@@ -89,7 +89,6 @@ while running:
         menu_go_on = menu.render()
         if not menu_go_on:
             download_map()
-            print(player)
             start()
     else:
         for event in pygame.event.get():
@@ -123,6 +122,6 @@ while running:
         if PRINT_FPS:
             print(int(clock.get_fps()))
         pygame.display.flip()
-time.sleep(0.5)
+#time.sleep(0.5)
 pygame.quit()
 

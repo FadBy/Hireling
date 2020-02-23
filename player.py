@@ -103,6 +103,9 @@ class Player(Character):
         self.change_x += x * self.tick
         self.change_y += y * self.tick
 
+    def death(self):
+        self.__init__()
+
     def move_by_collider(self, x, y):
         if x != 0:
             self.change_x = x
