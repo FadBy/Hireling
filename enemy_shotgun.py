@@ -3,6 +3,7 @@ from watchtimer import Timer
 from bullet import Bullet
 from random import randint
 from various import koef_dif
+from sounds import *
 
 
 class EnemyShotgun(Weapon):
@@ -21,6 +22,7 @@ class EnemyShotgun(Weapon):
         self.angle_dispertion = 60
 
     def shoot(self, angle):
+        rat_shot.play()
         for i in range(self.count_bullets):
             Bullet(self.owner, angle + randint(-self.angle_dispertion // 2,
                                                self.angle_dispertion // 2), self.distance_bullet)

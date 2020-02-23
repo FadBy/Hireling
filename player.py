@@ -6,6 +6,7 @@ from melle import Melle
 from pistol import Pistol
 from functions import *
 from collider import Collider
+import threading
 
 
 class Player(Character):
@@ -203,6 +204,8 @@ class Player(Character):
                 if pressed_btns[pygame.K_r]:
                     self.weapon.reload()
                 if pressed_btns[pygame.K_ESCAPE]:
+                    threading.local
+                    threading.Lock
                     return ingame_menu_start()
                 if movement_buttons["a"] and not movement_buttons["w"] and not movement_buttons["s"]:
                     self.change_animation(self.animation_run_left)
