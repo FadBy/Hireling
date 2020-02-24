@@ -98,6 +98,9 @@ while menu.running:
     test()
     if menu_go_on:
         menu_go_on = menu.render()
+        print(menu_go_on)
+        if menu_go_on == "exit":
+            running = False
         if not menu_go_on:
             delete_all_lsts()
             download_map()

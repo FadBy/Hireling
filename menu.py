@@ -29,8 +29,6 @@ class Menu:
     def render(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
                     click.play()
