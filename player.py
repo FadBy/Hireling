@@ -12,7 +12,7 @@ import threading
 class Player(Character):
     def __init__(self):
         super().__init__(middle, motionful)
-        self.timers = {"weapon": [0.1, self.stop_timer_rapidity], "jerk": [1, self.stop_timer_jerk],
+        self.timers = {"weapon": [0.1, self.stop_timer_rapidity], "jerk": Timer(1, self.stop_timer_jerk),
                        "illusion": [0.2, self.stop_timer_illusion], "health": [1, self.stop_timer_damage],
                        "after_jerk": [0.15, self.stop_timer_after_jerk], "after_melle": []}
         self.tag = "player"
@@ -49,6 +49,8 @@ class Player(Character):
         self.step_stop = 0
         self.max_steps = 8
         self.min_steps = 0
+
+        self.pressed_btns = None
 
         self.speed = 0
 
@@ -100,6 +102,10 @@ class Player(Character):
                                            PLAYER["player_left"], 0.75)
         self.active_animation = self.animation_run_face
 
+        self.test_lst = [pygame.K_w, pygame.K_d, pygame.K_s, pygame.K_a]
+
+        self.frame = 1
+
     def move(self, x, y):
         self.change_x += x * self.tick
         self.change_y += y * self.tick
@@ -147,7 +153,7 @@ class Player(Character):
             self.jerk_delay = True
             self.current_length_jerk = 0
             Timer(*self.timers["after_jerk"]).start()
-            Timer(*self.timers["jerk"]).start()
+            self.timers["jerk"].start()
         self.current_length_jerk += self.speed_jerk * self.tick
         coord = set_change_coord(self.angle, self.speed_jerk)
         self.move(*coord)
@@ -155,7 +161,7 @@ class Player(Character):
     def run(self, side):
         self.condition = "run"
         self.angle = convert_side_in_angle(side)
-        if pygame.key.get_pressed()[pygame.K_SPACE] and not self.jerk_delay:
+        if self.pressed_btns[pygame.K_SPACE] and not self.jerk_delay:
             blink.play()
             self.jerk()
         else:
@@ -191,21 +197,26 @@ class Player(Character):
                 for i in self.illusions:
                     i.kill()
                 self.condition = "stand"
-                pressed_btns = pygame.key.get_pressed()
+                self.pressed_btns = list(pygame.key.get_pressed())
+                self.pressed_btns[pygame.K_SPACE] = True
+                self.pressed_btns[self.test_lst[self.frame - 1]] = True
+                if self.frame == 4:
+                    self.frame = 1
+                else:
+                    self.frame += 1
                 movement_buttons = {"a": False, "w": False, "d": False, "s": False}
-                if pressed_btns[pygame.K_a] and not pressed_btns[pygame.K_d]:
+                if self.pressed_btns[pygame.K_a] and not self.pressed_btns[pygame.K_d]:
                     movement_buttons["a"] = True
-                if pressed_btns[pygame.K_w] and not pressed_btns[pygame.K_s]:
+                if self.pressed_btns[pygame.K_w] and not self.pressed_btns[pygame.K_s]:
                     movement_buttons["w"] = True
-                if pressed_btns[pygame.K_d] and not pressed_btns[pygame.K_a]:
+                if self.pressed_btns[pygame.K_d] and not self.pressed_btns[pygame.K_a]:
                     movement_buttons["d"] = True
-                if pressed_btns[pygame.K_s] and not pressed_btns[pygame.K_w]:
+                if self.pressed_btns[pygame.K_s] and not self.pressed_btns[pygame.K_w]:
                     movement_buttons["s"] = True
-                if pressed_btns[pygame.K_r]:
+                if self.pressed_btns[pygame.K_r]:
                     self.weapon.reload()
-                if pressed_btns[pygame.K_ESCAPE]:
-                    threading.local
-                    threading.Lock
+                if self.pressed_btns[pygame.K_ESCAPE]:
+                    self.timers["jerk"].cancel()
                     return ingame_menu_start()
                 if movement_buttons["a"] and not movement_buttons["w"] and not movement_buttons["s"]:
                     self.change_animation(self.animation_run_left)
@@ -236,36 +247,36 @@ class Player(Character):
                 if movement_buttons["d"] and movement_buttons["s"]:
                     self.active_animation.start()
                     self.run("right-down")
-                if pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_UP]:
+                if self.pressed_btns[pygame.K_LEFT] and self.pressed_btns[pygame.K_UP]:
                     self.attack("left-up")
-                elif pressed_btns[pygame.K_LEFT] and pressed_btns[pygame.K_DOWN]:
+                elif self.pressed_btns[pygame.K_LEFT] and self.pressed_btns[pygame.K_DOWN]:
                     self.attack("left-down")
-                elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_UP]:
+                elif self.pressed_btns[pygame.K_RIGHT] and self.pressed_btns[pygame.K_UP]:
                     self.attack('right-up')
-                elif pressed_btns[pygame.K_RIGHT] and pressed_btns[pygame.K_DOWN]:
+                elif self.pressed_btns[pygame.K_RIGHT] and self.pressed_btns[pygame.K_DOWN]:
                     self.attack("right-down")
-                elif pressed_btns[pygame.K_LEFT]:
+                elif self.pressed_btns[pygame.K_LEFT]:
                     self.attack('left')
-                elif pressed_btns[pygame.K_RIGHT]:
+                elif self.pressed_btns[pygame.K_RIGHT]:
                     self.attack('right')
-                elif pressed_btns[pygame.K_UP]:
+                elif self.pressed_btns[pygame.K_UP]:
                     self.attack('up')
-                elif pressed_btns[pygame.K_DOWN]:
+                elif self.pressed_btns[pygame.K_DOWN]:
                     self.attack('down')
-                if pressed_btns[pygame.K_1]:
+                if self.pressed_btns[pygame.K_1]:
                     self.weapon = self.weapons[0]
                     self.interface.set_ammo()
                     self.interface.set_weapon()
-                elif pressed_btns[pygame.K_2]:
+                elif self.pressed_btns[pygame.K_2]:
                     self.weapon = self.weapons[1]
                     self.interface.set_ammo()
                     self.interface.set_weapon()
-                elif pressed_btns[pygame.K_3]:
+                elif self.pressed_btns[pygame.K_3]:
                     if len(self.weapons) > 2:
                         self.weapon = self.weapons[2]
                         self.interface.set_ammo()
                         self.interface.set_weapon()
-                elif pressed_btns[pygame.K_4]:
+                elif self.pressed_btns[pygame.K_4]:
                     if len(self.weapons) > 3:
                         self.weapon = self.weapons[3]
                         self.interface.set_ammo()

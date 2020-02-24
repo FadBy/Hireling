@@ -161,7 +161,6 @@ class Room:
             for i in self.doors:
                 i.block()
         Timer(self.spawn_time, self.spawn_enemies_instead).start()
-        print(self.left)
 
     def spawn_weapon(self):
         room = transes[GET_FIRST_WEAPON]

@@ -70,6 +70,7 @@ def calculate_distance(main, second):
 
 
 def ingame_menu_start():
+
     pygame.mouse.set_visible(1)
     btn_1_crd_x = width * 3 // 4 - 41 / 128 * width
     btn_1_crd_y = height * 15 // 16 - 35 / 72 * height
@@ -82,6 +83,7 @@ def ingame_menu_start():
     paused = True
     little_menu = pygame.transform.scale(INGAME_MENU['ingame_menu'], (width // 2, width // 2))
     while paused:
+        clock.tick()
         mouse_x, mouse_y = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:

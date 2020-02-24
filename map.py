@@ -2,6 +2,7 @@ from player import Player
 from room import Room
 from sprites import *
 from various import *
+from menu import Menu
 
 
 def download_map():

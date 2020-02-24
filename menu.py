@@ -6,6 +6,7 @@ from sounds import *
 class Menu:
     def __init__(self):
         self.start_game = False
+        self.running = True
         self.x_size, self.y_size = size
         self.mouse_size = (self.x_size // 1280 * 50, self.y_size // 720 * 47)
         self.max_resolution = self.max_x_size, self.max_y_size = 1920, 1080
@@ -51,6 +52,7 @@ class Menu:
                             screen.blit(self.background, self.background.get_rect(bottomright=self.resolution))
                             pygame.display.flip()
                             pygame.time.Clock().tick(FPS)
+                            self.running = False
                             return False
             if event.type == pygame.MOUSEBUTTONUP:
                 self.arrow = pygame.transform.scale(CURSOR['arrow'],
