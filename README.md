@@ -7,3 +7,5 @@ Developed in Python using the PyGame library.
 ### Gameplay Video
 
 https://drive.google.com/file/d/1M9Dmeosc7ITJwtI-_BhtxqQqAEry1Zsf/view?usp=drive_link
+
+The game was developed as part of the Yandex Lyceum programming school.
