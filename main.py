@@ -15,7 +15,7 @@ def check_colliders():
                     if u.trigger:
                         u.unit_collided(i.colliders[j])
                     elif not i.colliders[j].trigger:
-                        if u.layer >= i.colliders[j].layer:
+                        if u.llayer >= i.colliders[j].llayer:
                             u.default_collided(i.colliders[j])
                     if i.colliders[j].trigger:
                         i.colliders[j].unit_collided(u)
@@ -78,10 +78,6 @@ def start():
             i.block_all_doors()
 
 
-def test():
-    print(len(middle))
-
-
 pygame.init()
 
 TEST_COLLIDER = False
@@ -95,10 +91,8 @@ download_map()
 start()
 menu = Menu()
 while menu.running:
-    test()
     if menu_go_on:
         menu_go_on = menu.render()
-        print(menu_go_on)
         if menu_go_on == "exit":
             running = False
         if not menu_go_on:
@@ -127,7 +121,7 @@ while menu.running:
         if ENEMYS_ATTACK:
             enemy_action()
         draw_all_sprites()
-        if player.health <= -9999999:
+        if player.health <= 0:
             screen.fill((0, 0, 0))
             pygame.display.flip()
             dying.play()

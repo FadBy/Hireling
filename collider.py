@@ -4,12 +4,12 @@ from various import *
 
 class Collider(Sprite):
     def __init__(self, owner, x, y, w, h, trigger=False):
+        if not trigger:
+            self.llayer = owner.layer_collider
         super().__init__(collider_group)
         self.trigger = trigger
         self.image = pygame.Surface((w, h))
         self.rect_f = [x + owner.rect_f[X], y + owner.rect_f[Y], w, h]
-        if not trigger:
-            self.layer = owner.layer_collider
         self.past_rect = self.rect_f.copy()
         self.rect = pygame.Rect(self.rect_f)
         self.owner = owner

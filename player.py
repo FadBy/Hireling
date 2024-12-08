@@ -197,9 +197,9 @@ class Player(Character):
                 for i in self.illusions:
                     i.kill()
                 self.condition = "stand"
-                self.pressed_btns = list(pygame.key.get_pressed())
-                self.pressed_btns[pygame.K_SPACE] = True
-                self.pressed_btns[self.test_lst[self.frame - 1]] = True
+                self.pressed_btns = pygame.key.get_pressed()
+                # self.pressed_btns[pygame.K_SPACE] = True
+                # self.pressed_btns[self.test_lst[self.frame - 1]] = True
                 if self.frame == 4:
                     self.frame = 1
                 else:
